@@ -2,7 +2,69 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: intro
-chapters:
-- file: markdown
-- file: notebooks
+root: chapters/intro
+parts:
+- caption: Preface
+  chapters:
+    - file: chapters/preface/background
+# Sections 1-3
+- caption: Basics
+  numbered: True
+  chapters:
+    # Blockchain as a data-structure
+    - file: chapters/baad/title.md
+      sections:
+          - file: chapters/baad/text.md
+          - file: chapters/baad/summary.md
+          - file: chapters/baad/questions.md
+          - file: chapters/baad/citations.md
+    # Cryptography
+    - file: chapters/crypto/title.md
+      sections:
+        - file: chapters/crypto/text.md
+        - file: chapters/crypto/summary.md
+        - file: chapters/crypto/questions.md
+        - file: chapters/crypto/citations.md
+    # Networks
+    - file: chapters/networks/title.md
+      sections:
+        - file: chapters/networks/text.md
+        - file: chapters/networks/summary.md
+        - file: chapters/networks/questions.md
+        - file: chapters/networks/citations.md
+# Sections 4-6
+- caption: Implementation
+  numbered: True
+  chapters:
+    # Bitcoin
+    - file: chapters/bitcoin/title.md
+      sections:
+          - file: chapters/bitcoin/text.md
+          - file: chapters/bitcoin/summary.md
+          - file: chapters/bitcoin/questions.md
+          - file: chapters/bitcoin/citations.md
+# Ethereum
+    - file: chapters/ethereum/title.md
+      sections:
+        - file: chapters/ethereum/text.md
+        - file: chapters/ethereum/summary.md
+        - file: chapters/ethereum/questions.md
+        - file: chapters/ethereum/citations.md
+# Vulnerabilities
+    - file: chapters/vulnerabilities/title.md
+      sections:
+        - file: chapters/vulnerabilities/text.md
+        - file: chapters/vulnerabilities/summary.md
+        - file: chapters/vulnerabilities/questions.md
+        - file: chapters/vulnerabilities/citations.md
+# Sections 7-9
+- caption: On top of Blockchain
+  numbered: True
+  chapters:
+  # Layer 2
+    - file: chapters/layer2/title.md
+      sections:
+        - file: chapters/layer2/text.md
+        - file: chapters/layer2/summary.md
+        - file: chapters/layer2/questions.md
+        - file: chapters/layer2/citations.md
