@@ -23,4 +23,4 @@ but the final decision on validity will always be up to you.
 The formatting and structure is inspired by Cornell professor 
 Michael Clarkson and his [CS3110 textbook](https://cs3110.github.io/textbook/cover.html). 
 
-**Copyright 2021 Cornell Blockchain & Daniel Mistrik.** 
+**Copyright 2022 Cornell Blockchain & Daniel Mistrik.** 
