@@ -1,5 +1,5 @@
 # Citations
-The following list is composed of the sources we used in this
+The following list is composed of the sources we used to build this
 chapter. We deem these sources credible. Reference style is APA.
 
 * Drescher, D. (2017). Blockchain Basics: A Non-Technical Introduction in 25 Steps (1st ed.). Apress.
