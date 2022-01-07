@@ -49,6 +49,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="../../_static/logo.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="1.2. Summary" href="summary.html" />
@@ -409,11 +410,11 @@
         aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
-            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+            href="https://github.com/DanielMistrik/Intro2Blockchain"><button type="button" class="btn btn-secondary topbarbtn"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapters/baad/text.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/DanielMistrik/Intro2Blockchain/issues/new?title=Issue%20on%20page%20%2Fchapters/baad/text.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -533,7 +534,7 @@ so we might think they are the solution. But they, too, have problems.
 A <em>Byzantine</em> problem.</p>
 <div class="section" id="the-byzantine-general-s-problem">
 <h2><span class="section-number">1.1.1. </span>The Byzantine General’s Problem<a class="headerlink" href="#the-byzantine-general-s-problem" title="Permalink to this headline">¶</a></h2>
-<img align="right" width="200" height="200" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Byzantine_Generals.PNG">
+<img align="right" width="200" height="200" src="images\Byzantine_Generals.PNG">
 <p>Formally, the Byzantine General’s Problem (<em>BGP</em>) is a <em>game theory</em> problem
 plaguing distributed systems. The problem goes as follows:</p>
 <p>A group of generals besieged the city of Byzantium. To take the
@@ -675,7 +676,7 @@ directly or indirectly.</p></li>
 a nuisance to delete data, but it can still be done, editing is unaffected. But,
 as we will see, Blockchain’s linked list has ‘strong’ immutability</p>
 </div>
-<p><img alt="" src="C:%5CUsers%5Cdanie%5CCS1998-Textbook%5CGithub%5CIntro2Blockchain%5CImages%5CLinked_Lists.PNG" /></p>
+<img src="images/Linked_Lists.PNG">
 <p><strong>Blocks</strong> are the nodes in <em>BADS</em>’s linked list. Blocks are composed of a header and
 data. The data the block contains must be validated by the data in preceding blocks.
 Blocks point to each other by storing the <em>hash</em>, a sort of data signature, of the
@@ -742,7 +743,7 @@ addresses all of our demands, a <em>Merkle Tree</em>.</p>
 <p><em>Merkle Trees</em> are a type of <em>tree</em>. Trees are an incredibly useful and widespread CS
 data structure and their use cases go far beyond blockchain.</p>
 </div>
-<img align="right" width="200" height="150" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Merkle_Tree.PNG">
+<img align="right" width="200" height="150" src="images/Merkle_Tree.PNG">
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
 is composed of the nodes value and the hashes of its two children.
 </div>
