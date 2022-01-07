@@ -55,7 +55,7 @@ A *Byzantine* problem.
 
 ## The Byzantine General's Problem
 
-<img align="right" width="200" height="200" src="images\Byzantine_Generals.PNG">
+<img align="right" width="200" height="200" src="images/Byzantine_Generals.png">
 
 Formally, the Byzantine General's Problem (*BGP*) is a *game theory* problem
 plaguing distributed systems. The problem goes as follows:
@@ -177,7 +177,8 @@ They are an incredibly important data structure in all of computer science, as
 anyone who has taken Cornell's [CS2110](https://cornellcswiki.gitlab.io/classes/CS2110.html) or ever prepared for an S.W.E interview knows. 
 A piece of data, also called a node but not to be confused with nodes in a system, 
 either point to another node or to nothing, but importantly they can only point to **one** 
-other thing.
+other thing and is pointed to by a maximum of one other node. This means two nodes cannot
+point to the same node.
 
 They have the following benefits:
 * Clear process to add data, you just point your new data to the most recent data already
@@ -194,7 +195,7 @@ a nuisance to delete data, but it can still be done, editing is unaffected. But,
 as we will see, Blockchain's linked list has 'strong' immutability 
 :::
 
-<img src="images/Linked_Lists.PNG">
+<img src="images/Linked_Lists.png">
 
 **Blocks** are the nodes in *BADS*'s linked list. Blocks are composed of a header and 
 data. The data the block contains must be validated by the data in preceding blocks. 
@@ -267,9 +268,43 @@ addresses all of our demands, a *Merkle Tree*.
 
 :::{admonition} On Trees
 *Merkle Trees* are a type of *tree*. Trees are an incredibly useful and widespread CS
-data structure and their use cases go far beyond blockchain.
+data structure and their use cases go far beyond blockchain. Although we will not cover 
+trees in depth we need to understand their basic architecture and some key terminology.
+Trees work much like linked lists in that they are composed of nodes pointing to other 
+nodes. But in the case of trees multiple nodes, the *children* can point to the same node,
+the *parent*. If we plot this relationship it looks like a tree, hence the name. Binary
+trees are trees where every parent can have at most 2 children, this means a node can be
+pointed to by a maximum of two other nodes. 
 :::
 
-<img align="right" width="200" height="150" src="images/Merkle_Tree.PNG">
+<img align="right" width="200" height="150" src="images/Merkle_T.png">
+
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
-is composed of the nodes value and the hashes of its two children.
+is the hash of the hashes of its two children. The actual data is stored in *leaves* 
+whose hash makes up the first layer of nodes that eventually connect to the Merkle *root*
+which is a unique digital signature of the whole set of data. This digital signature
+has a given size, but it can represent a data set of infinite size. We cannot understate
+the importance of this data structure in blockchain. It appears everywhere in nearly
+every implementation and add-on, after *BADS* Merkle Trees are the data structure of the blockchain.
+
+Merkle Trees largely rely on *hashes* which, in a simplified sense, are a unique 
+fixed-size signature of the data provided. The idea that every piece of data,
+be it an image or just a combination of other hashes, has a unique representation is
+what gives Merkle Trees their power. Hashing is a fascinating and integral part of
+blockchain and cryptography in general, and we will cover it in depth in the next chapter.
+
+Merkle Trees have multiple benefits and features that address our desires for storing 
+concrete data:
+* Thanks to the merkle root we can quickly determine whether two sets of data, perhaps
+stored by two different nodes with unreliable connections, are *exactly* the same, 
+in both structure and content.
+* The merkle root also makes it very easy to see if anyone edited the data as the 
+root would change, and it is very difficult, to impossible, to keep the changed data but 
+revert the root back to its old version. This makes merkle trees immutable.
+* Changing a single piece of data means the whole merkle tree becomes invalid and to
+make it work again you need to recalculate all the hashes to get a new valid root.
+* The merkle root acts as a signature of the data provided so, in some cases, rather
+than send all the data we just send the much smaller merkle root. 
+
+Data within blocks is therefore stored in merkle trees, and we can represent this 
+data through a small fixed-sized merkle root that is, almost, guaranteed to be unique.
