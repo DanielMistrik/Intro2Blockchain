@@ -434,6 +434,41 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-byzantine-general-s-problem">
+   1.1.1. The Byzantine General’s Problem
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#blockchain-as-a-solution">
+   1.1.2. Blockchain as a solution
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#storing-the-data">
+     1.1.2.1. Storing the Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conventional-methods">
+     1.1.2.2. Conventional Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#blockchain-implementation">
+     1.1.2.3. Blockchain Implementation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -444,6 +479,274 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="chapter">
 <h1><span class="section-number">1.1. </span>Chapter<a class="headerlink" href="#chapter" title="Permalink to this headline">¶</a></h1>
+<p>When talking about blockchain we are talking about a system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>What is a system? <a class="reference external" href="https://www.merriam-webster.com/dictionary/system">Merriam-Webster</a>
+defines <em>system</em> as “interacting or interdependent group of
+items forming a unified group”. This isn’t the best, or most
+concrete, definition so for this textbook we define system sa <em>a
+group of computers, nodes, trying to work on a singular application.</em>
+This singular application can be as big or as small as it wants.</p>
+</div>
+<p>System architecture is a whole course in itself, at
+Cornell its <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS4410.html">CS4410</a>,
+so we will not be going into any sort of depth on the topic.
+All we need to know that systems can be structured in three basic
+ways:</p>
+<ul class="simple">
+<li><p><strong>Centralized</strong>: The whole network revolves and depends on
+a ‘leader’ node (i.e. Facebook).</p></li>
+<li><p><strong>Decentralized</strong>: The whole network revolves and depends on
+a <em>group</em> of ‘leader’ nodes (i.e. Tor).</p></li>
+<li><p><strong>Distributed</strong>: A network composed of equal <em>peer</em> nodes
+that are variously connected between each other. There is no
+‘leader’ node (i.e. I.o.T).</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The definitions of decentralized and distributed are often
+used interchangeably. You might find blockchain being called
+distributed on website and decentralized on the next. Formally
+the two terms are different but for 95% of sources on the
+blockchain, including this textbook, they mean the same thing
+which is that the system isn’t centralized.</p>
+</div>
+<p>The three types all have their uses and there is no one type
+that is better overall. Saying this we have to concede that
+an overwhelming majority of consumer-facing applications are
+built on centralized systems.</p>
+<p>Why? Centralized systems are easy to control and run, so they
+are often the first choice for already centralized companies.
+But centralized systems aren’t perfect.</p>
+<ul class="simple">
+<li><p>Centralized systems are fragile in that if the ‘leader’ node
+falls so those the whole system.</p></li>
+<li><p>Censorship is far easier to implement on a centralized system
+than on one of the others.</p></li>
+<li><p>Centralized systems have limited privacy.</p></li>
+</ul>
+<p>A good example of how centralized systems can go wrong was <a class="reference external" href="https://blog.cloudflare.com/october-2021-facebook-outage/">Facebook’s
+2021 outage caused by a maintenance failure on their centralized servers</a>.</p>
+<p>Distributed and decentralized systems largely address the above,
+so we might think they are the solution. But they, too, have problems.
+A <em>Byzantine</em> problem.</p>
+<div class="section" id="the-byzantine-general-s-problem">
+<h2><span class="section-number">1.1.1. </span>The Byzantine General’s Problem<a class="headerlink" href="#the-byzantine-general-s-problem" title="Permalink to this headline">¶</a></h2>
+<img align="right" width="200" height="200" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Byzantine_Generals.PNG">
+<p>Formally, the Byzantine General’s Problem (<em>BGP</em>) is a <em>game theory</em> problem
+plaguing distributed systems. The problem goes as follows:</p>
+<p>A group of generals besieged the city of Byzantium. To take the
+city they have to attack all at once BUT:</p>
+<ul class="simple">
+<li><p>The Generals have unreliable messengers who might have been
+infiltrated by Byzantium.</p></li>
+<li><p>Some generals may be traitors.</p></li>
+</ul>
+<p>There are many adaptations of this problem but the issue is the
+same: How do you work with a group of peers you don’t trust
+and communication between you is unreliable.</p>
+<p>This problem affects distributed systems because of the equality of nodes.
+There is no gatekeeper, anyone can join the system and communicate
+with whom ever they want. This means your peers may be malicious
+actors trying to subvert the system, or they may be honest nodes that
+just have very bad internet, so they get only some of the
+critical messages needed to support the system.</p>
+<p>Although <em>BGP</em> is at heart a theoretical problem it has
+a number of real-world applications. These include:</p>
+<ul class="simple">
+<li><p>Communication between nuclear submarines</p></li>
+<li><p>An international team of developers trying to build
+a product (i.e. Whatsapp)</p></li>
+<li><p>The Internet</p></li>
+</ul>
+<p>One of the largest distributed/decentralized systems is after all
+the internet. Anyone can host a website and anyone can
+visit and this made managing payments very hard. Some websites
+use credit cards, but these can be misused by malicious websites,
+while others just trusted the customer would pay when the product would
+physically be delivered. In short <em>BGP</em> meant there was no clean
+solution to online payments.</p>
+</div>
+<div class="section" id="blockchain-as-a-solution">
+<h2><span class="section-number">1.1.2. </span>Blockchain as a solution<a class="headerlink" href="#blockchain-as-a-solution" title="Permalink to this headline">¶</a></h2>
+<p>On Halloween in 2008 a solution to the payment problem was announced
+under the whitepaper <em>Bitcoin: A peer-to-peer electronic cash system</em>.
+Although the author never used the term, the whitepaper created <em>Blockchain</em>, a
+technology and data-structure that solved <em>BGP</em>.</p>
+<div class="section" id="storing-the-data">
+<h3><span class="section-number">1.1.2.1. </span>Storing the Data<a class="headerlink" href="#storing-the-data" title="Permalink to this headline">¶</a></h3>
+<p>The remainder of this chapter will be looking at a
+subset of the solution: storing the information the
+generals send each other. The following two chapters
+will complete the solution.</p>
+<p>We need a <em>data-structure</em> that can store information
+among a <em>trustless</em> system. This data-structure
+needs to address the following:</p>
+<ul class="simple">
+<li><p>How the actual data will be structured.</p></li>
+<li><p>How will data be added/edited.</p></li>
+<li><p>How will we make sure the data is valid.</p></li>
+<li><p>How will we make sure everyone has the same set of data.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By <em>trustless</em> we don’t mean a system with 0 trust but rather a system you can
+trust even if you don’t trust the participants. This might seem paradoxical but
+its actually one of the wonders of the blockchain and in this chapter we will take
+a peak into how this is possible.</p>
+</div>
+</div>
+<div class="section" id="conventional-methods">
+<h3><span class="section-number">1.1.2.2. </span>Conventional Methods<a class="headerlink" href="#conventional-methods" title="Permalink to this headline">¶</a></h3>
+<p>Traditionally, when we want to store big sets of data we look at databases.
+<a class="reference external" href="https://www.oracle.com/database/what-is-database/#:~:text=A%20database%20is%20an%20organized,database%20management%20system%20(DBMS).&amp;text=Most%20databases%20use%20structured%20query,for%20writing%20and%20querying%20data.">Databases</a>
+are an organized collection of data often arranged into a set of tables. To
+look whether we can use purely databases lets try to answer our 4 questions with
+databases:</p>
+<ul class="simple">
+<li><p><strong>How will the data be structured?</strong> - In groups of inter-related tables.</p></li>
+<li><p><strong>Adding/editing the data?</strong> - As we are working with a distributed system which
+anyone can join the answer is anyone can add and edit data.</p></li>
+<li><p><strong>Validity of data?</strong> - As anyone can add/edit data we don’t really have a way
+to efficiently check if the data is correct.</p></li>
+<li><p><strong>Same version of data?</strong> - We have to centralize the system to the same copy
+of the database for everyone, a <a class="reference external" href="https://www.techopedia.com/definition/25146/programming-concurrency">concurrency</a>
+nightmare not to mention that it stops being a decentralized system. There is
+really no other solution inherent to databases.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We intentionally put <em>purely</em> databases above. This is because databases are
+in many ways an inherent way to store data and many blockchain implementations
+do actually store their local version of the blockchain in a database. The above was
+meant to showcase that we can’t only depend on conventional methods, that is
+we need something extra, something new.</p>
+</div>
+<p>Clearly using <em>just</em> databases isn’t enough. Not having a gatekeeper is looking like a
+problem. By going over the questions we realize that conventional methods don’t quite
+cut it. Our ideal data-structure would have the following properties:</p>
+<ul class="simple">
+<li><p>Is ordered.</p></li>
+<li><p>Has clear rules on who and how data is added.</p></li>
+<li><p>Data present in the structure can be easily verified by anyone</p></li>
+<li><p>Is <em>immutable</em>, that is once data is added it can’t be deleted or edited.</p></li>
+<li><p>Can be shared easily among nodes in the system.</p></li>
+<li><p>Anyone can contribute to it but can only submit valid data.</p></li>
+</ul>
+</div>
+<div class="section" id="blockchain-implementation">
+<h3><span class="section-number">1.1.2.3. </span>Blockchain Implementation<a class="headerlink" href="#blockchain-implementation" title="Permalink to this headline">¶</a></h3>
+<p>The blockchain meets the requirements above through the following data-structure:</p>
+<ul class="simple">
+<li><p>Data is ordered into <em>blocks</em> and structured by <em>Merkle Trees</em>.</p></li>
+<li><p><em>Blocks</em> are united through a <em>linked list</em>.</p></li>
+<li><p><em>Blocks</em> are added on a regular basis to the <em>linked list</em> and must be valid to
+be added.</p></li>
+<li><p>Everyone has an identical version of the above and can propose new <em>blocks</em> that
+should be added.</p></li>
+</ul>
+<p>This composite data structure is the Blockchain-as-a-data-structure (<em>BADS</em>)</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>We just used alot of new definitions like linked lists, merkle trees and blocks.
+If this looks overwhelming don’t worry we will cover all of them in the rest of
+the chapter. Once you read what all of these terms mean it could be useful to go over
+the above again.</p>
+</div>
+<p><strong>Linked Lists</strong> are pieces of data that <em>point</em> to each other forming a chain.
+They are an incredibly important data structure in all of computer science, as
+anyone who has taken Cornell’s <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS2110.html">CS2110</a> or ever prepared for an S.W.E interview knows.
+A piece of data, also called a node but not to be confused with nodes in a system,
+either point to another node or to nothing, but importantly they can only point to <strong>one</strong>
+other thing.</p>
+<p>They have the following benefits:</p>
+<ul class="simple">
+<li><p>Clear process to add data, you just point your new data to the most recent data already
+in the linked list.</p></li>
+<li><p>Immutable. To replace one node is to replace all the nodes that point to it either
+directly or indirectly.</p></li>
+</ul>
+<p>As such linked lists have solved several of our desired B.A.D.S qualities. Namely
+<em>An ordered data structure</em>,<em>Clear process to add data</em>,<em>Immutable</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Linked Lists, in their basic form, have ‘soft’ immutability. By this we mean it is
+a nuisance to delete data, but it can still be done, editing is unaffected. But,
+as we will see, Blockchain’s linked list has ‘strong’ immutability</p>
+</div>
+<p><img alt="" src="C:%5CUsers%5Cdanie%5CCS1998-Textbook%5CGithub%5CIntro2Blockchain%5CImages%5CLinked_Lists.PNG" /></p>
+<p><strong>Blocks</strong> are the nodes in <em>BADS</em>’s linked list. Blocks are composed of a header and
+data. The data the block contains must be validated by the data in preceding blocks.
+Blocks point to each other by storing the <em>hash</em>, a sort of data signature, of the
+previous block, there is no ‘physical’ link between the nodes.</p>
+<p>Blocks and the linked list give the technology its name as: <strong>Block + Chain</strong>.</p>
+<p>The former part coming from nodes and the latter part coming from the fact that
+linked lists ‘chain’ data together. We explored the expanding tail of the blockchain
+linked list but what about its head? What is the ‘first’ block and what does it point
+to? In blockchain, we call this block the <em>genesis block</em>.</p>
+<p><strong>Genesis Block</strong> is the oldest block in the linked list and the only one that points to
+nothing. It comes <em>hard-coded</em> in most blockchain implementations and is the only
+block that is inherently true. This means our trust in the blockchain is partly
+based on our trust that the data in the genesis block is valid. Genesis blocks often
+dont contain alot of information and are often used for grand statements, like Bitcoin’s
+was.</p>
+<blockquote class="epigraph">
+<div><p>The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
+– Bitcoin Genesis Block</p>
+</div></blockquote>
+<p>Blocks and the linked list address another desired characteristic of BADS: <em>sharing
+the data structure is efficient</em>. This is because to update the data structure we only
+need to share the latest block, each node can then add this block to their own private
+and much larger blockchain. The initial blockchain ‘download’ is still slow, but now it
+only has to be done once. We still need to guarantee that every node gets the same
+block and that it is in the correct order. This is called reaching <em>consensus</em> and
+Blockchain achieves it through several <em>consensus algorithms</em> like <em>PoW</em> or <em>PoS</em>.</p>
+<p>Above we often mentioned that data in a block has to <em>valid</em> and that only the genesis block
+has the luxury of being automatically correct. But what does this actually mean?</p>
+<p>For those who have done some discrete math, i.e. have done Cornell’s
+<a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS2800.html">CS2800</a>, this process is similar to
+induction where the genesis block is the <em>base case</em> and adding blocks is the <em>inductive case</em>.</p>
+<p>For those who haven’t done any discrete math we can look at it as follows:</p>
+<ul class="simple">
+<li><p>The data cannot be proven incorrect by the data in preceding blocks.</p></li>
+<li><p>The data must have the same structure as data in the preceding blocks.</p></li>
+</ul>
+<p>The above is only a generalization as the exact definition of what it means to be <em>correct</em>
+depends on blockchain.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>Lets look at a theoretical blockchain that tracks how much legos you own.</p>
+<ul class="simple">
+<li><p>The genesis block says you have 1 lego</p></li>
+<li><p>The block after genesis says you lost 1 lego</p></li>
+<li><p>If any block after that says you lost more legos the data in that block is invalid
+as you can’t have less than 0 blocks.</p></li>
+</ul>
+</div>
+<p>We now have a way to organize data, a block chain, but how do we organize data within
+blocks? This is an important question as we need to guarantee the following:</p>
+<ul class="simple">
+<li><p>The data must be clearly ordered so different nodes can have the same version</p></li>
+<li><p>The data has to have a ‘signature’ that we can use to quickly check it’s the same as
+the data of other nodes</p></li>
+<li><p>The data has to be immutable</p></li>
+<li><p>We need to guarantee that data is unaltered when it is sent from one node to another,
+this is to protect against unreliable or malicious communication channels.</p></li>
+</ul>
+<p>Using purely a database would introduce a smaller version of our original problem
+and a linked list would be too complicated. Fortunately we have a data structure that
+addresses all of our demands, a <em>Merkle Tree</em>.</p>
+<div class="admonition-on-trees admonition">
+<p class="admonition-title">On Trees</p>
+<p><em>Merkle Trees</em> are a type of <em>tree</em>. Trees are an incredibly useful and widespread CS
+data structure and their use cases go far beyond blockchain.</p>
+</div>
+<img align="right" width="200" height="150" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Merkle_Tree.PNG">
+**Merkle Tree** is a binary tree where every node has a hash, digital signature, which
+is composed of the nodes value and the hashes of its two children.
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -495,7 +798,7 @@
         
           By Cornell Blockchain<br/>
         
-            &copy; Copyright 2021.<br/>
+            &copy; Copyright 2022.<br/>
       </p>
     </div>
   </footer>

@@ -9,3 +9,4 @@ chapter. We deem these sources credible. Reference style is APA.
 * Nakamoto, S. (2008, October). Bitcoin: A Peer-to-Peer Electronic Cash System. Satoshi Nakamoto. https://bitcoin.org/bitcoin.pdf
 * Kumar, A. (2018, June 30). Is Blockchain a Linked List like Data Structure? Data Analytics. Retrieved January 5, 2022, from https://vitalflux.com/blockchain-linked-list-like-data-structure/
 * C. Walter, P. Ellis and B. La Valley, "The reliable platform service: a property-based fault tolerant service architecture," Ninth IEEE International Symposium on High-Assurance Systems Engineering (HASE'05), 2005, pp. 34-43, doi: 10.1109/HASE.2005.23.
+* Merriam-Webster. (n.d.). System. In Merriam-Webster (Merriam-Webster ed.). Retrieved January 7, 2022, from https://www.merriam-webster.com/dictionary/system
