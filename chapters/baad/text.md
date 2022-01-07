@@ -55,7 +55,7 @@ A *Byzantine* problem.
 
 ## The Byzantine General's Problem
 
-<img align="right" width="200" height="200" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Byzantine_Generals.PNG">
+<img align="right" width="200" height="200" src="images\Byzantine_Generals.PNG">
 
 Formally, the Byzantine General's Problem (*BGP*) is a *game theory* problem
 plaguing distributed systems. The problem goes as follows:
@@ -194,7 +194,7 @@ a nuisance to delete data, but it can still be done, editing is unaffected. But,
 as we will see, Blockchain's linked list has 'strong' immutability 
 :::
 
-![](C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Linked_Lists.PNG)
+<img src="images/Linked_Lists.PNG">
 
 **Blocks** are the nodes in *BADS*'s linked list. Blocks are composed of a header and 
 data. The data the block contains must be validated by the data in preceding blocks. 
@@ -270,6 +270,6 @@ addresses all of our demands, a *Merkle Tree*.
 data structure and their use cases go far beyond blockchain.
 :::
 
-<img align="right" width="200" height="150" src="C:\Users\danie\CS1998-Textbook\Github\Intro2Blockchain\Images\Merkle_Tree.PNG">
+<img align="right" width="200" height="150" src="images/Merkle_Tree.PNG">
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
 is composed of the nodes value and the hashes of its two children.
