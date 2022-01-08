@@ -26,6 +26,8 @@ When we use *italics* we are using a formal definition that is
 commonly used for Blockchain while 'single-quotes' are our own
 definitions to help explanation. Using *definitions* outside
 this course means others in Blockchain understand them but
-'definitions' might leave some confused.
+'definitions' might leave some confused. The only exemption
+to this rule is for blockchain-as-a-data-structure, our own definition, which is too wordy to 
+constantly repeat, so we often use its italicized acronym, *BADS*.
 
 **Copyright 2022 Cornell Blockchain & Daniel Mistrik.** 

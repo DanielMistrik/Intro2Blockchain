@@ -55,7 +55,7 @@ A *Byzantine* problem.
 
 ## The Byzantine General's Problem
 
-<img align="right" width="200" height="200" src="images\Byzantine_Generals.PNG">
+<img align="right" width="200" height="200" src="images/Byzantine_Generals.png">
 
 Formally, the Byzantine General's Problem (*BGP*) is a *game theory* problem
 plaguing distributed systems. The problem goes as follows:
@@ -154,7 +154,7 @@ cut it. Our ideal data-structure would have the following properties:
 * Can be shared easily among nodes in the system.
 * Anyone can contribute to it but can only submit valid data.
 
-### Blockchain Implementation
+### Blockchain Implementation (*BADS*)
 The blockchain meets the requirements above through the following data-structure:
 * Data is ordered into *blocks* and structured by *Merkle Trees*.
 * *Blocks* are united through a *linked list*.
@@ -177,7 +177,8 @@ They are an incredibly important data structure in all of computer science, as
 anyone who has taken Cornell's [CS2110](https://cornellcswiki.gitlab.io/classes/CS2110.html) or ever prepared for an S.W.E interview knows. 
 A piece of data, also called a node but not to be confused with nodes in a system, 
 either point to another node or to nothing, but importantly they can only point to **one** 
-other thing.
+other thing and is pointed to by a maximum of one other node. This means two nodes cannot
+point to the same node.
 
 They have the following benefits:
 * Clear process to add data, you just point your new data to the most recent data already
@@ -191,10 +192,12 @@ As such linked lists have solved several of our desired B.A.D.S qualities. Namel
 :::{note}
 Linked Lists, in their basic form, have 'soft' immutability. By this we mean it is 
 a nuisance to delete data, but it can still be done, editing is unaffected. But, 
-as we will see, Blockchain's linked list has 'strong' immutability 
+as we will see, Blockchain's linked list has 'strong' immutability. By principle, Blockchain
+linked lists are add-only, so if you are to act honestly you will only every add nodes,
+not edit or replace them. 
 :::
 
-<img src="images/Linked_Lists.PNG">
+<img src="images/Linked_Lists.png">
 
 **Blocks** are the nodes in *BADS*'s linked list. Blocks are composed of a header and 
 data. The data the block contains must be validated by the data in preceding blocks. 
@@ -267,9 +270,177 @@ addresses all of our demands, a *Merkle Tree*.
 
 :::{admonition} On Trees
 *Merkle Trees* are a type of *tree*. Trees are an incredibly useful and widespread CS
-data structure and their use cases go far beyond blockchain.
+data structure and their use cases go far beyond blockchain. Although we will not cover 
+trees in depth we need to understand their basic architecture and some key terminology.
+Trees work much like linked lists in that they are composed of nodes pointing to other 
+nodes. But in the case of trees multiple nodes, the *children* can point to the same node,
+the *parent*. If we plot this relationship it looks like a tree, hence the name. Binary
+trees are trees where every parent can have at most 2 children, this means a node can be
+pointed to by a maximum of two other nodes. 
 :::
 
-<img align="right" width="200" height="150" src="images/Merkle_Tree.PNG">
+<img align="right" width="200" height="150" src="images/Merkle_T.png">
+
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
-is composed of the nodes value and the hashes of its two children.
+is the hash of the hashes of its two children. The actual data is stored in *leaves* 
+whose hash makes up the first layer of nodes that eventually connect to the Merkle *root*
+which is a unique digital signature of the whole set of data. This digital signature
+has a given size, but it can represent a data set of infinite size. We cannot understate
+the importance of this data structure in blockchain. It appears everywhere in nearly
+every implementation and add-on, after *BADS* Merkle Trees are the data structure of the blockchain.
+
+Merkle Trees largely rely on *hashes* which, in a simplified sense, are a unique 
+fixed-size signature of the data provided. The idea that every piece of data,
+be it an image or just a combination of other hashes, has a unique representation is
+what gives Merkle Trees their power. Hashing is a fascinating and integral part of
+blockchain and cryptography in general, and we will cover it in depth in the next chapter.
+
+Merkle Trees have multiple benefits and features that address our desires for storing 
+concrete data:
+* Thanks to the merkle root we can quickly determine whether two sets of data, perhaps
+stored by two different nodes with unreliable connections, are *exactly* the same, 
+in both structure and content.
+* The merkle root also makes it very easy to see if anyone edited the data as the 
+root would change, and it is very difficult, to impossible, to keep the changed data but 
+revert the root back to its old version. This makes merkle trees immutable.
+* Changing a single piece of data means the whole merkle tree becomes invalid and to
+make it work again you need to recalculate all the hashes to get a new valid root.
+* The merkle root acts as a signature of the data provided so, in some cases, rather
+than send all the data we just send the much smaller merkle root. 
+
+Data within blocks is therefore stored in merkle trees, and we can represent this 
+data through a small fixed-sized merkle root that is, almost, guaranteed to be unique.
+
+We talked alot about the data stored by the block but are still missing its 'brain', 
+the part that references the preceding block and contains information about the block
+, like the merkle root. The blocks 'brain' is the *block header*.
+
+**Block Header** defines the block's properties. Every blockchain implementation has
+a unique header structure. Regardless a, very generalized, block header contains the 
+following:
+* **Version** - The version of the blockchain implementation when the block was added. Like all software 
+blockchain implementation has updates and so different versions that can affect how we
+determine whether a block is valid.
+* **Preceding Block Hash** - The hash of the latest block before this one. This creates
+the linked list.
+* **Merkle Root of Data** - The root of the merkle tree storing all the block's data.
+This is very useful as a node can quickly determine whether its local version of the 
+data is valid. 
+* **Timestamp** - The timestamp of when the block was added to the blockchain.
+
+All the fields of the block header are filled out by the creator of the block. This
+concludes our discussion of the core *BADS*. A linked list composed of blocks as nodes
+which store concrete data into merkle trees and are coordinated by their headers. 
+
+We now know how to build a blockchain as a data structure, but we don't know to run it.
+The discussion above has left us with questions like who adds and validates blocks
+and how is 'strong' immutability implemented into *BADS*.
+
+### Maintaining *BADS*
+Let's start with adding and validating blocks and tackle immutability later. Adding 
+and validating blocks forces us to introduce another aspect of Blockchain, *networks*.
+
+[*Networks*](https://www.computerhope.com/jargon/n/network.htm#:~:text=A%20network%20is%20a%20collection,people%20all%20over%20the%20world.)
+are in the most simple sense just a set of connected computers that share data. Systems
+work on top of networks. Blockchain in particular is heavily dependent on networks as 
+a distributed system, and we will be devoting a whole chapter to them. 
+
+For now blockchain can be considered as a network where *BADS* is the data shared. To determine
+who adds and validates blocks is to decide which nodes add and which nodes validate the
+data they all share. This is still a distributed system, so we somehow need every node
+to independently, but identically, agree on which block will be added. This is called
+achieving *consensus* and is the responsibility of *consensus algorithms*, which we will
+cover in detail in the following chapters. 
+
+There is broad range of consensus algorithms and there is still active research invested
+in them. Consensus algorithms can have very diverse implementations so the following 
+generalization does not necessarily apply to all of them. 
+
+A generalized, but heavily inspired by PoW and original implementations of PoS, consensus
+algorithm requires that all nodes store *BADS* and actively participate in trying to
+add a block or validate a candidate. The general process for a node goes as follows:
+1. A node collects, and verifies, data to put into its block, fills out its block header and then 
+tries to validate it. This validation goes beyond the validity of the data and is the 
+main point where consensus algorithms converge. Validation is always meant to take
+some noticeable amount of time so the network isn't flooded with candidate blocks.
+2. 1. The node successfully validates its block at which point it broadcasts its candidate
+block to the rest of the network. 
+     2. Before the node can validate its own block another candidate block comes in.
+At this point the node stops working on its own block and checks if the candidate 
+is valid. In the case it is the node abandons its attempt, adds the candidate to 
+its own blockchain and tries to create the block that follows it.
+
+Achieving consensus therefore happens at an individual level for every node, but it happens 
+simultaneously. As what makes a block valid is known to the whole network, via the 
+consensus algorithm, every block can individually determine whether a block is valid,
+and it expresses its consent by adding it to its own local blockchain. When this happens
+at a majority of nodes we consider the block to be successfully added to the blockchain.
+
+But what about immutability? Can't someone just produce a new set of valid blocks that
+replace existing blocks and then publish them to the network that accepts them? In 
+theory yes but the likelihood of something like this happening is very low. We 
+first must understand that at anyone time there may be multiple competing chains
+and the *valid* chain is the one that is the biggest/longest. This is 
+because creating, a broadcasting, a valid block is a time race and so as long as a 
+majority of nodes are honest, and accept that blockchain is add-only, the attackers
+won't be able to catch up with the longer, valid, chain that the honest nodes add onto.
+
+Maintaining *BADS* is difficult to comprehend. There is no one copy of *BADS* as every
+node stores its own. The 'current' version of *BADS* can be understood as the version 
+a majority of nodes currently store. This brings in the concept of 'identicalness 
+as a requirement' where consensus algorithms guarantee every node has the same version
+of *BADS*. This requirement also essentially makes *BADS* impossible to destroy as to
+do it one would have to destroy the local version of every node. 
+
+:::{admonition} An honest majority
+Above we based alot of *BADS* maintenance on the idea that a majority of nodes are
+honest. This might seem like a design flaw, but it is one of the central assumptions 
+of a valid blockchain. As we will discover later in the course this assumption holds
+for the most part but there have been cases when it hasn't with tragic results. 
+:::
+
+## Implications of Blockchain being a solution
+Coming back to *BGP* we now have a solution on the format of the messages that the 
+generals send to each other. The messages are put in a blockchain, the genesis block
+can contain none or some very basic information they all agree on like how many generals there are,
+and each general has a local version. Generals don't need to trust the messengers, as 
+a malicious message would not be supported by previous data in the blockchain, or 
+other generals. They only need to trust the system and that a majority of the generals 
+are honest, so they will always control the valid chain and so only exchange valid 
+messages. 
+
+This solution has an important implication, the concept that we can trust
+the system rather than any particular participant in it. We trust the blockchain, we
+don't need to trust any individual node/general/website. This is partially achieved
+by every node verifying everything on its own and trusting no particular block/data 
+sent to it.
+
+From our discussion above we can determine several benefits of *BADS*:
+* **Censorship-Resistant** - Anyone can join a distributed system.
+* **Very stable** - For *BADS* to disappear every node has to delete its local version 
+of it, a very unlikely event.
+* **Works well over a unstable connection** - With Merkle Trees and immediate verification
+upon receiving, data that is kept is guaranteed to be what the sender intended it to be.
+* **Verification is conducted individually so there is no need to trust any individual participant**
+
+There are however also drawbacks to *BADS*:
+* **Inefficient by design** - Every participant has to store the exact same version
+of the blockchain which from a storage standpoint, is as inefficient as it gets.
+* **Limited Data** - Although we haven't delved into this just yet, the verification
+of data is difficult and so a blockchain is often limited to only one type of data it
+can store.
+* **Dishonest Majority** - There is always the small possibility that a majority of the
+nodes are dishonest in which case our concept of a valid blockchain collapses. 
+* **Blockchain Bugs** - Because of how blockchains are implemented, if there is a bug
+it is, like the data, immutable. We will cover this in detail in a later chapter.
+
+This doesn't mean *BADS* is inherently flawed, it just goes to show that *BADS* isn't
+a universal solution to everything. Like databases and centralized systems, blockchain
+has use-cases it's useful for and use-cases it's not.  
+
+:::{note}
+One of the reasons why we introduced you to blockchain through Byzantine Generals is 
+because we want to address a common misconception: blockchain isn't only finance. Although
+Bitcoin and DeFi are successful financial applications of the blockchain they aren't 
+its only applications.
+:::
