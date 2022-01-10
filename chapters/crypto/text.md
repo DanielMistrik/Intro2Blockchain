@@ -104,9 +104,8 @@ trees, password verification and ofcourse data signatures.
 There are alot of implementations of hash functions but good ones should share the
 three following characteristics:
 
-* **Deterministic** - A given input will *always* produce the same output, if it is 
-passed through the same hash implementation as different implementations can give
-different outputs. 
+* **Deterministic** - A given input will *always* produce the same output for the same
+hash function implementation.
 * **Trap-door Function** - You can quickly and easily take an input and calculate the 
 output, the *hash digest*, but you cannot take the *hash digest* and quickly find
 what the original input was. You could say the hash function is not *invertible*.
@@ -124,14 +123,14 @@ to remember.
 ### How it Works
 Hash functions typically work with binary but the hash digest is often represented as 
 a hexadecimal due to terseness. Implementations always try to provide the three
-key properties of good hash functions but how they achieve this varies greatly.
-We will be looking at SHA-256 because it is the most widely used in the real world
-as well as being Bitcoin's hash function.
+properties of good hash functions but how they achieve this varies greatly.
+We will be looking at SHA-256 because it is the most widely used and 
+is also Bitcoin's hash function.
 
 :::{note}
-Alot of CS textbooks give examples of very simple hash functions( i.e. converting data
-to a number and the output is that number times two). We disagree with this approach
-because those kinds of hash functions don't have the three good hash function properties and
+Alot of CS textbooks give examples of very simple hash functions (i.e. converting data
+to a number and the output is that number times two). We disagree with this approach.
+These kinds of simple hash functions don't have the three good hash function properties and
 as such are never used in the real-world making teaching them redundant. We will be showing
 you SHA-256 which is incredibly difficult and incredibly useful. We do not expect you to understand it.
 We are putting it in this textbook merely, so you are *aware* of its inner-workings, and you can rest 
@@ -157,7 +156,7 @@ them to hexadecimal, and you have your hash digest.
 
 We warned you. This is not simple in the slightest and why these steps are the way they
 are is far beyond the scope of this textbook. If you want one thing to take away from
-all of this is that hash functions use bitwise operations, logic and math to guarantee
+all of this then know that hash functions use bitwise operations, logic and math to guarantee
 the three good hash function properties.
 
 **SHA-256** is the hash function we described above, and it is part of the SHA-2 family
