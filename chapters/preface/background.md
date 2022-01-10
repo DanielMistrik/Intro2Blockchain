@@ -7,12 +7,6 @@ Each time we, the teaching staff, try to improve the course and
 this textbook is one such improvement, first introduced in 
 Spring 2022.
 
-This book was created for the blockchain-curious who want to understand the 
-intricacies of the technology. Blockchain has brought people of many trades &
-interests together, and we try to reflect this in our book. As such we assume no 
-prior CS or blockchain knowledge and will teach you CS concepts, and there will be 
-many, that blockchain incorporates. 
-
 We want to thank everyone in the Cornell Blockchain for their
 contribution to the course and the textbook. 
 

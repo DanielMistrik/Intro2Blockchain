@@ -68,3 +68,7 @@ parts:
         - file: chapters/layer2/summary.md
         - file: chapters/layer2/questions.md
         - file: chapters/layer2/citations.md
+  # DeFi
+    - file: chapters/DeFi/title.md
+      sections:
+        - file: chapters/DeFi/text.md
