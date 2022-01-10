@@ -274,12 +274,12 @@ data structure and their use cases go far beyond blockchain. Although we will no
 trees in depth we need to understand their basic architecture and some key terminology.
 Trees work much like linked lists in that they are composed of nodes pointing to other 
 nodes. But in the case of trees multiple nodes, the *children* can point to the same node,
-the *parent*. If we plot this relationship it looks like a tree, hence the name. Binary
+the *parent*. Nodes that have no children are called *leaves*. If we plot this relationship it looks like a tree, hence the name. Binary
 trees are trees where every parent can have at most 2 children, this means a node can be
 pointed to by a maximum of two other nodes. 
 :::
 
-<img align="right" width="200" height="150" src="images/Merkle_T.png">
+<img align="right" width="200" height="150" src="Merkle_T.png">
 
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
 is the hash of the hashes of its two children. The actual data is stored in *leaves* 

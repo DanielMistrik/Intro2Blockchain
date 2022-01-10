@@ -168,7 +168,98 @@ SHA3 before it was edited by NIST in 2013. These edits caused some concerns that
 NIST was engineering a *backdoor* in SHA3 so the creators of Ethereum decided to use 
 the raw unedited SHA3 called Keccak-256. Like SHA-256 it has a 256-bit hash digest.
 
+### Cracking Hashes
+There are two primary ways to crack a hash function:
+finding the input to the hash function given a hash input, or finding hash *collisions*.
+
+*Collisions* are when two different inputs have the same output and while good hash
+functions should not have them advancements in computer processing have turned made
+once good hash functions, like SHA-1, susceptible to *collision attacks*.
+
+*Collision Attacks* are when you take any piece of data and *salt* it with additional 
+data so that it has a desired hash digest. This attack can therefore misuse services
+that, for security reasons, only compare hash digests and not the actual input (i.e. 
+like password verification). SHA-1's algorithm has been cracked to the point that
+you can find a hash collision in 2^62 calculations. In comparison, for the yet 
+uncracked SHA-256 you would have to do at least 2^256 calculations to find a collision. 
+
+*Brute-Force Attacks* are attacks that try to *reverse* a hash function and this is 
+much more difficult, to the point it is impossible, than collision attacks. This is
+because complex hashing functions cannot be *reversed* so the only way you find the input
+for a given output is try all possible inputs until you get your output. For SHA-256
+this would take roughly 2^256 computations which would take the whole worlds computing
+power more time than the predicted lifespan of the universe. Note, that because of 
+collisions even if you find an input that translates to your desired output you can 
+never be sure it is the input you want. 
 ### Merkle Trees
+Now that we understand hashing we can cover merkle trees in more depth. Because of 
+how rare collisions in good hash functions are when we compute the merkle root of 
+any data set we can be confident that this root is unique. This makes merkle roots 
+almost impossible to impersonate making them immutable once their root is in the block 
+header. This is because it is practically impossible for an attacker to get the same root 
+hash for a different merkle tree than the one intended so no node in the blockchain 
+network could be tricked into accepting wrong/malicious data.
+
+:::{admonition} Example
+:class: tip
+Lets create a merkle tree with the following pieces of data: the numbers 1,2,3 and 4.
+For this example we will be using the [Adler32](http://www.unit-conversion.info/texttools/adler-32/#data) hashing algorithm.
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+<div class="row">
+<div class="column">
+<figure >
+  <img src="images/mt_1.PNG">
+  <figcaption>Step 1: Arrange tha values as leaves</figcaption>
+</figure>
+</div>
+<div class="column">
+<figure >
+  <img src="images/mt_2.PNG">
+  <figcaption>Step 2: Calculate hash digests of values</figcaption>
+</figure>
+</div>
+</div>
+<div class="row">
+<div class="column">
+<figure>
+  <img src="images/mt_3.PNG">
+  <figcaption>Step 3: Combine hashes and calculate their hash digest as 
+the value of the parent node</figcaption>
+</figure>
+</div>
+<div class="column">
+<figure >
+  <img src="images/mt_1.PNG">
+  <figcaption>Step 4: Repeat step 3 until you have 
+the merkle root, pictured green.</figcaption>
+</figure>
+</div>
+</div>
+
+:::
+
+Merkle trees are secure and space efficient because just like a hash function can 
+represent data of any size, a merkle root can represent a merkle tree of any size. 
+This is particularly important in the space sensitive blockchain were every participant
+has to store the whole blockchain. 
 
 ### Block Validation in PoW
 
