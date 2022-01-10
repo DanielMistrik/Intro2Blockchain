@@ -205,54 +205,11 @@ network could be tricked into accepting wrong/malicious data.
 Lets create a merkle tree with the following pieces of data: the numbers 1,2,3 and 4.
 For this example we will be using the [Adler32](http://www.unit-conversion.info/texttools/adler-32/#data) hashing algorithm.
 
-<style>
-* {
-  box-sizing: border-box;
-}
-
-.column {
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-
-/* Clearfix (clear floats) */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-</style>
-<div class="row">
-<div class="column">
-<figure >
-  <img src="images/mt_1.PNG">
-  <figcaption>Step 1: Arrange tha values as leaves</figcaption>
-</figure>
-</div>
-<div class="column">
-<figure >
-  <img src="images/mt_2.PNG">
-  <figcaption>Step 2: Calculate hash digests of values</figcaption>
-</figure>
-</div>
-</div>
-<div class="row">
-<div class="column">
-<figure>
-  <img src="images/mt_3.PNG">
-  <figcaption>Step 3: Combine hashes and calculate their hash digest as 
-the value of the parent node</figcaption>
-</figure>
-</div>
-<div class="column">
-<figure >
-  <img src="images/mt_1.PNG">
-  <figcaption>Step 4: Repeat step 3 until you have 
-the merkle root, pictured green.</figcaption>
-</figure>
-</div>
-</div>
+|![s1](images/mt_1.png)|![s2](images/mt_2.png)|
+|-|-|
+|*Step 1: Arrange tha values as leaves*|*Step 2: Calculate hash digests of values*|
+|![s3](images/mt_3.png) | ![s4](images/mt_4.png)
+|*Step 3: Combine hashes and calculate their hash digest as the value of the parent node*|*Step 4: Repeat step 3 until you have the merkle root, pictured green.*|
 
 :::
 
@@ -262,21 +219,286 @@ This is particularly important in the space sensitive blockchain were every part
 has to store the whole blockchain. 
 
 ### Block Validation in PoW
+In the last chapter we briefly covered block validation and consensus
+algorithms. Consensus algorithms differ to greatly in implementation
+so a detailed description of them isn't fit for the first chapter. 
+Consensus algorithms try to achieve two goals:
+* Limit the number of valid blocks produced in a 
+time interval, to guarantee every node gets the newest block in time to 
+synchronize before the next block is produced.
+* Try to express
+the opinion of an honest majority.
+
+*Proof of Work* (*PoW*) is a consensus algorithm achieves the above by
+using hash functions. We previously talked about the fact that to get
+a desired output there is no other solution than brute-force, trying random
+inputs until one input generates a desired output. While brute-force
+is often seen as a bad thing it does have some desirable properties:
+* Given the parameters of the desired hash digest and a known amount of
+computing power, it takes a predictable
+amount of time to solve.
+* If it were a competition, the winner will most-likely be the one with
+the greatest computing power. 
+
+This means that brute-force hashing can limit the number of solutions
+over a period of time and accurately describe the opinion of the majority,
+in other words it solves the two goals we want from a consensus algorithm!
+
+*Hash puzzle* is PoW's desired output. The hash puzzle is a hash output
+that is below a certain value, remember hash outputs are hexadecimal which
+is just a number system. The value, known as the *target*, is calculated 
+through something known as the *difficulty* which roughly equates to 
+how difficult the hash puzzle is. Blockchain's typically adjust 
+the difficulty depending on how much computing power is present to 
+keep the 'ABCT', average block creation time, constant. 
+
+:::{note}
+Bitcoin has an 'ABCT' of 10 minutes and readjusts its difficulty
+every 2016 blocks, roughly 2 weeks. For the interested, the equations
+for difficulty and the target are:
+* **Difficulty** = (Old Difficulty) * (Time taken for the last 2016
+blocks to be produced)/(20160 minutes or 2 weeks) . Limited by
+a factor of 4.
+* **Target** = Difficulty Coefficient * 2^(8*((Difficulty Index)-2))
+
+Difficulty Coefficient - Last 3 bytes of the new difficulty.
+
+Difficulty Index - First byte of the new difficulty.
+:::
+
+Difficulty is included in the block header along with a field called
+the *nonce*. The *nonce* is a free field which can be populated with
+anything and is meant to make the block header smaller than the target.
+
+*PoW* defines the valid chain as the one with the most cumulative 
+difficulty. As we assume a honest majority, the honest chain will
+have the most blocks produced and so the greatest cumulative difficulty.
+Even if a dishonest attacker manages to create a new block, statistically
+the honest majority will always overtake the malicious chain given enough 
+time. 
+
+*PoW* works on the process that once every node creates its candidate
+block it will modify the nonce until the hash of the block header is below
+the target. This is difficult to achieve but very easy to verify, you
+just evaluate: *target* > *block header*. 
+
+*PoW* also has the consequence
+that the definition of an honest majority is a majority of computing
+power, even if the number of actual nodes is a minority. 
 
 ## Public-Private Cryptography
+We now know how to verify what data is supposed to be in a block and
+how to verify the block. What we are missing is how we verify the actual
+data that goes into the block. This is a very general question that
+largely depends on what *type* of data the blockchain is storing but
+nearly every type of data needs to verify its source. While at first 
+sight this might seem irrelevant it becomes important when a piece of 
+data orders the blockchain to move money from one account to another.
+
+But how do we do this? Verifying the creator/origin of a piece 
+of data is very difficult as we can't just give a signature like 
+we can in the real-world. The solution lies in a topic called 
+*Public-Private Cryptography*.
+
+**Public-Private Cryptography** (*PPC*) is a set of cryptographic algorithms that
+work on the basis of two keys, a *public key* and *private key*. These
+two keys are mathematically linked in such a way that anything *encrypted*
+with the private key can only be decrypted with its corresponding public key
+and only that public key. The private key is to be kept private and not 
+share with anyone while the public key can and should be shared with 
+everyone.
+
+*PPC* is a very important subset of cryptography and is used extensively
+in real-world applications. *PPC* provides two key benefits that
+make it useful:
+* They can be used to verify that a certain digital entity, represented
+by a public key, attested to some piece of data, by encrypting it with 
+their private key.
+* They allow for peer-to-peer secret communication. This is because each side can encrypt
+their messages with the others public key which can only be decrypted with
+the other party's private key. Some PPC algorithms allow for this kind of public keys
+encryption and private keys decryption.
+
+Blockchain is primarily interested in the first type of application
+because it can be used in verifying the source of pieces of data, a *digital signature*.
+
+:::{note}
+This textbook uses the phrase data signature and digital signature,
+but they are not interchangeable! Data signature refers to a hash, a unique
+identifier of a piece of data anyone can calculate while digital signatures
+are attestations by a public key that can only be signed by the possessor
+of the corresponding private key.
+:::
 
 ### Digital Signature
+Formally **digital signatures** are a mathematical method to authenticate
+the source of a message. They often incorporate the hash of the message
+they are trying to authenticate in the signature. Digital signatures are meant to 
+be verifiable by anyone but can only be generated by one entity.
+This is done by the one source or 'verifier' encrypting the message/data
+with their private key and then anyone with their public key, which 
+should be publicly available, can verify their message/data signature.
+
+:::{tip}
+Digital signatures boil down to proving one has the private key without
+actually revealing the private key.
+:::
+
+Digital signatures can work with just public and private keys but for 
+a number of reasons, one being they are shorter, participants on
+the blockchain are identified not by their public key but by their
+*address*.
+
+**Address** is the public key after a couple rounds of hashing and 
+being encoded into a more human-readable format, i.e. Base58 which 
+is shorter and can detect if you make an error writing it. Addresses
+are smaller than the *raw* public key and are the most supported method
+for identifying yourself on most blockchain projects.
 
 :::{admonition} Example
 :class: tip
 In the first chapter we looked at an example with a blockchain tracking how much
 blocks each participant had. There we just assumed that the data about the block 
 movements was valid, but now we will analyze how we can guarantee that. 
+We are back on the lego blockchain and the current version of the 
+blockchain says you have 3 legos. Lets say you want to give one of those
+legos to Alice:
+1. You first write up the transaction that states you are transferring
+1 lego to Alice.
+2. You sign the transaction with your private key and broadcast the 
+signed transaction.
+3. Other nodes pick the transaction up and through your address are
+able to verify you did in fact agree to the lego transfer and considering
+you have 3 legos the transaction is inductively correct.
+4. The transaction is included in the latest block, and you are
+down to 2 legos and Alice has one more.
+:::
 
+### PPC Implementations
+Like with hashing algorithms, there is no perfect *PPC* implementation
+with every one having pros and cons. We will be looking at two major
+implementations: RSA and ECDSA.
 
+#### RSA
+**RSA**, the name is derived form its creators' initials, was developed in the 1970s and is a *PPC* algorithm that 
+is 'double-sided'. By this we mean that you can take either public 
+or private key, encrypt a message and that message can only be 
+decrypted with the other. 
+
+RSA works on the set of real numbers, this will be important later, and
+heavily relies on the concept of [modulo](https://www.computerhope.com/jargon/m/modulo.htm#:~:text=Modulo%20is%20a%20math%20operation,and%20r%20is%20the%20remainder.)
+, which guarantees you can't deduce the private key from the public key
+and an encrypted message. Its public key is composed of two numbers while the private key
+is composed of one number. All three numbers are derived from two very
+large and random prime numbers that have 
+to be kept private as well.
+
+RSA is used heavily in industry as it is secure and easy to use.
+
+:::{note}
+RSA is one of the more 'straightforward' encryption algorithms to 
+understand and for those interested it is one of the topics covered
+by Cornell's [CS2800](https://cornellcswiki.gitlab.io/classes/CS2800.html)
+:::
+
+#### ECDSA 
+ECDSA, which stands for *Elliptical Curve Digital Signature Algorithm*, 
+is a *PPC* algorithm that is 'single-sided', you can only encrypt with
+the private key and decrypt with the public key. ECDSA is *very* difficult
+to crack but this is balanced out by the fact that you cannot use it in
+p2p messaging like you can with RSA. 
+
+ECDSA's power comes from the fact that unlike RSA, it does not work 
+on the set of real numbers but on a group on the prime order. This means
+that it only works with a certain set of prime numbers. These prime numbers
+form the path of an elliptical curve. All you need to know about this
+elliptical curve is that it is symmetric along the x-axis and it is 
+defined by an equation. 
+
+:::{tip}
+*Groups* are a topic in complex mathematics. Forget about 1,2,3,4,...
+groups work with only select numbers, often incomprehensibly complicated
+or long.
+:::
+
+One of the implications of ECDSA working on a group is that its operators
+, like addition or multiplication, are not like the addition and 
+multiplication we are used to. While there are may operators for 
+our needs we only need to know one, addition. This is because from 
+addition we can get multiplication, which is just addition *n* many
+times, and multiplication is key in ECDSA.
+
+:::{admonition} ECDSA Addition
+ECDSA is not easy to comprehend, and we do not expect you to understand it
+fully here. Like with hashing we are only putting it here, so you can
+gain an appreciation for the complexity that goes into the blockchain.
+
+ECDSA is a group so addition means adding two points and getting another
+point. To further simplify the example, and because we are primarily concerned
+with multiplication, lets look at the addition of a single point to itself.
+
+*k+k*: You take the tangent at point k and find the other point the tangent
+intersects the elliptical curve. Then flip that point along the x-axis and
+you have the result of k+k.
+
+This is very easily done one way but given a point it is almost impossible
+to find the two values that add up to it, the only strategy is brute-force
+which is very ineffective.
 :::
 
 
-### PPC Implementations
+ECDSA starts with a single point on the elliptical point known as 
+the *generator point*. This point is public and the same for everyone.
+It then generates a random very large number that becomes the private key.
+The equation for the public key is then:
+
+Public Key = Private Key * Generator Point
+
+The public key is then used along with the private key, the hash of the
+message to be signed and a random number known as k to generate a digital 
+signature. This signature can be verified provided you have the 
+message, public key and the random number.
+ 
+Another benefit of ECDSA is because the elliptical curve is symmetric
+along the x-axis we can denote the public key, which is just another
+point on the curve, just through its x-coordinate and the sign of the
+y-coordinate rather than the full coordinate. This cuts the size of the
+public key by nearly half and this version is called the *compressed* public
+key compared to the larger *uncompressed* public key.
+
+:::{note}
+Compressed public keys are so small that they are even smaller than addresses.
+This raises the natural question of why we use addresses at all? The
+reason is Bitcoin uses addresses and as the original blockchain project
+we adopted alot of its features.
+
+But why does Bitcoin use addresses? Well, there is *suspicion* that its
+creator was unaware of compressed public keys and that why Bitcoin
+uses addresses. 
+:::
+
+#### ECDSA v RSA
+RSA is an *encryption* algorithm while ECDSA is just a digital signature
+algorithm. At first glance it might seem like RSA is the more practical of 
+the two and while it is true it has more use-cases both algorithms have their
+benefits and drawbacks.
+
+| Algorithm | Pros                                                       | Cons                                                                       |
+| --- |------------------------------------------------------------|----------------------------------------------------------------------------|
+| RSA| Can be used for both applications of PPC                   | More memory-intensive to store and process                                 |
+| ECDSA | More space-efficient when it comes to storage & processing | Is only a digital encryption algorithm, it can't be used in p2p encryption 
+
+The space efficiency was the deciding factor for why ECDSA is used in blockchain 
+projects like Bitcoin and Ethereum. When you require every participant
+to store the whole blockchain a couple more bytes for every piece of data
+starts to really add up. 
 
 ## Cryptography in Action
+
+{True Random} 
+
+### Cryptography in the Blockchain
+{A summary of hashing,ppc's uses in blockchain}
+{Transactions}
+{Pseudonymity}
+{Byzantine Generals}

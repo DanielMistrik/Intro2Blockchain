@@ -279,7 +279,7 @@ trees are trees where every parent can have at most 2 children, this means a nod
 pointed to by a maximum of two other nodes. 
 :::
 
-<img align="right" width="200" height="150" src="Merkle_T.png">
+<img align="right" width="200" height="150" src="images/Merkle_T.png">
 
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
 is the hash of the hashes of its two children. The actual data is stored in *leaves* 
