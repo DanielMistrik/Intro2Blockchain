@@ -353,6 +353,23 @@
    </li>
   </ul>
  </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../DeFi/title.html">
+   8. DeFi
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../DeFi/text.html">
+     8.1. Chapter
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
     </div>
@@ -435,6 +452,104 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cryptography-basics">
+   2.1.1. Cryptography Basics
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#number-systems">
+     2.1.1.1. Number Systems
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bitwise-operations">
+     2.1.1.2. Bitwise Operations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hashing">
+   2.1.2. Hashing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-it-works">
+     2.1.2.1. How it Works
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cracking-hashes">
+     2.1.2.2. Cracking Hashes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merkle-trees">
+     2.1.2.3. Merkle Trees
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#block-validation-in-pow">
+     2.1.2.4. Block Validation in PoW
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#public-private-cryptography">
+   2.1.3. Public-Private Cryptography
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#digital-signature">
+     2.1.3.1. Digital Signature
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ppc-implementations">
+     2.1.3.2. PPC Implementations
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#rsa">
+       2.1.3.2.1. RSA
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ecdsa">
+       2.1.3.2.2. ECDSA
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ecdsa-v-rsa">
+       2.1.3.2.3. ECDSA v RSA
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cryptography-in-action">
+   2.1.4. Cryptography in Action
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cryptography-in-the-blockchain">
+     2.1.4.1. Cryptography in the Blockchain
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -445,6 +560,513 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="chapter">
 <h1><span class="section-number">2.1. </span>Chapter<a class="headerlink" href="#chapter" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://techterms.com/definition/cryptography">Cryptography</a> is the study of securing
+information derived from complex mathematics. This is a very general definition because
+cryptography is a very large topic that goes beyond just CS. Cryptography is a fascinating
+field that lies in the cross paths of computer science and mathematics and is the
+subject of active research. For those at Cornell who are interested in exploring
+more of cryptography we recommend <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS4830.html">CS4830</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When we talk about cryptography in blockchain we are mainly concerned with
+cryptography’s ability to secure and validate data like blocks and the data they store.</p>
+</div>
+<p>Blockchain depends on two primary cryptographic devices:</p>
+<ul class="simple">
+<li><p><strong>Hashing</strong> - Used to validate blocks in <em>Proof-of-Work</em> consensus, act as a signature of blocks and the
+backbone of merkle trees.</p></li>
+<li><p><strong>Digital Signature</strong> - Used to verify individual participants signing off on a piece
+of data and so validate data in blocks.</p></li>
+</ul>
+<p>The two devices work in tandem and give blockchain trust even when the participants are
+untrustworthy. In the previous chapter we left this definition without explaining the
+seeming paradox of a trusted system composed of untrusted nodes. Both of the devices
+above are rooted in theoretical math and so can be proven correct and valid. Not even
+dishonest participants can forge them which means their use guarantees trust and validity.</p>
+<div class="section" id="cryptography-basics">
+<h2><span class="section-number">2.1.1. </span>Cryptography Basics<a class="headerlink" href="#cryptography-basics" title="Permalink to this headline">¶</a></h2>
+<p>Before we get into the intricacies of cryptography we need to understand some basic
+ideas that cryptography uses. First we need to understand the ‘language’ cryptography
+operates in, <em>number systems</em> and how it manipulates this language, <em>bitwise operations</em>.</p>
+<div class="section" id="number-systems">
+<h3><span class="section-number">2.1.1.1. </span>Number Systems<a class="headerlink" href="#number-systems" title="Permalink to this headline">¶</a></h3>
+<p>As you may or may not know computers don’t understand human languages, they understand
+binary. Luckily thanks to countless very bright programmers and engineers who
+built a <em>layer of abstraction</em> we can use computers without knowing binary. But
+cryptography works at the very ‘core’ of computers and so uses languages they understand.</p>
+<p><em>Binary</em> is at the end of the day what computers really understand, it is the
+sequential stream of 1’s and 0’s that you see in many movies and images. While it is
+now closely associated with computers it is first and foremost a <em>number system</em>.</p>
+<p><em>Number Systems</em> are how we represent numbers. You are most likely accustomed to
+the base-10(<em>decimal</em>) number system that has 10 numerals. We use it because it is the most
+intuitive as we have 10 fingers, but it is not the only number system out there.
+The <a class="reference external" href="https://www.thoughtco.com/why-we-still-use-babylonian-mathematics-116679">Babylonians used a base-60 number system</a>
+and cryptography primarily uses <em>binary</em> and <em>hexadecimal</em>.</p>
+<p>We use <em>binary</em>, or base-2 composed of 2 numerals 1 and 0, because it is what basic
+building blocks of computers, <em>logic gates</em>, can work with.</p>
+<p>We use <em>hexadecimal</em>,or base-16 composed of the standard 10 numerals and the 6 letters
+from ‘a’ to ‘f’, because working with binary is incredibly complicated. Hexadecimal
+is more <em>terse</em> and is used frequently in  <em>lower-level programming</em>, programming
+that works in languages computers understand more.</p>
+<p>We will see hexadecimal re-appear throughout the course as we examine the basic building
+blocks of blockchain implementations like Ethereum.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>Below is the number 42 represented in three different number systems:</p>
+<ul class="simple">
+<li><p><strong>Binary</strong>: 101010</p></li>
+<li><p><strong>Decimal</strong>: 42</p></li>
+<li><p><strong>Hexadecimal</strong>: 2A</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="bitwise-operations">
+<h3><span class="section-number">2.1.1.2. </span>Bitwise Operations<a class="headerlink" href="#bitwise-operations" title="Permalink to this headline">¶</a></h3>
+<p>As with all languages, we need a way to manipulate them. Bitwise operations are
+operators on binary and imitate what <em>logic gates</em>, the basic building blocks of
+computers do. While their use-case isn’t immediately clear they are an integral part of
+computer science with <a class="reference external" href="https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators">a wide range of applications</a>
+including cryptography.</p>
+<p>Bitwise operations work by taking to binary <em>streams</em>, sequences of 1’s and 0’s, of
+equal length and calculating a new binary stream from them. They do this by analyzing
+the bytes at every individual position and depending on what operator they are
+producing either a 1 or 0.</p>
+<p>Bitwise Operators are not an easy concept, and we do not expect you to understand
+them fully. We only want to make sure you have a rough idea of how they work so when
+we explain processes like hashing you will be able to understand it a little more
+deeply.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>There are many bitwise operators, but we will be looking at OR and AND.</p>
+<p><strong>OR</strong> - Produces a 1 if either or both input bits are 1 and 0 otherwise. If we had
+input streams <em>1010</em> and <em>1100</em> the OR operator would output <em>1110</em>. This is because
+when the operator looks at the first bit of both streams it sees it has two 1’s and
+so produces another 1, the second bit in the streams is a 1 or 0 which produces a 1,
+the same goes for the third bit but for the fourth and final bit they are both 0 so the
+OR operator produces a 0.</p>
+<p><strong>AND</strong> - Produces a 1 if both input bits are 1 and 0 otherwise. Therefore, if we
+had input streams <em>1010</em> and <em>1100</em> the AND operator would output <em>1000</em>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="hashing">
+<h2><span class="section-number">2.1.2. </span>Hashing<a class="headerlink" href="#hashing" title="Permalink to this headline">¶</a></h2>
+<p>A formal definition of hashing is a <em>hash function</em> which takes an input of arbitrary
+size and produces an output value, a number, of fixed-size, the <em>hash digest</em>. Hash functions
+are very useful. They appear in data structures, through Hash tables &amp; Merkle
+trees, password verification and ofcourse data signatures.</p>
+<p>There are alot of implementations of hash functions but good ones should share the
+three following characteristics:</p>
+<ul class="simple">
+<li><p><strong>Deterministic</strong> - A given input will <em>always</em> produce the same output for the same
+hash function implementation.</p></li>
+<li><p><strong>Trap-door Function</strong> - You can quickly and easily take an input and calculate the
+output, the <em>hash digest</em>, but you cannot take the <em>hash digest</em> and quickly find
+what the original input was. You could say the hash function is not <em>invertible</em>.</p></li>
+<li><p><strong>Collision Resistant</strong> - The number of inputs that share the same output, known
+as a <em>collision</em>, should be as small as possible. Ideally one input maps to one output but as
+the output is fixed-size and input can be anything even the best hash functions are
+bound to have collisions.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The three properties of good hash functions are incredibly important. They are the
+properties that make hash functions so useful, so they are definitely something
+to remember.</p>
+</div>
+<div class="section" id="how-it-works">
+<h3><span class="section-number">2.1.2.1. </span>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h3>
+<p>Hash functions typically work with binary but the hash digest is often represented as
+a hexadecimal due to terseness. Implementations always try to provide the three
+properties of good hash functions but how they achieve this varies greatly.
+We will be looking at SHA-256 because it is the most widely used and
+is also Bitcoin’s hash function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Alot of CS textbooks give examples of very simple hash functions (i.e. converting data
+to a number and the output is that number times two). We disagree with this approach.
+These kinds of simple hash functions don’t have the three good hash function properties and
+as such are never used in the real-world making teaching them redundant. We will be showing
+you SHA-256 which is incredibly difficult and incredibly useful. We do not expect you to understand it.
+We are putting it in this textbook merely, so you are <em>aware</em> of its inner-workings, and you can rest
+assured that for 99.5% of blockchain projects you will not have to understand it fully.</p>
+</div>
+<p>From a simplified perspective, SHA-256 works as follows:</p>
+<ol class="simple">
+<li><p>Convert the input data into binary</p></li>
+<li><p>‘Pad’ the data, add 0’s to it, and add its original length in binary to it so its
+final length is divisible by 512, that is its length is 512k bits where k is some integer.</p></li>
+<li><p>Divide the entire binary sequence into 512 bit long ‘chunks’.</p></li>
+<li><p>Taking each chunk one-by-one first divide it further into 16 32-bit ‘windows’ and then
+add another 48 32-bit ‘windows’ initialized to 0.</p></li>
+<li><p>For the 16 non-empty words run some logic and the XOR bitwise operator on them and
+put the results in the 48 empty words.</p></li>
+<li><p>Starting with 8 pre-defined hash values modify them by compressing the 64 words into them
+through XOR and bit-logic. These 8 hash values will only have pre-defined values when
+the words of the first ‘chunk’ are compressed into them. After that the results of the
+compression are changed. If the results are greater than 2^32 the modulo operator is applied
+so they are always smaller than 2^32.</p></li>
+<li><p>After we iterated over all the chunks append the 8 resulting hash functions, convert
+them to hexadecimal, and you have your hash digest.</p></li>
+</ol>
+<p>We warned you. This is not simple in the slightest and why these steps are the way they
+are is far beyond the scope of this textbook. If you want one thing to take away from
+all of this then know that hash functions use bitwise operations, logic and math to guarantee
+the three good hash function properties.</p>
+<p><strong>SHA-256</strong> is the hash function we described above, and it is part of the SHA-2 family
+created by NIST in 2001, and it has a 256-bit hash digest. Its notable use-case in Blockchain
+is Bitcoin.</p>
+<p><strong>Keccak-256</strong> is Ethereum’s hash function. It was the <em>original</em> version of NIST’s
+SHA3 before it was edited by NIST in 2013. These edits caused some concerns that
+NIST was engineering a <em>backdoor</em> in SHA3 so the creators of Ethereum decided to use
+the raw unedited SHA3 called Keccak-256. Like SHA-256 it has a 256-bit hash digest.</p>
+</div>
+<div class="section" id="cracking-hashes">
+<h3><span class="section-number">2.1.2.2. </span>Cracking Hashes<a class="headerlink" href="#cracking-hashes" title="Permalink to this headline">¶</a></h3>
+<p>There are two primary ways to crack a hash function:
+finding the input to the hash function given a hash input, or finding hash <em>collisions</em>.</p>
+<p><em>Collisions</em> are when two different inputs have the same output and while good hash
+functions should not have them advancements in computer processing have turned made
+once good hash functions, like SHA-1, susceptible to <em>collision attacks</em>.</p>
+<p><em>Collision Attacks</em> are when you take any piece of data and <em>salt</em> it with additional
+data so that it has a desired hash digest. This attack can therefore misuse services
+that, for security reasons, only compare hash digests and not the actual input (i.e.
+like password verification). SHA-1’s algorithm has been cracked to the point that
+you can find a hash collision in 2^62 calculations. In comparison, for the yet
+uncracked SHA-256 you would have to do at least 2^256 calculations to find a collision.</p>
+<p><em>Brute-Force Attacks</em> are attacks that try to <em>reverse</em> a hash function and this is
+much more difficult, to the point it is impossible, than collision attacks. This is
+because complex hashing functions cannot be <em>reversed</em> so the only way you find the input
+for a given output is try all possible inputs until you get your output. For SHA-256
+this would take roughly 2^256 computations which would take the whole worlds computing
+power more time than the predicted lifespan of the universe. Note, that because of
+collisions even if you find an input that translates to your desired output you can
+never be sure it is the input you want.</p>
+</div>
+<div class="section" id="merkle-trees">
+<h3><span class="section-number">2.1.2.3. </span>Merkle Trees<a class="headerlink" href="#merkle-trees" title="Permalink to this headline">¶</a></h3>
+<p>Now that we understand hashing we can cover merkle trees in more depth. Because of
+how rare collisions in good hash functions are when we compute the merkle root of
+any data set we can be confident that this root is unique. This makes merkle roots
+almost impossible to impersonate making them immutable once their root is in the block
+header. This is because it is practically impossible for an attacker to get the same root
+hash for a different merkle tree than the one intended so no node in the blockchain
+network could be tricked into accepting wrong/malicious data.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>Lets create a merkle tree with the following pieces of data: the numbers 1,2,3 and 4.
+For this example we will be using the <a class="reference external" href="http://www.unit-conversion.info/texttools/adler-32/#data">Adler32</a> hashing algorithm.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><img alt="s1" src="../../_images/mt_1.png" /></p></th>
+<th class="head"><p><img alt="s2" src="../../_images/mt_2.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Step 1: Arrange tha values as leaves</em></p></td>
+<td><p><em>Step 2: Calculate hash digests of values</em></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="s3" src="../../_images/mt_3.png" /></p></td>
+<td><p><img alt="s4" src="../../_images/mt_4.png" /></p></td>
+</tr>
+<tr class="row-even"><td><p><em>Step 3: Combine hashes and calculate their hash digest as the value of the parent node</em></p></td>
+<td><p><em>Step 4: Repeat step 3 until you have the merkle root, pictured green.</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Merkle trees are secure and space efficient because just like a hash function can
+represent data of any size, a merkle root can represent a merkle tree of any size.
+This is particularly important in the space sensitive blockchain were every participant
+has to store the whole blockchain.</p>
+</div>
+<div class="section" id="block-validation-in-pow">
+<h3><span class="section-number">2.1.2.4. </span>Block Validation in PoW<a class="headerlink" href="#block-validation-in-pow" title="Permalink to this headline">¶</a></h3>
+<p>In the last chapter we briefly covered block validation and consensus
+algorithms. Consensus algorithms differ to greatly in implementation
+so a detailed description of them isn’t fit for the first chapter.
+Consensus algorithms try to achieve two goals:</p>
+<ul class="simple">
+<li><p>Limit the number of valid blocks produced in a
+time interval, to guarantee every node gets the newest block in time to
+synchronize before the next block is produced.</p></li>
+<li><p>Try to express
+the opinion of an honest majority.</p></li>
+</ul>
+<p><em>Proof of Work</em> (<em>PoW</em>) is a consensus algorithm achieves the above by
+using hash functions. We previously talked about the fact that to get
+a desired output there is no other solution than brute-force, trying random
+inputs until one input generates a desired output. While brute-force
+is often seen as a bad thing it does have some desirable properties:</p>
+<ul class="simple">
+<li><p>Given the parameters of the desired hash digest and a known amount of
+computing power, it takes a predictable
+amount of time to solve.</p></li>
+<li><p>If it were a competition, the winner will most-likely be the one with
+the greatest computing power.</p></li>
+</ul>
+<p>This means that brute-force hashing can limit the number of solutions
+over a period of time and accurately describe the opinion of the majority,
+in other words it solves the two goals we want from a consensus algorithm!</p>
+<p><em>Hash puzzle</em> is PoW’s desired output. The hash puzzle is a hash output
+that is below a certain value, remember hash outputs are hexadecimal which
+is just a number system. The value, known as the <em>target</em>, is calculated
+through something known as the <em>difficulty</em> which roughly equates to
+how difficult the hash puzzle is. Blockchain’s typically adjust
+the difficulty depending on how much computing power is present to
+keep the ‘ABCT’, average block creation time, constant.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bitcoin has an ‘ABCT’ of 10 minutes and readjusts its difficulty
+every 2016 blocks, roughly 2 weeks. For the interested, the equations
+for difficulty and the target are:</p>
+<ul class="simple">
+<li><p><strong>Difficulty</strong> = (Old Difficulty) * (Time taken for the last 2016
+blocks to be produced)/(20160 minutes or 2 weeks) . Limited by
+a factor of 4.</p></li>
+<li><p><strong>Target</strong> = Difficulty Coefficient * 2^(8*((Difficulty Index)-2))</p></li>
+</ul>
+<p>Difficulty Coefficient - Last 3 bytes of the new difficulty.</p>
+<p>Difficulty Index - First byte of the new difficulty.</p>
+</div>
+<p>Difficulty is included in the block header along with a field called
+the <em>nonce</em>. The <em>nonce</em> is a free field which can be populated with
+anything and is meant to make the block header smaller than the target.</p>
+<p><em>PoW</em> defines the valid chain as the one with the most cumulative
+difficulty. As we assume a honest majority, the honest chain will
+have the most blocks produced and so the greatest cumulative difficulty.
+Even if a dishonest attacker manages to create a new block, statistically
+the honest majority will always overtake the malicious chain given enough
+time.</p>
+<p><em>PoW</em> works on the process that once every node creates its candidate
+block it will modify the nonce until the hash of the block header is below
+the target. This is difficult to achieve but very easy to verify, you
+just evaluate: <em>target</em> &gt; <em>block header</em>.</p>
+<p><em>PoW</em> also has the consequence
+that the definition of an honest majority is a majority of computing
+power, even if the number of actual nodes is a minority.</p>
+</div>
+</div>
+<div class="section" id="public-private-cryptography">
+<h2><span class="section-number">2.1.3. </span>Public-Private Cryptography<a class="headerlink" href="#public-private-cryptography" title="Permalink to this headline">¶</a></h2>
+<p>We now know how to verify what data is supposed to be in a block and
+how to verify the block. What we are missing is how we verify the actual
+data that goes into the block. This is a very general question that
+largely depends on what <em>type</em> of data the blockchain is storing but
+nearly every type of data needs to verify its source. While at first
+sight this might seem irrelevant it becomes important when a piece of
+data orders the blockchain to move money from one account to another.</p>
+<p>But how do we do this? Verifying the creator/origin of a piece
+of data is very difficult as we can’t just give a signature like
+we can in the real-world. The solution lies in a topic called
+<em>Public-Private Cryptography</em>.</p>
+<p><strong>Public-Private Cryptography</strong> (<em>PPC</em>) is a set of cryptographic algorithms that
+work on the basis of two keys, a <em>public key</em> and <em>private key</em>. These
+two keys are mathematically linked in such a way that anything <em>encrypted</em>
+with the private key can only be decrypted with its corresponding public key
+and only that public key. The private key is to be kept private and not
+share with anyone while the public key can and should be shared with
+everyone.</p>
+<p><em>PPC</em> is a very important subset of cryptography and is used extensively
+in real-world applications. <em>PPC</em> provides two key benefits that
+make it useful:</p>
+<ul class="simple">
+<li><p>They can be used to verify that a certain digital entity, represented
+by a public key, attested to some piece of data, by encrypting it with
+their private key.</p></li>
+<li><p>They allow for peer-to-peer secret communication. This is because each side can encrypt
+their messages with the others public key which can only be decrypted with
+the other party’s private key. Some PPC algorithms allow for this kind of public keys
+encryption and private keys decryption.</p></li>
+</ul>
+<p>Blockchain is primarily interested in the first type of application
+because it can be used in verifying the source of pieces of data, a <em>digital signature</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This textbook uses the phrase data signature and digital signature,
+but they are not interchangeable! Data signature refers to a hash, a unique
+identifier of a piece of data anyone can calculate while digital signatures
+are attestations by a public key that can only be signed by the possessor
+of the corresponding private key.</p>
+</div>
+<div class="section" id="digital-signature">
+<h3><span class="section-number">2.1.3.1. </span>Digital Signature<a class="headerlink" href="#digital-signature" title="Permalink to this headline">¶</a></h3>
+<p>Formally <strong>digital signatures</strong> are a mathematical method to authenticate
+the source of a message. They often incorporate the hash of the message
+they are trying to authenticate in the signature. Digital signatures are meant to
+be verifiable by anyone but can only be generated by one entity.
+This is done by the one source or ‘verifier’ encrypting the message/data
+with their private key and then anyone with their public key, which
+should be publicly available, can verify their message/data signature.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Digital signatures boil down to proving one has the private key without
+actually revealing the private key.</p>
+</div>
+<p>Digital signatures can work with just public and private keys but for
+a number of reasons, one being they are shorter, participants on
+the blockchain are identified not by their public key but by their
+<em>address</em>.</p>
+<p><strong>Address</strong> is the public key after a couple rounds of hashing and
+being encoded into a more human-readable format, i.e. Base58 which
+is shorter and can detect if you make an error writing it. Addresses
+are smaller than the <em>raw</em> public key and are the most supported method
+for identifying yourself on most blockchain projects.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>In the first chapter we looked at an example with a blockchain tracking how much
+blocks each participant had. There we just assumed that the data about the block
+movements was valid, but now we will analyze how we can guarantee that.
+We are back on the lego blockchain and the current version of the
+blockchain says you have 3 legos. Lets say you want to give one of those
+legos to Alice:</p>
+<ol class="simple">
+<li><p>You first write up the transaction that states you are transferring
+1 lego to Alice.</p></li>
+<li><p>You sign the transaction with your private key and broadcast the
+signed transaction.</p></li>
+<li><p>Other nodes pick the transaction up and through your address are
+able to verify you did in fact agree to the lego transfer and considering
+you have 3 legos the transaction is inductively correct.</p></li>
+<li><p>The transaction is included in the latest block, and you are
+down to 2 legos and Alice has one more.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="ppc-implementations">
+<h3><span class="section-number">2.1.3.2. </span>PPC Implementations<a class="headerlink" href="#ppc-implementations" title="Permalink to this headline">¶</a></h3>
+<p>Like with hashing algorithms, there is no perfect <em>PPC</em> implementation
+with every one having pros and cons. We will be looking at two major
+implementations: RSA and ECDSA.</p>
+<div class="section" id="rsa">
+<h4><span class="section-number">2.1.3.2.1. </span>RSA<a class="headerlink" href="#rsa" title="Permalink to this headline">¶</a></h4>
+<p><strong>RSA</strong>, the name is derived form its creators’ initials, was developed in the 1970s and is a <em>PPC</em> algorithm that
+is ‘double-sided’. By this we mean that you can take either public
+or private key, encrypt a message and that message can only be
+decrypted with the other.</p>
+<p>RSA works on the set of real numbers, this will be important later, and
+heavily relies on the concept of <a class="reference external" href="https://www.computerhope.com/jargon/m/modulo.htm#:~:text=Modulo%20is%20a%20math%20operation,and%20r%20is%20the%20remainder.">modulo</a>
+, which guarantees you can’t deduce the private key from the public key
+and an encrypted message. Its public key is composed of two numbers while the private key
+is composed of one number. All three numbers are derived from two very
+large and random prime numbers that have
+to be kept private as well.</p>
+<p>RSA is used heavily in industry as it is secure and easy to use.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RSA is one of the more ‘straightforward’ encryption algorithms to
+understand and for those interested it is one of the topics covered
+by Cornell’s <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS2800.html">CS2800</a></p>
+</div>
+</div>
+<div class="section" id="ecdsa">
+<h4><span class="section-number">2.1.3.2.2. </span>ECDSA<a class="headerlink" href="#ecdsa" title="Permalink to this headline">¶</a></h4>
+<p>ECDSA, which stands for <em>Elliptical Curve Digital Signature Algorithm</em>,
+is a <em>PPC</em> algorithm that is ‘single-sided’, you can only encrypt with
+the private key and decrypt with the public key. ECDSA is <em>very</em> difficult
+to crack but this is balanced out by the fact that you cannot use it in
+p2p messaging like you can with RSA.</p>
+<p>ECDSA’s power comes from the fact that unlike RSA, it does not work
+on the set of real numbers but on a group on the prime order. This means
+that it only works with a certain set of prime numbers. These prime numbers
+form the path of an elliptical curve. All you need to know about this
+elliptical curve is that it is symmetric along the x-axis and it is
+defined by an equation.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><em>Groups</em> are a topic in complex mathematics. Forget about 1,2,3,4,…
+groups work with only select numbers, often incomprehensibly complicated
+or long.</p>
+</div>
+<p>One of the implications of ECDSA working on a group is that its operators
+, like addition or multiplication, are not like the addition and
+multiplication we are used to. While there are may operators for
+our needs we only need to know one, addition. This is because from
+addition we can get multiplication, which is just addition <em>n</em> many
+times, and multiplication is key in ECDSA.</p>
+<div class="admonition-ecdsa-addition admonition">
+<p class="admonition-title">ECDSA Addition</p>
+<p>ECDSA is not easy to comprehend, and we do not expect you to understand it
+fully here. Like with hashing we are only putting it here, so you can
+gain an appreciation for the complexity that goes into the blockchain.</p>
+<p>ECDSA is a group so addition means adding two points and getting another
+point. To further simplify the example, and because we are primarily concerned
+with multiplication, lets look at the addition of a single point to itself.</p>
+<p><em>k+k</em>: You take the tangent at point k and find the other point the tangent
+intersects the elliptical curve. Then flip that point along the x-axis and
+you have the result of k+k.</p>
+<p>This is very easily done one way but given a point it is almost impossible
+to find the two values that add up to it, the only strategy is brute-force
+which is very ineffective.</p>
+</div>
+<p>ECDSA starts with a single point on the elliptical point known as
+the <em>generator point</em>. This point is public and the same for everyone.
+It then generates a random very large number that becomes the private key.
+The equation for the public key is then:</p>
+<p>Public Key = Private Key * Generator Point</p>
+<p>The public key is then used along with the private key, the hash of the
+message to be signed and a random number known as k to generate a digital
+signature. This signature can be verified provided you have the
+message, public key and the random number.</p>
+<p>Another benefit of ECDSA is because the elliptical curve is symmetric
+along the x-axis we can denote the public key, which is just another
+point on the curve, just through its x-coordinate and the sign of the
+y-coordinate rather than the full coordinate. This cuts the size of the
+public key by nearly half and this version is called the <em>compressed</em> public
+key compared to the larger <em>uncompressed</em> public key.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Compressed public keys are so small that they are even smaller than addresses.
+This raises the natural question of why we use addresses at all? The
+reason is Bitcoin uses addresses and as the original blockchain project
+we adopted alot of its features.</p>
+<p>But why does Bitcoin use addresses? Well, there is <em>suspicion</em> that its
+creator was unaware of compressed public keys and that why Bitcoin
+uses addresses.</p>
+</div>
+</div>
+<div class="section" id="ecdsa-v-rsa">
+<h4><span class="section-number">2.1.3.2.3. </span>ECDSA v RSA<a class="headerlink" href="#ecdsa-v-rsa" title="Permalink to this headline">¶</a></h4>
+<p>RSA is an <em>encryption</em> algorithm while ECDSA is just a digital signature
+algorithm. At first glance it might seem like RSA is the more practical of
+the two and while it is true it has more use-cases both algorithms have their
+benefits and drawbacks.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Pros</p></th>
+<th class="head"><p>Cons</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RSA</p></td>
+<td><p>Can be used for both applications of PPC</p></td>
+<td><p>More memory-intensive to store and process</p></td>
+</tr>
+<tr class="row-odd"><td><p>ECDSA</p></td>
+<td><p>More space-efficient when it comes to storage &amp; processing</p></td>
+<td><p>Is only a digital encryption algorithm, it can’t be used in p2p encryption</p></td>
+</tr>
+</tbody>
+</table>
+<p>The space efficiency was the deciding factor for why ECDSA is used in blockchain
+projects like Bitcoin and Ethereum. When you require every participant
+to store the whole blockchain a couple more bytes for every piece of data
+starts to really add up.</p>
+</div>
+</div>
+</div>
+<div class="section" id="cryptography-in-action">
+<h2><span class="section-number">2.1.4. </span>Cryptography in Action<a class="headerlink" href="#cryptography-in-action" title="Permalink to this headline">¶</a></h2>
+<p>{True Random}</p>
+<div class="section" id="cryptography-in-the-blockchain">
+<h3><span class="section-number">2.1.4.1. </span>Cryptography in the Blockchain<a class="headerlink" href="#cryptography-in-the-blockchain" title="Permalink to this headline">¶</a></h3>
+<p>{A summary of hashing,ppc’s uses in blockchain}
+{Transactions}
+{Pseudonymity}
+{Byzantine Generals}</p>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
