@@ -47,3 +47,6 @@ These questions are meant to refresh your memory on the chapter.
 <br />
 
 **In a blockchain system, do we need to trust individual participants? Why or why not?**
+<br />
+<br />
+<br />

@@ -149,7 +149,7 @@ put the results in the 48 empty words.
 6. Starting with 8 pre-defined hash values modify them by compressing the 64 words into them
 through XOR and bit-logic. These 8 hash values will only have pre-defined values when 
 the words of the first 'chunk' are compressed into them. After that the results of the
-compression are changed. If the results are greater than 2^32 the modulo operator is applied
+compression are changed. If the results are greater than 2^32 the modulo operator is applied,
 so they are always smaller than 2^32.
 7. After we iterated over all the chunks append the 8 resulting hash functions, convert
 them to hexadecimal, and you have your hash digest.
@@ -271,7 +271,7 @@ the *nonce*. The *nonce* is a free field which can be populated with
 anything and is meant to make the block header smaller than the target.
 
 *PoW* defines the valid chain as the one with the most cumulative 
-difficulty. As we assume a honest majority, the honest chain will
+difficulty. As we assume an honest majority, the honest chain will
 have the most blocks produced and so the greatest cumulative difficulty.
 Even if a dishonest attacker manages to create a new block, statistically
 the honest majority will always overtake the malicious chain given enough 
@@ -361,7 +361,7 @@ In the first chapter we looked at an example with a blockchain tracking how much
 blocks each participant had. There we just assumed that the data about the block 
 movements was valid, but now we will analyze how we can guarantee that. 
 We are back on the lego blockchain and the current version of the 
-blockchain says you have 3 legos. Lets say you want to give one of those
+blockchain says you have 3 legos. Let's say you want to give one of those
 legos to Alice:
 1. You first write up the transaction that states you are transferring
 1 lego to Alice.
@@ -406,13 +406,15 @@ ECDSA, which stands for *Elliptical Curve Digital Signature Algorithm*,
 is a *PPC* algorithm that is 'single-sided', you can only encrypt with
 the private key and decrypt with the public key. ECDSA is *very* difficult
 to crack but this is balanced out by the fact that you cannot use it in
-p2p messaging like you can with RSA. 
+p2p messaging like you can with RSA. This is because everyone can
+decrypt a ECDSA-encrypted message, that is very much the point of ECDSA but
+not very helpful when you are trying to send encrypted messages.
 
 ECDSA's power comes from the fact that unlike RSA, it does not work 
 on the set of real numbers but on a group on the prime order. This means
 that it only works with a certain set of prime numbers. These prime numbers
 form the path of an elliptical curve. All you need to know about this
-elliptical curve is that it is symmetric along the x-axis and it is 
+elliptical curve is that it is symmetric along the x-axis, and it is 
 defined by an equation. 
 
 :::{tip}
@@ -438,7 +440,7 @@ point. To further simplify the example, and because we are primarily concerned
 with multiplication, lets look at the addition of a single point to itself.
 
 *k+k*: You take the tangent at point k and find the other point the tangent
-intersects the elliptical curve. Then flip that point along the x-axis and
+intersects the elliptical curve. Then flip that point along the x-axis, and
 you have the result of k+k.
 
 This is very easily done one way but given a point it is almost impossible
@@ -495,10 +497,105 @@ starts to really add up.
 
 ## Cryptography in Action
 
-{True Random} 
+When describing RSA and ECDSA we used the word *random* alot. This is
+incredibly important because the security of both RSA and ECDSA, but 
+particularly the latter, is dependent on being as random as 
+possible. This introduces us to a common problem in cryptography, which
+is achieving *true random*.
+
+**True random** is something that is incredibly difficult to achieve
+for computers because they only do exactly as told. This makes generating
+*randomness* very difficult because how do you tell a computer, in 
+exact detail, how to return a completely random number? The solution 
+is often that you can't. Random functions in most computers aren't
+random at all but rather *pseudorandom* which derive from mathematical
+equations. While this is ok for picking colors or the name of your
+rock band it isn't good in cryptography because attackers can predict
+the numbers.
+
+We began our discussion of digital signatures with the observation
+that they are trying to prove you have the private
+key without actually showing the private key. With possible
+thousands of such unique proofs, as different messages need to be
+verified, it becomes increasingly difficult to keep the private key
+private. This is where randomness comes in as with a constantly changing random
+number added in to your digital signature your private key is hidden.
+If you are only
+putting pseudo-random numbers in then the attacker can predict them and then
+uncover your private key, stressing the importance of true random.
+
+Randomness therefore underpins the security of cryptography. You might
+be wondering how true random is achieved and the solution is
+the physical world. Some programs measure the exact heat of the cpu, 
+the background noise or even tell you to move your mouse around. 
+Computers become random by moving the randomness onto the physical
+world which, for the most part, can be very random. 
+
+:::{note}
+Those who neglected randomness in cryptography are often punished for it.
+A good example is Sony which used ECDSA for verification in its PS3 store.
+While this might seem like a responsible thing to do, Sony didn't use
+random numbers at all, it just used one number for all of its digital 
+signatures.
+
+The result was that the private key was almost immediately revealed 
+and the PS3 store was hacked. 
+:::
 
 ### Cryptography in the Blockchain
-{A summary of hashing,ppc's uses in blockchain}
-{Transactions}
-{Pseudonymity}
-{Byzantine Generals}
+In this chapter we covered hashing and PPC. Their use cases in blockchain
+are:
+* Hashing is the backbone of the Merkle Tree data structure that blocks
+use to store their data.
+* In PoW hashing is also used as the solution to block validation and
+consensus through the hash puzzle.
+* ECDSA cryptography validates individual pieces of data in a blockchain
+as it allows anyone to definitely prove the source or attestation to a
+piece of data in the blockchain.
+
+A common format of data in the blockchain are transaction which depend
+on cryptography even more. This because a standard transaction is 
+composed of:
+* Sender & Receiver - Often identified through their addresses/public keys
+* Transaction Amount - Standard Number (No cryptography involved)
+* Signature of Sender - An ECDSA proof of the sender's consent to move
+the amount listed.
+
+You may have noticed that no where in the blockchain transaction did
+we mention the personal details of the sender or receiver, only their
+cryptographic keys. This is called *pseudonymity*.
+
+**Pseudonymity** is when a party is only reachable through its 
+cryptographic identity which is disconnected from its physical one.
+There is a gap between the physical and the cryptographic, but it is
+a gap that can, and has, be bridged. 
+
+Being pseudonymous does not
+imply anonymity. A public keys interactions are public-knowledge and interacting with well
+known public keys, like those of a bank or public exchange, can be 
+used along with tracking devices, like security cameras, to deduce the 
+actual identity behind the public key. 
+
+:::{tip}
+On most blockchain implementations the participants are pseudonymous, not
+anonymous.
+:::
+
+### Back to Byzantium
+Coming back to the Byzantine General's problem, this chapter helped the generals verify that messages originate 
+from other generals and are not forged by unreliable messengers.
+This guarantees communication between generals is un tamper-able as
+a modified message would have a different hash which would not fit
+into the provided digital signature, which cannot be forged because
+Byzantium nor the messengers have the private key.
+
+We have also started exploring one possible solution for the generals
+achieving consensus, agreeing on the exact content of the valid chain,
+through PoW.
+
+The generals now have a message format, the blockchain, that is 
+trustworthy if there is an honest majority and will now only 
+contain data that verifiable originates from the generals and not
+some malicious third party. We are still lacking coordination, 
+how do the generals organize this whole blockchain. This will be
+the topic of out next chapter, *networks*.
