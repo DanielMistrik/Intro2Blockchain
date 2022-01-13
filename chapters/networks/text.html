@@ -541,10 +541,37 @@
   <a class="reference internal nav-link" href="#types-of-blockchain">
    3.1.4. Types of Blockchain
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#public-blockchain">
+     3.1.4.1. Public Blockchain
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#private-blockchain">
+     3.1.4.2. Private Blockchain
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#public-v-private">
+     3.1.4.3. Public v Private
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#permissioned-blockchain">
+     3.1.4.4. Permissioned Blockchain
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#byzantium">
    3.1.5. Byzantium
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   3.1.6. Conclusion
   </a>
  </li>
 </ul>
@@ -1004,23 +1031,116 @@ to even meet the main blockchain’s target. When this happens the block is
 added to the main chain and all the miners that added a block on the share-chain
 in the past 2 weeks are rewarded.</p></li>
 </ul>
+<p><strong>Staking Pools</strong> address the high cost of entry in staking <em>PoS</em> blockchains.
+In staking pools miners pool their tokens to have enough to meet
+the typically high staking amount requirement. Larger pools are
+again responsible for more of the block production as a larger stake
+means they are more likely to be selected as block producers.</p>
 </div>
 </div>
 </div>
 <div class="section" id="types-of-blockchain">
 <h2><span class="section-number">3.1.4. </span>Types of Blockchain<a class="headerlink" href="#types-of-blockchain" title="Permalink to this headline">¶</a></h2>
+<p>Up until now we were talking about one type of blockchain, a <em>public</em>
+blockchain. This type of blockchain is the most well-known type,
+and we will devote a majority of textbook to discussing it. But
+while blockchains are attractive to anonymous communities, in part
+because they solve <em>BGP</em>, but they also offer potential for private
+networks where participants know and trust each other. This is because:</p>
+<ul class="simple">
+<li><p>Blockchain is a reliable data storage medium because it is unlikely to
+crash or be erased.</p></li>
+<li><p>Blockchain tracks every process on its network meticulously.</p></li>
+<li><p>Blockchain is designed to only contain valid data.</p></li>
+</ul>
+<p>Blockchain has many use-cases which therefore require different
+types.</p>
+<div class="section" id="public-blockchain">
+<h3><span class="section-number">3.1.4.1. </span>Public Blockchain<a class="headerlink" href="#public-blockchain" title="Permalink to this headline">¶</a></h3>
+<p>Is what we think of when we think blockchain. There are no
+gatekeepers. Anyone can join, read and propose new blocks to the
+blockchain. This type of blockchain is completely decentralized
+and practices self-governance. This was the first type of blockchain
+and is the one used by some of the most notable projects like
+Bitcoin or Ethereum. Communities with anonymous participants
+or participants that don’t trust each other use this type of
+blockchain.</p>
+</div>
+<div class="section" id="private-blockchain">
+<h3><span class="section-number">3.1.4.2. </span>Private Blockchain<a class="headerlink" href="#private-blockchain" title="Permalink to this headline">¶</a></h3>
+<p>This blockchain selectively chooses its participants. Figures with
+authority determine who can join the network and with what amount
+of responsibilities (i.e. can they read or write or both). This type
+of blockchain is closed and is selectively distributed. This type is
+ideal for companies that want to use the blockchain to store
+sensitive data that shouldn’t be publicized. These blockchains can
+have more lax consensus and data validation algorithms because it
+is assumed the participants trust each other.</p>
+</div>
+<div class="section" id="public-v-private">
+<h3><span class="section-number">3.1.4.3. </span>Public v Private<a class="headerlink" href="#public-v-private" title="Permalink to this headline">¶</a></h3>
+<p>As with all things, different types of blockchain have their
+advantages and disadvantages. There is no type that is generally
+better than the rest, they all serve their independent use-cases.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Public Blockchain</p></th>
+<th class="head"><p>Private Blockchain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Characteristics</strong>:<br/>Truly decentralized<br/>Transparent<br/>Immutable Data</p></td>
+<td><p><strong>Characteristics</strong>:<br/> Selective Entry<br/> Strict Governance<br/> Private Data</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pros</strong>:<br/>Open to anyone<br/>Ensures Trust<br/>Immutable Data</p></td>
+<td><p><strong>Pros</strong>:<br/>Efficient<br/>Fast Block production<br/>Trust assumed</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Cons</strong>:<br/>Slow block production<br/>Allows malicious participants</p></td>
+<td><p><strong>Cons</strong>:<br/>Not truly decentralized<br/>Limited Transparent</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="permissioned-blockchain">
+<h3><span class="section-number">3.1.4.4. </span>Permissioned Blockchain<a class="headerlink" href="#permissioned-blockchain" title="Permalink to this headline">¶</a></h3>
+<p>Trying to combine the best of both worlds, permissioned blockchains are
+a hybrid between public and private. Participants are selectively
+added but have rights as predetermined by some standard rather
+than being given them on a case-to-case basis. Typically, participants
+get all the rights they would in a public chain.
+This blockchain is selectively permissioned/restricted and is ideal
+for use-cases where participant trust is the central issue.</p>
+</div>
 </div>
 <div class="section" id="byzantium">
 <h2><span class="section-number">3.1.5. </span>Byzantium<a class="headerlink" href="#byzantium" title="Permalink to this headline">¶</a></h2>
-<p>{The big finish, go over the whole problem explain what we learned
-in the first two chapters and explain the last puzzle piece and then
-explain the whole thing}</p>
+<p>We now have the last piece of the puzzle, the coordination. The
+Byzantine’s General Problem illustrates the difficulties of coordinating
+a group of trustless, possibly malicious, participants through a
+siege. We have a number of generals which have circled the city of
+Byzantium and need to all attack at once if they are to succeed. The
+problem is that they have no reliable communication channels to
+talk through and some generals might be traitors that
+will intentionally try to push false information.</p>
+<p>Blockchain offers a solution. By using <em>BADS</em> as the format of
+their messages they allow only valid messages to be taken seriously.
+With good cryptography they prevent anyone but the generals from
+creating messages and through networks and consensus algorithms
+they can efficiently spread valid messages, stop lies in their tracks
+and have a valid chain of messages even if only a small majority of
+generals are honest, the others are traitors. Generals need to trust
+no one but themselves and the system. They keep a record of all the
+messages and ultimately decide on their own whether they trust something.</p>
+<p>The generals can now coordinate effectively and there is nothing
+Byzantium can do.</p>
+</div>
+<div class="section" id="conclusion">
+<h2><span class="section-number">3.1.6. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>This chapter concludes the basics. If you only wanted to
-know the basic building blocks of a blockchain congratulations, you now
-know them. The next part of the textbook will take what we learned and
-apply them to actual blockchain implementations. Up to now we were
+know the basic building blocks of a blockchain congratulations, you now do. The next part of the textbook will take what we learned and
+apply it to actual blockchain implementations. Up to now we were
 largely in the idealistic theoretical realm but as you will see in the coming
-chapters’ implementation is not always clean.</p>
+chapters implementation is not always clean.</p>
 </div>
 </div>
 
