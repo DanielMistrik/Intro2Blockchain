@@ -449,17 +449,93 @@ added to the main chain and all the miners that added a block on the share-chain
 in the past 2 weeks are rewarded.
 
 **Staking Pools** address the high cost of entry in staking *PoS* blockchains. 
+In staking pools miners pool their tokens to have enough to meet 
+the typically high staking amount requirement. Larger pools are
+again responsible for more of the block production as a larger stake
+means they are more likely to be selected as block producers.
 
 ## Types of Blockchain
+Up until now we were talking about one type of blockchain, a *public*
+blockchain. This type of blockchain is the most well-known type,
+and we will devote a majority of textbook to discussing it. But 
+while blockchains are attractive to anonymous communities, in part
+because they solve *BGP*, but they also offer potential for private
+networks where participants know and trust each other. This is because:
+* Blockchain is a reliable data storage medium because it is unlikely to 
+crash or be erased.
+* Blockchain tracks every process on its network meticulously.
+* Blockchain is designed to only contain valid data.
+
+Blockchain has many use-cases which therefore require different
+types.
+
+### Public Blockchain
+Is what we think of when we think blockchain. There are no 
+gatekeepers. Anyone can join, read and propose new blocks to the 
+blockchain. This type of blockchain is completely decentralized 
+and practices self-governance. This was the first type of blockchain
+and is the one used by some of the most notable projects like 
+Bitcoin or Ethereum. Communities with anonymous participants
+or participants that don't trust each other use this type of 
+blockchain.
+
+### Private Blockchain
+This blockchain selectively chooses its participants. Figures with 
+authority determine who can join the network and with what amount 
+of responsibilities (i.e. can they read or write or both). This type 
+of blockchain is closed and is selectively distributed. This type is
+ideal for companies that want to use the blockchain to store 
+sensitive data that shouldn't be publicized. These blockchains can 
+have more lax consensus and data validation algorithms because it
+is assumed the participants trust each other.
+
+### Public v Private
+As with all things, different types of blockchain have their 
+advantages and disadvantages. There is no type that is generally
+better than the rest, they all serve their independent use-cases.
+
+| Public Blockchain                                                               | Private Blockchain                                                                 |
+|---------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| **Characteristics**:<br/>Truly decentralized<br/>Transparent<br/>Immutable Data | **Characteristics**:<br/> Selective Entry<br/> Strict Governance<br/> Private Data |
+| **Pros**:<br/>Open to anyone<br/>Ensures Trust<br/>Immutable Data               | **Pros**:<br/>Efficient<br/>Fast Block production<br/>Trust assumed                |
+| **Cons**:<br/>Slow block production<br/>Allows malicious participants            | **Cons**:<br/>Not truly decentralized<br/>Limited Transparent                      |
+
+### Permissioned Blockchain
+Trying to combine the best of both worlds, permissioned blockchains are
+a hybrid between public and private. Participants are selectively
+added but have rights as predetermined by some standard rather
+than being given them on a case-to-case basis. Typically, participants
+get all the rights they would in a public chain.
+This blockchain is selectively permissioned/restricted and is ideal
+for use-cases where participant trust is the central issue.
 
 ## Byzantium
-{The big finish, go over the whole problem explain what we learned
-in the first two chapters and explain the last puzzle piece and then
-explain the whole thing}
+We now have the last piece of the puzzle, the coordination. The 
+Byzantine's General Problem illustrates the difficulties of coordinating
+a group of trustless, possibly malicious, participants through a
+siege. We have a number of generals which have circled the city of 
+Byzantium and need to all attack at once if they are to succeed. The
+problem is that they have no reliable communication channels to 
+talk through and some generals might be traitors that 
+will intentionally try to push false information.
+
+Blockchain offers a solution. By using *BADS* as the format of
+their messages they allow only valid messages to be taken seriously.
+With good cryptography they prevent anyone but the generals from
+creating messages and through networks and consensus algorithms
+they can efficiently spread valid messages, stop lies in their tracks
+and have a valid chain of messages even if only a small majority of
+generals are honest, the others are traitors. Generals need to trust
+no one but themselves and the system. They keep a record of all the
+messages and ultimately decide on their own whether they trust something.
+
+The generals can now coordinate effectively and there is nothing
+Byzantium can do. 
+
+## Conclusion
 
 This chapter concludes the basics. If you only wanted to 
-know the basic building blocks of a blockchain congratulations, you now
-know them. The next part of the textbook will take what we learned and
-apply them to actual blockchain implementations. Up to now we were
+know the basic building blocks of a blockchain congratulations, you now do. The next part of the textbook will take what we learned and
+apply it to actual blockchain implementations. Up to now we were
 largely in the idealistic theoretical realm but as you will see in the coming
-chapters' implementation is not always clean.
+chapters implementation is not always clean.
