@@ -522,6 +522,18 @@
     <a class="reference internal nav-link" href="#miners">
      3.1.3.2. Miners
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#incentives">
+       3.1.3.2.1. Incentives
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#types-of-miners">
+       3.1.3.2.2. Types of Miners
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -790,6 +802,12 @@ easily, you just collect a set of valid data and produce a block around it.
 This means there is far less processing waste than with <em>PoW</em> as there
 is no hash puzzle to solve, or it’s very simple to solve like in the case
 of PeerCoin.</p>
+<p>While it may seem like inadvertent centralization to put a single node
+in charge of producing a block <em>PoS</em> blockchains heavily regulate this.
+First the node is given a set amount of time to produce the block and if
+it doesn’t the node is punished and another node fills its place. The produced
+block is also rigorously checked so one node will never be the point of
+failure for a <em>PoS</em> blockchain.</p>
 </div>
 <div class="section" id="pow-v-pos">
 <h3><span class="section-number">3.1.2.3. </span>PoW v PoS<a class="headerlink" href="#pow-v-pos" title="Permalink to this headline">¶</a></h3>
@@ -882,9 +900,111 @@ Cash).</p>
 </div>
 <div class="section" id="miners">
 <h3><span class="section-number">3.1.3.2. </span>Miners<a class="headerlink" href="#miners" title="Permalink to this headline">¶</a></h3>
-<p>Consensus is therefore critical
-to the survival of any blockchain but because nodes aren’t <em>forced</em> to
-create or validate blocks we need some sort of incentive.</p>
+<p>Nodes don’t have to create blocks. But it is critically important
+to a blockchain that blocks are regularly produced as if they aren’t a
+malicious chain might become the valid chain. Blockchains therefore
+need an honest class of nodes to create blocks, these nodes are called
+<em>miners</em>.</p>
+<p><em>Miners</em> are the nodes that create blocks, and they appear in many
+consensus algorithms. In <em>PoW</em> they are the nodes that participate
+in the competition to solve the hash puzzle. In <em>PoS</em> they are the
+producers and validators that create &amp; validate blocks. Regardless of
+consensus algorithm, being a miner is extra work. To cover the costs of
+this extra work, blockchains give incentives.</p>
+<div class="section" id="incentives">
+<h4><span class="section-number">3.1.3.2.1. </span>Incentives<a class="headerlink" href="#incentives" title="Permalink to this headline">¶</a></h4>
+<p>These incentives are often <em>native</em> to the blockchain. This means the
+reward is given through the blockchain. In currency blockchains, like
+Bitcoin and Ethereum, this is relatively simple as their native tokens
+are valuable, so they just reward them with that. Blockchains that don’t
+have a currency token have a harder time finding an incentive, but this
+doesn’t mean they are any less secure.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The incentives in currency blockchains are typically issued per block. Each
+block has something known as a <em>coinbase transaction</em>. A coinbase transaction
+is unique in that is the only piece of data in a block that does not have
+to be proven correct by data in previous blocks. It is very much creating
+money out of thin air. The coinbase transaction is a composite of a <em>block
+reward</em>, the money out of thin air, and the transaction fees paid by participants
+as an incentive to include their transaction in the block.</p>
+</div>
+<p>The incentives worked. In blockchain projects like Bitcoin or Ethereum, the
+competition to solve the hash puzzle is very intense. In <em>PoW</em> blockchains
+, tens of thousands
+of miners competing for one prize the technology they use to solve the hash
+puzzle has evolved <a class="reference external" href="http://rapidly.In">rapidly.In</a> the early days of Blockchain even computer
+CPUs, processors, were good enough. Miners then moved on to GPUs, which are
+very good at doing ‘easy’ tasks like producing hash values and graphics, and
+then ASICs.</p>
+<p>Application-Specific-Integrated-Circuits are special pieces of
+hardware made for just one use case, in PoW blockchains its to solve the hash puzzles.
+ASICs are very specific, there isn’t even a general <em>PoW</em> blockchain ASIC, and very
+fast. As of 2022, top of the line ASICs can do 100 TerraHashes per second which
+means it can produce 100 <em>trillion</em> hashes per second.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>ASICs are not only used by Blockchain. If you know your logic gates you can even
+make an ASIC for your own uses! But be sure to remember that ASICS are only
+good at doing one particular task very well, anything else, and they’re pretty
+useless.</p>
+</div>
+<p>Bitcoin is a <em>ASIC-optimal</em> which means ASICs are the most efficient hardware
+to use when solving the hash puzzle. Because of this reason a majority of
+processing power in Bitcoin comes from ASICs. Other blockchain
+projects can be GPU or even CPU-optimal.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ASICs are somewhat controversial in the blockchain space. This is because they
+are an excellent example of how better equipped miners can take over the network.
+For this reason some blockchain implementations, like Litecoin, have a hash
+puzzle that is intentionally difficult to solve on ASICs so miners
+use more common equipment like GPUs or even CPUs.</p>
+</div>
+<p><em>PoS</em> is a bit more organized and the need for specialized hardware is lesser.
+To participate miners need to put up collateral, or <em>stake</em>, a typically not-insignificant
+amount of tokens. These staked tokens are still the miners, but they can be
+taken away if they act dishonestly either as a validator or producer. Miners
+also typically earn a more stable reward than in <em>PoW</em> because both
+validators and producers are rewarded, there is no incentive for validating
+in <em>PoW</em>.</p>
+</div>
+<div class="section" id="types-of-miners">
+<h4><span class="section-number">3.1.3.2.2. </span>Types of Miners<a class="headerlink" href="#types-of-miners" title="Permalink to this headline">¶</a></h4>
+<p>With different blockchains and changing circumstances comes the need for
+different types of miners.</p>
+<p><strong>Mining Pools</strong> are a reaction to <em>PoW</em> mining becoming increasingly competitive.
+At this point no individual miner has enough computing power to regularly win
+the hash puzzle competition. This means that individual miners run the risk
+of never getting a reward for the resources they spend trying to win. To address
+this, miners <em>pool</em> their resources together to stand a greater chance of winning
+and their miners get more stable, but smaller, rewards. Mining pools come
+in two types:</p>
+<a class="reference internal image-reference" href="../../_images/C_Mining_Pool.png"><img alt="Fork" class="align-right" src="../../_images/C_Mining_Pool.png" style="width: 140px;" /></a>
+<ul class="simple">
+<li><p><strong>Centralized Mining Pool</strong> - Traditional mining pools where miners coordinate
+with a ‘leader’ node that relays information about the hash puzzle, publishes the
+winning block and distributes the rewards by processing power. These kinds of mining
+pools are straightforward to set up and can be managed easily, so they are a popular,
+but they are a point of centralization.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/P_Mining_Pool.png"><img alt="Fork" class="align-right" src="../../_images/P_Mining_Pool.png" style="width: 200px;" /></a>
+<ul class="simple">
+<li><p><strong>Peer-to-Peer Mining Pool</strong> - Centralized mining pools slightly defeat the
+point of blockchain being centralized so as a reaction p2p mining pools came
+to existence. Peer-to-Peer mining pools operate on a <em>share-chain</em> that is
+identical to the main blockchain and even includes &amp; verifies the same data,
+but it has a lower difficulty and smaller ABCT. With a smaller difficulty
+and more regular blocks we can accurately gauge how much processing power
+each participant has by the number of blocks they add over a period of time,
+typically two weeks. These block additions are recorded in the coinbase
+transaction for that period of time and by the law of probability, even with
+a lower difficulty, one of the hash values will eventually be low enough
+to even meet the main blockchain’s target. When this happens the block is
+added to the main chain and all the miners that added a block on the share-chain
+in the past 2 weeks are rewarded.</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="types-of-blockchain">
