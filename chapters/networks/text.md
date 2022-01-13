@@ -252,6 +252,13 @@ This means there is far less processing waste than with *PoW* as there
 is no hash puzzle to solve, or it's very simple to solve like in the case
 of PeerCoin.
 
+While it may seem like inadvertent centralization to put a single node
+in charge of producing a block *PoS* blockchains heavily regulate this.
+First the node is given a set amount of time to produce the block and if 
+it doesn't the node is punished and another node fills its place. The produced
+block is also rigorously checked so one node will never be the point of 
+failure for a *PoS* blockchain.
+
 ### PoW v PoS
 Proof-of-Work was the first consensus algorithm used on the blockchain 
 through Bitcoin while Proof-of-Stake started showing up a couple years
@@ -326,10 +333,122 @@ Forks can cause the creation of new blockchain projects (Bitcoin and Bitcoin
 Cash).
 
 ### Miners
-Consensus is therefore critical
-to the survival of any blockchain but because nodes aren't *forced* to
-create or validate blocks we need some sort of incentive.
+Nodes don't have to create blocks. But it is critically important
+to a blockchain that blocks are regularly produced as if they aren't a 
+malicious chain might become the valid chain. Blockchains therefore
+need an honest class of nodes to create blocks, these nodes are called
+*miners*.
 
+*Miners* are the nodes that create blocks, and they appear in many 
+consensus algorithms. In *PoW* they are the nodes that participate
+in the competition to solve the hash puzzle. In *PoS* they are the 
+producers and validators that create & validate blocks. Regardless of 
+consensus algorithm, being a miner is extra work. To cover the costs of
+this extra work, blockchains give incentives.
+
+#### Incentives
+
+These incentives are often *native* to the blockchain. This means the
+reward is given through the blockchain. In currency blockchains, like
+Bitcoin and Ethereum, this is relatively simple as their native tokens
+are valuable, so they just reward them with that. Blockchains that don't
+have a currency token have a harder time finding an incentive, but this
+doesn't mean they are any less secure.
+
+:::{note}
+The incentives in currency blockchains are typically issued per block. Each
+block has something known as a *coinbase transaction*. A coinbase transaction
+is unique in that is the only piece of data in a block that does not have
+to be proven correct by data in previous blocks. It is very much creating
+money out of thin air. The coinbase transaction is a composite of a *block
+reward*, the money out of thin air, and the transaction fees paid by participants
+as an incentive to include their transaction in the block.
+:::
+
+The incentives worked. In blockchain projects like Bitcoin or Ethereum, the
+competition to solve the hash puzzle is very intense. In *PoW* blockchains
+, tens of thousands
+of miners competing for one prize the technology they use to solve the hash
+puzzle has evolved rapidly.In the early days of Blockchain even computer
+CPUs, processors, were good enough. Miners then moved on to GPUs, which are
+very good at doing 'easy' tasks like producing hash values and graphics, and 
+then ASICs. 
+
+Application-Specific-Integrated-Circuits are special pieces of
+hardware made for just one use case, in PoW blockchains its to solve the hash puzzles.
+ASICs are very specific, there isn't even a general *PoW* blockchain ASIC, and very
+fast. As of 2022, top of the line ASICs can do 100 TerraHashes per second which 
+means it can produce 100 *trillion* hashes per second.
+
+:::{tip}
+ASICs are not only used by Blockchain. If you know your logic gates you can even
+make an ASIC for your own uses! But be sure to remember that ASICS are only
+good at doing one particular task very well, anything else, and they're pretty
+useless.
+:::
+
+Bitcoin is a *ASIC-optimal* which means ASICs are the most efficient hardware
+to use when solving the hash puzzle. Because of this reason a majority of
+processing power in Bitcoin comes from ASICs. Other blockchain
+projects can be GPU or even CPU-optimal.
+
+:::{note}
+ASICs are somewhat controversial in the blockchain space. This is because they
+are an excellent example of how better equipped miners can take over the network.
+For this reason some blockchain implementations, like Litecoin, have a hash 
+puzzle that is intentionally difficult to solve on ASICs so miners
+use more common equipment like GPUs or even CPUs.
+:::
+
+*PoS* is a bit more organized and the need for specialized hardware is lesser. 
+To participate miners need to put up collateral, or *stake*, a typically not-insignificant
+amount of tokens. These staked tokens are still the miners, but they can be 
+taken away if they act dishonestly either as a validator or producer. Miners
+also typically earn a more stable reward than in *PoW* because both 
+validators and producers are rewarded, there is no incentive for validating
+in *PoW*. 
+
+#### Types of Miners
+With different blockchains and changing circumstances comes the need for 
+different types of miners. 
+
+**Mining Pools** are a reaction to *PoW* mining becoming increasingly competitive.
+At this point no individual miner has enough computing power to regularly win
+the hash puzzle competition. This means that individual miners run the risk 
+of never getting a reward for the resources they spend trying to win. To address
+this, miners *pool* their resources together to stand a greater chance of winning
+and their miners get more stable, but smaller, rewards. Mining pools come
+in two types:
+```{image} images/C_Mining_Pool.png
+:alt: Fork
+:width: 140px
+:align: right
+```
+* **Centralized Mining Pool** - Traditional mining pools where miners coordinate
+with a 'leader' node that relays information about the hash puzzle, publishes the 
+winning block and distributes the rewards by processing power. These kinds of mining
+pools are straightforward to set up and can be managed easily, so they are a popular,
+but they are a point of centralization.
+```{image} images/P_Mining_Pool.png
+:alt: Fork
+:width: 200px
+:align: right
+```
+* **Peer-to-Peer Mining Pool** - Centralized mining pools slightly defeat the
+point of blockchain being centralized so as a reaction p2p mining pools came 
+to existence. Peer-to-Peer mining pools operate on a *share-chain* that is 
+identical to the main blockchain and even includes & verifies the same data,
+but it has a lower difficulty and smaller ABCT. With a smaller difficulty 
+and more regular blocks we can accurately gauge how much processing power
+each participant has by the number of blocks they add over a period of time,
+typically two weeks. These block additions are recorded in the coinbase 
+transaction for that period of time and by the law of probability, even with 
+a lower difficulty, one of the hash values will eventually be low enough
+to even meet the main blockchain's target. When this happens the block is
+added to the main chain and all the miners that added a block on the share-chain
+in the past 2 weeks are rewarded.
+
+**Staking Pools** address the high cost of entry in staking *PoS* blockchains. 
 
 ## Types of Blockchain
 
