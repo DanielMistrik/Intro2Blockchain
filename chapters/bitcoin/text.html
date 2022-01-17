@@ -481,6 +481,13 @@
   <a class="reference internal nav-link" href="#bitcoin-operation">
    4.1.5. Bitcoin Operation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spv-nodes">
+     4.1.5.1. SPV Nodes
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#miscellaneous">
@@ -500,22 +507,344 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="chapter">
 <h1><span class="section-number">4.1. </span>Chapter<a class="headerlink" href="#chapter" title="Permalink to this headline">¶</a></h1>
+<p>On Halloween 2008, a month after the more than a hundred years-old investment bank
+<a class="reference external" href="https://www.investopedia.com/articles/economics/09/lehman-brothers-collapse.asp">Lehman Brothers filed for bankruptcy</a>
+a user calling themselves <em>Satoshi Nakamoto</em> published a whitepaper on a
+crypto mailing list. This whitepaper described an electronic peer-to-peer
+currency called <em>Bitcoin</em>. The genesis block was published in January of 2009
+and Bitcoin came to life.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might be confused why we referred to Bitcoin’s creator in plural. This
+is because <em>no one</em> knows who Satoshi Nakamoto actually is. It could be
+a single person, a group or even a company, we just don’t know. Many have tried
+to uncover this secret but have come short. For those interested in learning
+more about Satoshi Nakamoto we recommend <em>The Book of Satoshi</em> by Phil Champagne.</p>
+</div>
+<p>Although Satoshi never mentioned the word in the whitepaper, Bitcoin introduced
+us to Blockchain. This was by no means an accident. Bitcoin’s goal was to
+decentralize finance and in the aftermath of the 2008 financial crisis the
+idea had backing. The whitepaper argued that the financial system being a
+<em>centralized</em> one was a problem and that a <em>distributed</em> system would be
+advantageous. The blockchain solution therefore addresses the drawbacks of a
+distributed system to make it usable.</p>
+<p>Bitcoin’s blockchain was therefore created to support decentralized token
+exchange. Participants could exchange the blockchain’s native token, <em>Bitcoin</em>,
+without the need for any central authority. For much of 2009 the blockchain
+was in the realm of enthusiasts as the token didn’t even have a trade-able value.
+This changed in October, a little less than a year after the whitepaper, when
+the first exchange of Bitcoin was launched offering 1,305 BTC for 1$. The
+cryptocurrency continued its rise and eventually became the behemoth we know it
+as today.</p>
+<p>Bitcoin was the genesis project for Blockchain and as of 2022 it is still the
+most popular project. Understanding Bitcoin will help us get a better
+perspective on blockchain. In this chapter we will go into the details of
+the Bitcoin implementation.</p>
 <div class="section" id="bitcoin-summary">
 <h2><span class="section-number">4.1.1. </span>Bitcoin Summary<a class="headerlink" href="#bitcoin-summary" title="Permalink to this headline">¶</a></h2>
+<p>Bitcoin is a <em>PoW</em> public blockchain that is created to support the exchange
+of its token. A run-down of the project is as follows:
+<br/><strong>Token</strong>: The Blockchain’s native token is <em>Bitcoin</em>. The maximum
+supply of <em>Bitcoin</em> is capped at 21 million.
+<br/><strong>Participant Rights</strong>: Bitcoin is completely open and permissionless
+so anyone can join as a participant and have full read &amp; write rights.
+<br/><strong>Consensus Algorithm</strong>: Bitcoin uses Proof-of-Work with SHA-256 hash
+puzzle. The difficulty is readjusted every 2 weeks to keep <em>ABCT</em> constant.
+<br/><strong>Data</strong>: Bitcoin data is token exchanges called transactions.
+<br/><strong>Average Blockchain Creation Time (<em>ABCT</em>)</strong>: 10 minutes.
+<br/><strong>Mining Incentive</strong>:The block creator is rewarded with the native token
+<em>Bitcoin</em> from transaction fees and a general block reward.</p>
+<p>While Bitcoin is a network that can be accessed through a publicly-known
+<em>port</em> it is typically run on a software implementation called <em>Bitcoin
+Core</em>. There are multiple implementations out there, you could even create
+your own, but 96% of nodes use <em>Bitcoin Core</em>. The software manages a bitcoin
+full node and typically makes all the choices for the node. Its development
+history can be traced all the way back to Satoshi Nakamoto and is now hosted
+as an open-source project on GitHub.</p>
 </div>
 <div class="section" id="bitcoin-block-transaction">
 <h2><span class="section-number">4.1.2. </span>Bitcoin Block &amp; Transaction<a class="headerlink" href="#bitcoin-block-transaction" title="Permalink to this headline">¶</a></h2>
-<p>{Include coinbase and transaction fees here aswell}</p>
+<p>Bitcoin’s block is around 1MB with the header being 80 bytes. Most of the
+space is taken up by transactions. The block header is composed of:</p>
+<ul class="simple">
+<li><p><strong>Version</strong> - The version of the software implementation like Bitcoin Core.</p></li>
+<li><p><strong>Previous Block Hash</strong> - The link to the last block in the blockchain linked list.</p></li>
+<li><p><strong>Timestamp</strong> - The unix timestamp for when the block was produced. Can be 2 hours
+off and still be valid.</p></li>
+<li><p><strong>Merkle Root</strong> - The root of the merkle tree containing the transactions in the block.</p></li>
+<li><p><strong>Difficulty</strong> - The difficulty of the hash puzzle. Nodes use this value to
+calculate the target.</p></li>
+<li><p><strong>Nonce</strong> - The input field miners can use to change the block header so it
+solves the hash puzzle.</p></li>
+</ul>
+<p>The bitcoin block header is very bare-bones. This is because space is incredibly
+limited so any redundancy is removed. When every node, regardless of type, has
+to store every block header, with a new one being added every 10 minutes, even
+a single byte adds up.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Alot of blockchain projects differ on the block size. This is because it’s
+a very sensitive issue as <strong>space vs throughput</strong> is a hotly debated topic in
+the blockchain world. Some original contributors to Bitcoin got into a bitter
+argument about whether Bitcoin’s block size should be increased. This feud is
+covered in detail in <em>The Block Size Wars</em> by Jonathan Bier.</p>
+</div>
+<p>Bitcoin’s data is transactions and transactions are concerned with token exchange. Each transaction
+is composed of the following:</p>
+<ul class="simple">
+<li><p><strong>Version</strong> - Like in the block header the version denotes the version of the
+software implementation and so the rules the transaction has to follow.</p></li>
+<li><p><strong>Input Counter</strong> - The number of inputs in this transaction.</p></li>
+<li><p><strong>Inputs</strong> - A list of inputs used in this transaction.</p></li>
+<li><p><strong>Output Counter</strong> - The number of outputs in the transaction.</p></li>
+<li><p><strong>Outputs</strong> - A list of the actual outputs used in this transaction.</p></li>
+<li><p><strong>LockTime</strong> - A field that prevents this transaction from being used for
+a given period, largely deprecated except for the Lightning Network.</p></li>
+<li><p><strong>Delegated Witness</strong> - A Segwit feature that is out of the scope of this textbook.</p></li>
+</ul>
+<p>Transactions are often bigger than the block header itself because there is
+a fair level of complexity in them. One of these complexities is deciphering
+what inputs and outputs are. For the following paragraph think of them as simply
+where the bitcoin is coming from, inputs, and where the money is going, output.</p>
+<p>To validate a transaction we need to check the following:</p>
+<ul class="simple">
+<li><p>Are the inputs valid? (We will discuss this shortly)</p></li>
+<li><p>Are Inputs &gt; Outputs?</p></li>
+</ul>
+<p>The order in the list is arbitrary we can do either one first. You might be
+wondering why the latter point isn’t Inputs=Outputs. This is because the difference
+between the inputs and outputs forms the transaction fee. The transaction
+fee is the incentive for the miner to include your transaction in their
+block as often there are more transactions than space in blocks. Transaction
+fees can be 0 and the transaction will eventually be included in a block
+but that could be several hours, if not days, after the transaction was
+first broadcast.</p>
+<p>Bitcoin transactions can be ordered within the merkle tree in any order
+the miner wants except for the first one, the <em>coinbase transaction</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Yes, that is where the popular crypto exchange got its name from.</p>
+</div>
+<p>If you remember the last chapter, we talked about how one part of the
+mining incentive is a piece of data in every block that is inherently correct.
+In Bitcoin this is the coinbase transaction. The coinbase transaction
+is how the miner rewards themselves for winning the hash puzzle and publishing
+a block. The input of the
+coinbase transaction is irrelevant, it’s often the place of the extra nonce.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As Bitcoin mining got more competitive miners were discovering that the 2^32
+possible nonce values solved the hash puzzle. They then started to change
+the timestamp as time passed by but sometimes not even that was enough. This
+is when the data in a coinbase transaction started to be used as an <em>extra
+nonce solution</em>.</p>
+</div>
+<p>While we don’t need to verify coinbase inputs we need to check that the miner has not
+rewarded them-self with too much bitcoin. The coinbase transaction output has to
+equal the block reward, which is well-known by the network, and the sum of
+all the transaction fees of the transactions in the block. If the output is
+larger than that the whole block is rejected.</p>
 </div>
 <div class="section" id="utxo-model">
 <h2><span class="section-number">4.1.3. </span>UTxO Model<a class="headerlink" href="#utxo-model" title="Permalink to this headline">¶</a></h2>
-<p>{Data Verification}</p>
+<p>We will now talk about the inputs and outputs.</p>
+<p>When we think of managing
+money we think of having an account with a balance. This has the benefit
+of being a simple way to think about one’s finances, but it has a drawback: space.
+Every account, no matter how big or small, needs to have an account and balance
+and this leads to redundancy. This is a big problem for the space sensitive
+blockchain so Bitcoin decided to only record unspent payments. This way accounts
+with no payments or an empty balance won’t fill the blockchain.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bitcoin’s model isn’t the only one used by blockchains. Projects like
+Ethereum use the standard account &amp; balance model known as the <em>state model</em>.</p>
+</div>
+<p>To do this Bitcoin reimagined what a payment is and how we store money. In
+Bitcoin a transaction is just a collection of inputs and outputs. Inputs
+are former outputs that are assigned, via a digital signature, to a
+particular entity. Outputs are a certain amount of Bitcoin being assigned
+to a new entity. Your ‘balance’ is now the sum of all the outputs you
+are yet to put into a transaction. These outputs are known as <em>unspent
+transaction outputs</em> and give this finance-tracking model its name, the <em>UTxO
+model</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By entity we just mean an address that has a public/private key. This
+‘entity’ could be an individual, group or even company.</p>
+</div>
+<a class="reference internal image-reference" href="../../_images/Output.png"><img alt="../../_images/Output.png" class="align-right" src="../../_images/Output.png" style="width: 190px;" /></a>
+<p>Bitcoin outputs are relatively simple. They are arranged in a list, where order matters,
+and are composed of an amount and <em>lock script</em>. This lock script is a
+script verifies the digital signature of the entity it was issued and has to
+be <em>unlocked</em>, the digital signature must be verified, for the output to be
+used as an input.</p>
+<a class="reference internal image-reference" href="../../_images/Input.png"><img alt="../../_images/Input.png" class="align-right" src="../../_images/Input.png" style="width: 190px;" /></a>
+<p>Bitcoin inputs are a bit trickier. They are composed of the hash of the
+transaction they were an output in, their index in the list of outputs of that
+transaction and the unlocking script that proves the digital signature. Each
+input must reference a single <em>unspent</em> output which means this input is
+the only input, in the entire blockchain, to reference the output.</p>
+<p>Inputs and outputs therefore have a <em>one-to-one</em> relationship. This means
+that unspent outputs, from now on <em>UTxOs</em>, can only be spent in full. But
+what if we want to send a payment with an amount that none of our <em>UTxOs</em>
+can sum to? The answer is in the fact that a single transaction can have
+multiple inputs <em>and</em> multiple outputs. To solve our problem we just collect
+<em>UTxOs</em> that sum to more than we want to pay and anything left over after
+the payment and transaction fee is made into a separate output addressed
+to ourselves, a refund output.</p>
+<div class="tip admonition">
+<p class="admonition-title">Example</p>
+<p>Alice wants to send Bob 30 bitcoins with a 1 BTC transaction fee. She
+has the following unspent <em>UTxOs</em> to choose from:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><em>UTxO</em></p></th>
+<th class="head"><p>Amount (BTC)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>50</p></td>
+</tr>
+</tbody>
+</table>
+<p>Alice will be spending a total of 31 BTC and the closest sum <strong>that is greater
+than that</strong> is A + B. A&amp;B sum to 35 BTC so Alice will also be creating
+a 4 BTC refund output. We can therefore express the inputs &amp; outputs as follows:</p>
+<p><ins>Inputs:</ins></p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Output</p></th>
+<th class="head"><p>Digital Signature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>Alice</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>Alice</p></td>
+</tr>
+</tbody>
+</table>
+<p><ins>Outputs:</ins></p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>To</p></th>
+<th class="head"><p>Amount (BTC)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bob</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>Alice</p></td>
+<td><p>4</p></td>
+</tr>
+</tbody>
+</table>
+<p>This transaction would be valid as the sum of inputs is 35 and the sum of
+outputs is 34. The 1 BTC difference is the transaction fee paid to the miner.
+Alice has now lost <em>UTxOs</em> A&amp;B and her balance has dropped from 85 BTC to
+54 BTC with a new <em>UTxO</em> of amount 4 BTC.
+Note the table representation is an oversimplification.</p>
+</div>
+<p>Using the UTxO has a number of implications:</p>
+<ul class="simple">
+<li><p><strong>Flexibility</strong> - Outputs and inputs can be used when the locking/unlocking
+script is satisfied. Bitcoin has a number of locking scripts with the
+most popular being <a class="reference external" href="https://learnmeabitcoin.com/technical/p2pkh">p2pkh</a> which
+uses addresses. But different locking scripts work with multi-signature addresses
+and even bare public keys.</p></li>
+<li><p><strong>Privacy</strong> - Outputs in a single transaction can have different recipients and
+inputs can be unlocked with different digital signatures.
+This has the benefit that we can disperse our funds over a number of addresses
+increasing one’s anonymity as it is more difficult for someone to track
+our balance.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <em>Dust Attack</em> is an attack vector that tries to weaken the latter feature.
+We will cover this in detail in the following chapters.</p>
+</div>
+<p><strong>P2PKH</strong> (Pay 2 Public Key Hash) scripts work through Bitcoin addresses.
+Bitcoin addresses are, like classic addresses, hashed public keys but in
+Bitcoin they are encoded in <em>Base 58</em> format to make them more readable.
+All Bitcoin addresses begin with a 1 to make them easy to differentiate.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Base 58</strong> format is an encoding format that is a more-readable version of
+<em>Base 64</em>. Base 64 is a number system with 64 numerals. They are represented by all the
+capital letters, un-capitalized letters,numerals 0 to 9 and + and /. Base 58
+takes characters that are frequently confused like, 0 and o, and has a built-in
+check that detects if you wrote it wrong.</p>
+</div>
 </div>
 <div class="section" id="bitcoin-script">
 <h2><span class="section-number">4.1.4. </span>Bitcoin Script<a class="headerlink" href="#bitcoin-script" title="Permalink to this headline">¶</a></h2>
+<p>Reviewing what we now know about transactions and <em>UTxOs</em> data(transaction)
+validation in Bitcoin breaks down into 2 steps:</p>
+<ul class="simple">
+<li><p>Is the sum of outputs smaller than that of inputs?</p></li>
+<li><p>Are all the inputs unlocked correctly?</p></li>
+</ul>
+<p>If the answer to both is yes then the transaction is valid. But how does
+the network actually check this? While it may be tempting to say that the
+software implementation, like Bitcoin Core, solves this that is not the case.
+Because the network has to be unanimous with all of its decisions’ data validation
+is done through a single programming language, <em>Script</em>.</p>
+<p><strong>Script</strong> is a low-level stack-based programming language that does
+the processing nodes need to do for Bitcoin. Script, which is reminiscent of
+the old programming language Fortran, was originally developed by Satoshi
+Nakamoto. Script is used for transaction verification and where locking/unlocking
+scripts exist. It is <em>non-turing complete</em> which means what it can do is limited.
+This might seem like a drawback but is actually a very intentional feature
+to prevent a malicious attacker from creating very complicated Script code
+that could slow the network down.</p>
+<div class="admonition-stack admonition">
+<p class="admonition-title">Stack</p>
+<p>Stacks are a very important low-level data structure in CS. They are a
+<em>FIFO</em> (First-In First-Out) list where you add and take from,<em>pop</em>, from the
+top of the stack. You can liken it to a stack of pancakes. You add the pancakes
+on top and have to first eat the pancakes on top.</p>
+</div>
+<p>Script is a programming langauge that isn’t like the languages you might know,
+such as Python or Java. Script is made up of operation codes, represented through
+1 byte of hexadecimal. Script works by adding these <em>op codes</em> onto the stack
+along with any data, like addresses, the <em>op codes</em> need to work with. The <em>op
+codes</em> then take the data from the stack and produce a new value. The <em>op
+codes</em> at the top are executed first.</p>
+<p>Below is an example of the code for a p2pkh locking script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OP_DUP</span> <span class="n">OP_HASH160</span> <span class="mf">62e907</span><span class="n">b15cbf27d5425399ebf6f0fb50ebb88f18</span> <span class="n">OP_EQUALVERIFY</span> <span class="n">OP_CHECKSIG</span>
+</pre></div>
+</div>
+<p>Script is not intuitive and is very limited for the sake of efficiency. Most
+bitcoin developers will rarely, if ever, interact with Bitcoin Script as software
+implementations are expected to be the only ones that deal with it.</p>
 </div>
 <div class="section" id="bitcoin-operation">
 <h2><span class="section-number">4.1.5. </span>Bitcoin Operation<a class="headerlink" href="#bitcoin-operation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="spv-nodes">
+<h3><span class="section-number">4.1.5.1. </span>SPV Nodes<a class="headerlink" href="#spv-nodes" title="Permalink to this headline">¶</a></h3>
+<p><em>Simplified Payment Verification</em> nodes are Bitcoin’s light nodes. They only store
+the block headers and are able to prove transactions are recorded in the
+blockchain through merkle paths provided by full nodes. They were included
+in Bitcoin’s whitepaper and are a solution to how space-limited parties
+can actively participate in the blockchain.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SPV nodes heavily utilize something called <em>Bloom Filters</em>. If you have ever
+taken Cornell’s <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS2112.html">CS2112</a> this should
+be a refresher.</p>
+</div>
+</div>
 </div>
 <div class="section" id="miscellaneous">
 <h2><span class="section-number">4.1.6. </span>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
