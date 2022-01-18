@@ -37,6 +37,8 @@ cryptography works at the very 'core' of computers and so uses languages they un
 *Binary* is at the end of the day what computers really understand, it is the 
 sequential stream of 1's and 0's that you see in many movies and images. While it is
 now closely associated with computers it is first and foremost a *number system*.
+When binary is used in computers each numeral (1 or 0) is called a *bit* and 8 bits
+is a *byte*. *Bytes* form the basis of every piece of computer data. 
 
 *Number Systems* are how we represent numbers. You are most likely accustomed to 
 the base-10(*decimal*) number system that has 10 numerals. We use it because it is the most 
