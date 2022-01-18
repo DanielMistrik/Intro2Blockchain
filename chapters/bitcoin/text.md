@@ -452,3 +452,106 @@ crypto, the same way car keys are needed to access your car.
 :::
 
 #### Custodial v Non-Custodial
+The following two types differ on whose responsibility the wallet is.
+
+**Custodial** wallets are kept safe by a third-party *custodian*. The
+custodian has access to the private/public keys so when you lose your
+password or the wallet itself, if its hardware, your crypto is safe and
+access can be restored. While custodial wallets are more forgiving
+it comes at the cost of a severe reduction in privacy and dependence
+on the custodian's legitimacy and security. As the custodian has access
+to the keys, and therefore the funds, if they are malicious or their security
+is broken your funds are at risk.
+
+**Non-Custodial** wallets are completely yours. No one else has access
+to them offering a strong degree of privacy but at the cost of
+being completely your responsibility. If you lose the keys or the wallet
+the crypto funds controlled by them are as good as lost, this has 
+happened before. They are primarily used by privacy-centric individuals
+or those who posses a large amount of cryptocurrencies.
+
+#### Hot v Cold
+The following types differ on where and how they are stored.
+
+**Hot** wallets store their public-private keys online, often behind a
+layer of protection. They are usually custodial and have the benefit
+of quick processing of transactions. Transactions can be signed and
+therefore broadcast immediately and effortlessly. This makes them a 
+popular choice for online exchanges but their security is limited. Because the
+keys are online their security is down-graded from ECDSA-grade to the
+quality of the wallet's online security. This has been a problem more than
+once with one notable case being an early Bitcoin exchange called 
+[Mt. Gox](https://www.wired.com/2014/03/bitcoin-exchange/).
+
+**Cold** wallets on the other hand store their keys completely offline,
+typically through hardware. They are almost exclusively non-custodial.
+They are more secure as no online hacker can access them, but they shift
+the entire burden of maintenance onto their owner. If they are lost or
+damaged the crypto funds controlled by them are put under risk. They 
+are nevertheless the most popular choice for privacy-centric users, some
+go as far as printing their private keys on a piece of paper and putting it in 
+a safe.
+
+#### Wallets & Keys
+While we mentioned that wallets' primary function is to store keys
+we are yet to mention how they do that and, arguably more importantly,
+how they are generated.
+
+**JBOK** (Just a Bunch Of Key) Wallets are just that. Just a bunch of 
+keys. The keys are generated randomly and kept in a secure place. JBOK
+wallets are relatively straightforward, in theory, but are very fragile
+as losing the place where they are stored constitutes an irreversible loss
+of the wallet. Further if the wallet implementation is badly built and uses
+ordinary pseudo-random software to generate keys your funds might be at
+stake even if you did everything right. JBOK wallets were the original 
+type of wallet on Bitcoin but have largely been phased-out by *HD wallets*.
+
+**HD** (Hierarchical Deterministic) Wallets are built on a mathematical
+model. Keys are generated from a single seed, long binary sequence, that
+can be represented as a mnemonic. So long you remember the mnemonic
+the seed can be constructed and so can an infinite, 2 billion child keys from
+each parent, number of derived keys. This makes HD wallets backup-friendly
+and the default for backup-concerned wallets like MetaMask or Ledger. The
+drawback is that the security of the HD wallet depends on the privacy of the
+seed/mnemonic. If the mnemonic is leaked your funds are under threat, although
+there are implementations which encrypt the mnemonic with a password.
+
+#### Wallet Comparison
+Except for JBOK, wallet types are serve different, but relevant,
+use cases. A run-down of how different types can be used is below:
+
+|          | **Hot**                                                          | **Cold**                                                                             |        
+|----------|------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| **JBOK** | Back-up difficult, <br/> good for wallets <br/> used by software | Largely outdated. <br/> High risk of losing <br/> the wallet                         |
+| **HD**   | Good for casual-use <br> wallets like MetaMask                   | Highly secure but <br/> requires self-maintenance.<br/> Appropriate for large funds. |
+
+### Token Supply
+Bitcoin's token supply is fixed and regulated. There will only
+ever be 21 million bitcoin with the last bitcoin being 
+created around 2140. Satoshi Nakamoto intentionally create
+this 'coded inflation' to simulate real-world inflation. 
+
+Bitcoin, the token, is generated through block rewards in the coinbase transaction.
+The token reward that is assumed valid is actually the source of 
+Bitcoin inflation and all Bitcoin that ever existed was 
+created in a coinbase block reward. 
+This makes the block reward serve an elegant double-purpose,
+both to incentivize the miner and act as a source of new Bitcoin.
+
+Block rewards are dictated by software and, as we reach 21
+million BTC created, halve every 210,000 blocks. The block
+reward was initially over 50 BTC but as of 2022 is just 6.25 BTC.
+Satoshi's idea was that as time passed transaction fees would
+make up for the lost block rewards.
+
+While block rewards offer a source of inflation, errors on the
+side of users or intentional acts by malicious ones offer a source of deflation.
+Known as *burning*, this is when bitcoin tokens are lost and
+take tokens out of *circulation*. This happens
+every day and while bitcoin inflation is fixed this sort
+of accidental deflation is not meaning that in the very long-term
+the amount of *circulating* Bitcoin is likely to fall. Already,
+an estimated 10% of create Bitcoins is presumed lost or 
+*unrecoverable*.
+
+### Limitations & Bitcoin's Future
