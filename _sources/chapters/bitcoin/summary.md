@@ -2,7 +2,7 @@
 Bitcoin is a *PoW* UTxO-model public blockchain that runs on a turing-incomplete
 language called Script. Bitcoin was the first blockchain project and so its
 analysis is an important retrospective into the origins of blockchain.
-* Bitcoin was created in the backdrop of the ‘08 financial crisis when trust in traditional finance was a record low.
+* Bitcoin was created in the backdrop of the ‘08 financial crisis when trust in traditional finance was at a record low.
 * Bitcoin is a public PoW blockchain with an ABCT of 10 minutes.
 * Bitcoin’s main software implementation is Bitcoin core.
 * Bitcoin’s data is transactions verified with a language called Script.
