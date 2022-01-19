@@ -493,6 +493,45 @@
   <a class="reference internal nav-link" href="#miscellaneous">
    4.1.6. Miscellaneous
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wallets">
+     4.1.6.1. Wallets
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#custodial-v-non-custodial">
+       4.1.6.1.1. Custodial v Non-Custodial
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hot-v-cold">
+       4.1.6.1.2. Hot v Cold
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wallets-keys">
+       4.1.6.1.3. Wallets &amp; Keys
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wallet-comparison">
+       4.1.6.1.4. Wallet Comparison
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#token-supply">
+     4.1.6.2. Token Supply
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitations-bitcoins-future">
+     4.1.6.3. Limitations &amp; Bitcoin’s Future
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -782,8 +821,8 @@ All Bitcoin addresses begin with a 1 to make them easy to differentiate.</p>
 <p class="admonition-title">Note</p>
 <p><strong>Base 58</strong> format is an encoding format that is a more-readable version of
 <em>Base 64</em>. Base 64 is a number system with 64 numerals. They are represented by all the
-capital letters, un-capitalized letters,numerals 0 to 9 and + and /. Base 58
-takes characters that are frequently confused like, 0 and o, and has a built-in
+capital letters, un-capitalized letters, numerals 0 to 9 and + and /. Base 58
+removes characters that are frequently confused, like 0 and o, and has a built-in
 check that detects if you wrote it wrong.</p>
 </div>
 </div>
@@ -831,6 +870,84 @@ implementations are expected to be the only ones that deal with it.</p>
 </div>
 <div class="section" id="bitcoin-operation">
 <h2><span class="section-number">4.1.5. </span>Bitcoin Operation<a class="headerlink" href="#bitcoin-operation" title="Permalink to this headline">¶</a></h2>
+<p>We will now examine how Bitcoin works day-to-day through the lens of
+transactions.</p>
+<p>For this section we will be looking how Alice can send 10 BTC to Bob. We
+start by creating the transaction. Alice, or more precisely her <em>wallet</em> software,
+keeps track of all her <em>UTxOs</em>. This is not a completely trivial task as
+for the sake of privacy Alice can have <em>UTxOs</em> addressed to a number of her
+addresses.</p>
+<p>Before she can select her <em>UTxOs</em> Alice also needs to consider
+the transaction fee. Transaction fees are completely up to Alice and while
+she could have no transaction fee this is has some consequences. Although
+Bitcoin transactions are time-weighted, so eventually the transaction will
+be put into a block, transactions with 0 or very small fees can take hours,
+if not days to be added to the blockchain. The ‘average’ transaction fee is
+dictated by the market with supply &amp; demand. If there are very little
+transactions being broadcast, fees are relatively low, if there are alot
+of transactions then fees are high. Wallet software almost always track
+the average transaction fees so Alice doesn’t have to worry about this much.
+For the sake of simplicity lets say that Alice’s wallet software tells her
+the average transaction fee is 1 BTC, and she decides to use that amount.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Bitcoin transaction fees are amount-blind which
+means that they are roughly the same for a 1BTC transaction and 10000 BTC
+transaction. Miners just look at the fees not the amount transferred in the
+transaction.</p>
+</div>
+<p>Now Alice knows that she needs to spend a total of 11 BTC, she can now
+start finding the <em>UTxOs</em> to use. After some searching, by her wallet
+software, Alice found three <em>UTxOs</em> that sum to 13 BTC, so she will also
+need to have a refund output of 2 BTC. Her transaction will therefore have
+3 inputs, the <em>UTxOs</em>, and two outputs, one output locked by Bob’s address
+worth 10 BTC and one locked by Alice’s address worth 2 BTC. Alice then
+organizes this into a formal transaction and then broadcasts it to
+the network. Wallet software typically has its own node, can be either full
+or light, through which it broadcasts Alice’s transaction to the network.</p>
+<p>Now Alice’s job is done. She created the transaction and now has to hope she’s
+done everything correctly. When nodes receive the transaction they verify the
+data. First they check the sums of output and input and after that verify
+that all the <em>UTxOs</em> are unspent and unlocked by the unlocking script. They
+do this by searching for the <em>UTxOs</em> in their <em>UTxO</em> set that every node maintains.
+If all the <em>UTxOs</em> are there the transaction is valid. If the transaction
+passes validation it is stored in the nodes <em>mem pool</em> as a valid but unconfirmed
+transaction. The node then propagates the transaction onwards to the rest
+of the network. Propagation throughout the network is done in seconds.</p>
+<p>After Alice’s transaction is in their mem pool, miner nodes can decide
+whether they include the transaction in their candidate block. This
+decision is important for Alice as a transaction isn’t truly confirmed until
+it’s included in a valid block. For large payments some vendors wait until
+the transactions has 6-confirmations which means the transaction is in a
+valid block that is at least 6 blocks below the current block height.
+Miners choose the transactions on their own so different candidate blocks
+will most likely have different transactions and merkle roots.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically Bob doesn’t have to wait for Alice’s transaction to be added
+to a block. This is called a <em>0-confirmation</em> transaction, and it is a very
+fast but very risky way of accepting Bitcoin transaction in return for
+real-world products. All that Bob, or his software, has to check is that the
+transaction is valid and so work with the idea that the transaction will
+<em>eventually</em> get confirmed by a block,</p>
+</div>
+<p>Let’s say that a miner by the name of Carl decides to include Alice’s transaction
+in his candidate block. Carl decides to put Alice’s transaction as the second
+one in his transaction list, the first position is reserved for the
+Coinbase transaction which Carl constructs after he assembled the rest
+of the transaction list. Carl’s coinbase transaction amounts to a
+whopping 100 BTC, 6.25 from the Block Reward (As of 2022) and 93.75 from
+transaction fees including Alice’s. Carl gets straight to solving the hash
+puzzle and after around 10 minutes since the last block was added Carl solves it.</p>
+<p>He immediately broadcasts the block to other nodes that verify the block.
+This includes verifying transactions, the coinbase transaction, whether its output is equal to the block reward
+&amp; transaction fees, and checking whether the block header hash is below the target. Carl’s
+block is valid and nodes add his block to their own versions of the Bitcoin
+blockchain. As the nodes do this they clean up the mem-pool and UTxO set so
+the <em>UTxOs</em> Alice used as inputs are deleted and the ones she created as outputs
+are added, her transaction is also erased from the mem-pool. As soon as Bob’s
+wallet software receives this block it informs him of the successful transaction.</p>
+<p>Bob now has a new <em>UTxO</em> of 10 BTC and his transaction with Alice is complete.</p>
 <div class="section" id="spv-nodes">
 <h3><span class="section-number">4.1.5.1. </span>SPV Nodes<a class="headerlink" href="#spv-nodes" title="Permalink to this headline">¶</a></h3>
 <p><em>Simplified Payment Verification</em> nodes are Bitcoin’s light nodes. They only store
@@ -842,12 +959,194 @@ can actively participate in the blockchain.</p>
 <p class="admonition-title">Note</p>
 <p>SPV nodes heavily utilize something called <em>Bloom Filters</em>. If you have ever
 taken Cornell’s <a class="reference external" href="https://cornellcswiki.gitlab.io/classes/CS2112.html">CS2112</a> this should
-be a refresher.</p>
+be a refresher. Bitcoin is very privacy-centric and to make sure that full nodes
+can’t track what transaction an SPV node is interested in it uses bloom filters.
+Rather than asking for one particular transaction, a node sends a binary sequence
+bloom filter which tells the full node to return all the transactions whose
+hash in binary has <em>at least</em> 1’s in the same place as the bloom filter.
+If a bloom filter is all 0’s then the node returns all the transactions while
+a more specific bloom filter, with more 1’s, is efficient but less anonymous.</p>
+<p>For a more rigorous, and technical, introduction you can try
+<a class="reference external" href="https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/">this link</a>.</p>
 </div>
 </div>
 </div>
 <div class="section" id="miscellaneous">
 <h2><span class="section-number">4.1.6. </span>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
+<p>Bitcoin is a currency blockchain which are often called <em>cryptocurrencies</em>.
+Cryptocurrencies have alot of specifics that are not a part of the
+generic blockchains we discussed in previous chapter. The final section of
+this paragraph will cover Bitcoin’s additions to a generic blockchain.</p>
+<div class="section" id="wallets">
+<h3><span class="section-number">4.1.6.1. </span>Wallets<a class="headerlink" href="#wallets" title="Permalink to this headline">¶</a></h3>
+<p>In the preceding section we mentioned wallets alot, but what actually are
+they. In the most basic terms, a wallet is just a collection of public &amp;
+private keys. However, these uber-simplistic wallets are rarely used as
+they don’t provide any of the convenient features like <em>UTxO</em> tracking or
+transaction creation &amp; broadcasting. Popular wallet software provides
+users with all the features they need to use Bitcoin without ever having
+to worry about the details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although our discussion of wallets is in the Bitcoin chapter they are used
+by all other cryptocurrency blockchains. The following types of wallets
+are not limited to just Bitcoin.</p>
+</div>
+<p>Wallets are one’s key, pun intended, to the blockchain. As Blockchains are
+used by different people with different use-cases wallets have a number
+of different types. Some types are more archaic than useful, but they
+are still important as they help us understand blockchain’s, and particularly
+Bitcoin’s, origins.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Wallets don’t <strong>hold</strong> cryptocurrencies. This is like saying your pockets
+hold your car because its holds your car keys in it. The car pocket example
+is analogous to crypto wallets. They hold the keys needed to access your
+crypto, the same way car keys are needed to access your car.</p>
+</div>
+<div class="section" id="custodial-v-non-custodial">
+<h4><span class="section-number">4.1.6.1.1. </span>Custodial v Non-Custodial<a class="headerlink" href="#custodial-v-non-custodial" title="Permalink to this headline">¶</a></h4>
+<p>The following two types differ on whose responsibility the wallet is.</p>
+<p><strong>Custodial</strong> wallets are kept safe by a third-party <em>custodian</em>. The
+custodian has access to the private/public keys so when you lose your
+password or the wallet itself, if its hardware, your crypto is safe and
+access can be restored. While custodial wallets are more forgiving
+it comes at the cost of a severe reduction in privacy and dependence
+on the custodian’s legitimacy and security. As the custodian has access
+to the keys, and therefore the funds, if they are malicious or their security
+is broken your funds are at risk.</p>
+<p><strong>Non-Custodial</strong> wallets are completely yours. No one else has access
+to them offering a strong degree of privacy but at the cost of
+being completely your responsibility. If you lose the keys or the wallet
+the crypto funds controlled by them are as good as lost, this has
+happened before. They are primarily used by privacy-centric individuals
+or those who posses a large amount of cryptocurrencies.</p>
+</div>
+<div class="section" id="hot-v-cold">
+<h4><span class="section-number">4.1.6.1.2. </span>Hot v Cold<a class="headerlink" href="#hot-v-cold" title="Permalink to this headline">¶</a></h4>
+<p>The following types differ on where and how they are stored.</p>
+<p><strong>Hot</strong> wallets store their public-private keys online, often behind a
+layer of protection. They are usually custodial and have the benefit
+of quick processing of transactions. Transactions can be signed and
+therefore broadcast immediately and effortlessly. This makes them a
+popular choice for online exchanges but their security is limited. Because the
+keys are online their security is down-graded from ECDSA-grade to the
+quality of the wallet’s online security. This has been a problem more than
+once with one notable case being an early Bitcoin exchange called
+<a class="reference external" href="https://www.wired.com/2014/03/bitcoin-exchange/">Mt. Gox</a>.</p>
+<p><strong>Cold</strong> wallets on the other hand store their keys completely offline,
+typically through hardware. They are almost exclusively non-custodial.
+They are more secure as no online hacker can access them, but they shift
+the entire burden of maintenance onto their owner. If they are lost or
+damaged the crypto funds controlled by them are put under risk. They
+are nevertheless the most popular choice for privacy-centric users, some
+go as far as printing their private keys on a piece of paper and putting it in
+a safe.</p>
+</div>
+<div class="section" id="wallets-keys">
+<h4><span class="section-number">4.1.6.1.3. </span>Wallets &amp; Keys<a class="headerlink" href="#wallets-keys" title="Permalink to this headline">¶</a></h4>
+<p>While we mentioned that wallets’ primary function is to store keys
+we are yet to mention how they do that and, arguably more importantly,
+how they are generated.</p>
+<p><strong>JBOK</strong> (Just a Bunch Of Key) Wallets are just that. Just a bunch of
+keys. The keys are generated randomly and kept in a secure place. JBOK
+wallets are relatively straightforward, in theory, but are very fragile
+as losing the place where they are stored constitutes an irreversible loss
+of the wallet. Further if the wallet implementation is badly built and uses
+ordinary pseudo-random software to generate keys your funds might be at
+stake even if you did everything right. JBOK wallets were the original
+type of wallet on Bitcoin but have largely been phased-out by <em>HD wallets</em>.</p>
+<p><strong>HD</strong> (Hierarchical Deterministic) Wallets are built on a mathematical
+model. Keys are generated from a single seed, long binary sequence, that
+can be represented as a mnemonic. So long you remember the mnemonic
+the seed can be constructed and so can an infinite, 2 billion child keys from
+each parent, number of derived keys. This makes HD wallets backup-friendly
+and the default for backup-concerned wallets like MetaMask or Ledger. The
+drawback is that the security of the HD wallet depends on the privacy of the
+seed/mnemonic. If the mnemonic is leaked your funds are under threat, although
+there are implementations which encrypt the mnemonic with a password.</p>
+</div>
+<div class="section" id="wallet-comparison">
+<h4><span class="section-number">4.1.6.1.4. </span>Wallet Comparison<a class="headerlink" href="#wallet-comparison" title="Permalink to this headline">¶</a></h4>
+<p>Except for JBOK, wallet types are serve different, but relevant,
+use cases. A run-down of how different types can be used is below:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><strong>Hot</strong></p></th>
+<th class="head"><p><strong>Cold</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JBOK</strong></p></td>
+<td><p>Back-up difficult, <br/> good for wallets <br/> used by software</p></td>
+<td><p>Largely outdated. <br/> High risk of losing <br/> the wallet</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>HD</strong></p></td>
+<td><p>Good for casual-use <br> wallets like MetaMask</p></td>
+<td><p>Highly secure but <br/> requires self-maintenance.<br/> Appropriate for large funds.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="token-supply">
+<h3><span class="section-number">4.1.6.2. </span>Token Supply<a class="headerlink" href="#token-supply" title="Permalink to this headline">¶</a></h3>
+<p>Bitcoin’s token supply is fixed and regulated. There will only
+ever be 21 million bitcoin with the last bitcoin being
+created around 2140. Satoshi Nakamoto intentionally create
+this ‘coded inflation’ to simulate real-world inflation.</p>
+<p>Bitcoin, the token, is generated through block rewards in the coinbase transaction.
+The token reward that is assumed valid is actually the source of
+Bitcoin inflation and all Bitcoin that ever existed was
+created in a coinbase block reward.
+This makes the block reward serve an elegant double-purpose,
+both to incentivize the miner and act as a source of new Bitcoin.</p>
+<p>Block rewards are dictated by software and, as we reach 21
+million BTC created, halve every 210,000 blocks. The block
+reward was initially over 50 BTC but as of 2022 is just 6.25 BTC.
+Satoshi’s idea was that as time passed transaction fees would
+make up for the lost block rewards.</p>
+<p>While block rewards offer a source of inflation, errors on the
+side of users or intentional acts by malicious ones offer a source of deflation.
+Known as <em>burning</em>, this is when bitcoin tokens are lost and
+take tokens out of <em>circulation</em>. This happens
+every day and while bitcoin inflation is fixed this sort
+of accidental deflation is not meaning that in the very long-term
+the amount of <em>circulating</em> Bitcoin is likely to fall. Already,
+an estimated 10% of create Bitcoins is presumed lost or
+<em>unrecoverable</em>.</p>
+</div>
+<div class="section" id="limitations-bitcoins-future">
+<h3><span class="section-number">4.1.6.3. </span>Limitations &amp; Bitcoin’s Future<a class="headerlink" href="#limitations-bitcoins-future" title="Permalink to this headline">¶</a></h3>
+<p>Bitcoin was the project that introduced the world to Blockchain.
+Being the first has its pros, namely recognition and first-mover
+advantage, but it comes at the drawback of being antiquated. Bitcoin’s
+creator disappeared in the early 2010s and without a central leader
+major changes to Bitcoin look unlikely. This means that Bitcoin
+is destined to remain the steam-powered ocean-liner of the blockchain
+world. This is most evident in its lack of scalability, can process
+3-4 transactions per second, inefficient consensus algorithm,
+<em>PoW</em> has been criticized for being very energetically inefficient,
+and limited functionality, Script is limited to transaction verification.</p>
+<p>Bitcoin’s drawbacks have lead to the creation of a large number of
+competitor projects like Ethereum, Cardano or Litecoin. Many of these
+competitors have active development teams supporting them so their
+technological advantage over Bitcoin will only grow.</p>
+<p>But not all hope is lost for Bitcoin. While the core project
+will most likely never change in any large meaningful way there is
+a community of developers trying to build <em>on top</em> of Bitcoin.
+The most notable is <em>Layer 2</em> with projects such as the Lightning
+Network or the Liquid Network. These projects significantly increase
+Bitcoin’s scalability and reduce its dependence on <em>PoW</em>. We
+also must not forget that as of 2022 Bitcoin is still the largest,
+by market valuation, blockchain project and the most recognizable.
+For many Bitcoin and blockchain are synonymous. As of 2022, Bitcoin has also
+been adopted by governments such as El Salvador and Tonga with other
+countries, like Bulgaria, owning significant amounts of Bitcoin. This all has bolstered
+a group of people who believe Bitcoin is the ultimate blockchain
+solution called <em>Bitcoin Maximalists</em>.</p>
+</div>
 </div>
 </div>
 
@@ -898,7 +1197,7 @@ be a refresher.</p>
     <div class="container">
       <p>
         
-          By Cornell Blockchain<br/>
+          By Daniel Mistrik & Cornell Blockchain<br/>
         
             &copy; Copyright 2022.<br/>
       </p>
