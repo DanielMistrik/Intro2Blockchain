@@ -5,7 +5,7 @@ When talking about blockchain we are talking about a system.
 What is a system? [Merriam-Webster](https://www.merriam-webster.com/dictionary/system)
 defines *system* as "interacting or interdependent group of 
 items forming a unified group". This isn't the best, or most 
-concrete, definition so for this textbook we define system sa *a 
+concrete, definition so for this textbook we define system as *a 
 group of computers, nodes, trying to work on a singular application.* 
 This singular application can be as big or as small as it wants.
 :::
@@ -13,7 +13,7 @@ This singular application can be as big or as small as it wants.
 System architecture is a whole course in itself, at
 Cornell its [CS4410](https://cornellcswiki.gitlab.io/classes/CS4410.html),
 so we will not be going into any sort of depth on the topic.
-All we need to know that systems can be structured in three basic
+All we need to know is that systems can be structured in three basic
 ways:
 * **Centralized**: The whole network revolves and depends on
 a 'leader' node (i.e. Facebook).
@@ -26,14 +26,14 @@ that are variously connected between each other. There is no
 :::{tip}
 The definitions of decentralized and distributed are often 
 used interchangeably. You might find blockchain being called
-distributed on website and decentralized on the next. Formally
-the two terms are different but for 95% of sources on the
+distributed on one website and decentralized on the next. Formally
+the two terms are different but for alot of online sources on the
 blockchain, including this textbook, they mean the same thing
 which is that the system isn't centralized.
 :::
 
 The three types all have their uses and there is no one type 
-that is better overall. Saying this we have to concede that 
+that is better overall. Saying that, we have to concede that 
 an overwhelming majority of consumer-facing applications are
 built on centralized systems. 
 
@@ -41,7 +41,7 @@ Why? Centralized systems are easy to control and run, so they
 are often the first choice for already centralized companies. 
 But centralized systems aren't perfect.
 * Centralized systems are fragile in that if the 'leader' node
-falls so those the whole system. 
+goes down so does the whole system. 
 * Censorship is far easier to implement on a centralized system
 than on one of the others.
 * Centralized systems have limited privacy.
@@ -62,13 +62,13 @@ plaguing distributed systems. The problem goes as follows:
 
 A group of generals besieged the city of Byzantium. To take the 
 city they have to attack all at once BUT:
-* The Generals have unreliable messengers who might have been
+* The Generals can only communicate through unreliable messengers who might have been
 infiltrated by Byzantium.
-* Some generals may be traitors.
+* Some generals may be traitors/liars.
 
 There are many adaptations of this problem but the issue is the 
 same: How do you work with a group of peers you don't trust 
-and communication between you is unreliable. 
+over communication that is unreliable. 
 
 This problem affects distributed systems because of the equality of nodes. 
 There is no gatekeeper, anyone can join the system and communicate
@@ -86,7 +86,7 @@ a product (i.e. Whatsapp)
 
 One of the largest distributed/decentralized systems is after all
 the internet. Anyone can host a website and anyone can
-visit and this made managing payments very hard. Some websites
+visit. This made managing payments very hard. Some websites
 use credit cards, but these can be misused by malicious websites, 
 while others just trusted the customer would pay when the product would
 physically be delivered. In short *BGP* meant there was no clean 
@@ -99,9 +99,9 @@ Although the author never used the term, the whitepaper created *Blockchain*, a
 technology and data-structure that solved *BGP*.
 
 ### Storing the Data
-The remainder of this chapter will be looking at a 
+For the remainder of this chapter we will be looking at a 
 subset of the solution: storing the information the 
-generals send each other. The following two chapters 
+generals send each other. The following chapters 
 will complete the solution.
 
 We need a *data-structure* that can store information 
@@ -123,18 +123,16 @@ a peak into how this is possible.
 Traditionally, when we want to store big sets of data we look at databases. 
 [Databases](https://www.oracle.com/database/what-is-database/#:~:text=A%20database%20is%20an%20organized,database%20management%20system%20(DBMS).&text=Most%20databases%20use%20structured%20query,for%20writing%20and%20querying%20data.)
 are an organized collection of data often arranged into a set of tables. To
-look whether we can use purely databases lets try to answer our 4 questions with
-databases:
+look at whether we can purely use databases lets try to answer our 4 questions:
 
 * **How will the data be structured?** - In groups of inter-related tables.
 * **Adding/editing the data?** - As we are working with a distributed system which 
 anyone can join the answer is anyone can add and edit data.
 * **Validity of data?** - As anyone can add/edit data we don't really have a way
-to efficiently check if the data is correct.
+to efficiently check if the added/edited data is correct.
 * **Same version of data?** - We have to centralize the system to the same copy
 of the database for everyone, a [concurrency](https://www.techopedia.com/definition/25146/programming-concurrency)
-nightmare not to mention that it stops being a decentralized system. There is 
-really no other solution inherent to databases.
+nightmare not to mention that it stops being a decentralized system.
 
 :::{note}
 We intentionally put *purely* databases above. This is because databases are
@@ -148,13 +146,13 @@ Clearly using *just* databases isn't enough. Not having a gatekeeper is looking 
 problem. By going over the questions we realize that conventional methods don't quite
 cut it. Our ideal data-structure would have the following properties:
 * Is ordered.
-* Has clear rules on who and how data is added.
-* Data present in the structure can be easily verified by anyone
-* Is *immutable*, that is once data is added it can't be deleted or edited.
-* Can be shared easily among nodes in the system.
+* Has clear rules on how data is added and who can do it.
+* Data in the structure can be easily verified by anyone
+* Is *immutable*, this means that once data is added it can't be deleted or edited.
+* Can be easily shared among nodes in the system.
 * Anyone can contribute to it but can only submit valid data.
 
-### Blockchain Implementation (*BADS*)
+### Blockchain Implementation (*BAADS*)
 The blockchain meets the requirements above through the following data-structure:
 * Data is ordered into *blocks* and structured by *Merkle Trees*.
 * *Blocks* are united through a *linked list*.
@@ -168,30 +166,30 @@ This composite data structure is the Blockchain-as-a-data-structure (*BADS*)
 :::{tip}
 We just used alot of new definitions like linked lists, merkle trees and blocks. 
 If this looks overwhelming don't worry we will cover all of them in the rest of 
-the chapter. Once you read what all of these terms mean it could be useful to go over
+the chapter. Once you have read what all of these terms mean it could be useful to go over
 the above again.
 :::
 
-**Linked Lists** are pieces of data that *point* to each other forming a chain. 
+**Linked Lists** are pieces of data that *point* to each other thereby forming a chain. 
 They are an incredibly important data structure in all of computer science, as 
-anyone who has taken Cornell's [CS2110](https://cornellcswiki.gitlab.io/classes/CS2110.html) or ever prepared for an S.W.E interview knows. 
+anyone who has taken Cornell's [CS2110](https://cornellcswiki.gitlab.io/classes/CS2110.html) or ever prepared for a S.W.E interview knows. 
 A piece of data, also called a node but not to be confused with nodes in a system, 
-either point to another node or to nothing, but importantly they can only point to **one** 
-other thing and is pointed to by a maximum of one other node. This means two nodes cannot
+either points to another node or to nothing, but importantly a node can only point to **one** 
+other thing and is pointed to by a maximum of one other node. This means two different nodes cannot
 point to the same node.
 
-They have the following benefits:
+Linked Lists have the following benefits:
 * Clear process to add data, you just point your new data to the most recent data already
 in the linked list.
 * Immutable. To replace one node is to replace all the nodes that point to it either
 directly or indirectly.
 
-As such linked lists have solved several of our desired B.A.D.S qualities. Namely 
+As such linked lists have solved several of our desired B.A.D.S qualities. Namely:
 *An ordered data structure*,*Clear process to add data*,*Immutable*.
 
 :::{note}
 Linked Lists, in their basic form, have 'soft' immutability. By this we mean it is 
-a nuisance to delete data, but it can still be done, editing is unaffected. But, 
+a nuisance to delete data, but it can still be done, and editing is unaffected. But, 
 as we will see, Blockchain's linked list has 'strong' immutability. By principle, Blockchain
 linked lists are add-only, so if you are to act honestly you will only every add nodes,
 not edit or replace them. 
@@ -200,7 +198,7 @@ not edit or replace them.
 <img src="images/Linked_Lists.png">
 
 **Blocks** are the nodes in *BADS*'s linked list. Blocks are composed of a header and 
-data. The data the block contains must be validated by the data in preceding blocks. 
+data. The data the block contains must be validated by data in preceding blocks. 
 Blocks point to each other by storing the *hash*, a sort of data signature, of the 
 previous block, there is no 'physical' link between the nodes. 
 
@@ -216,8 +214,7 @@ to? In blockchain, we call this block the *genesis block*.
 nothing. It comes *hard-coded* in most blockchain implementations and is the only 
 block that is inherently true. This means our trust in the blockchain is partly
 based on our trust that the data in the genesis block is valid. Genesis blocks often 
-dont contain alot of information and are often used for grand statements, like Bitcoin's
-was. 
+don't contain alot of information and are often used for grand statements, like Bitcoin's.
 
 ```{epigraph}
 The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
@@ -225,14 +222,14 @@ The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
 ```
 
 Blocks and the linked list address another desired characteristic of BADS: *sharing 
-the data structure is efficient*. This is because to update the data structure we only
-need to share the latest block, each node can then add this block to their own private
+the data structure is efficient*. To update the data structure we only
+need to share the latest block, each node can then add this block to its own private
 and much larger blockchain. The initial blockchain 'download' is still slow, but now it
 only has to be done once. We still need to guarantee that every node gets the same
-block and that it is in the correct order. This is called reaching *consensus* and 
+block and that its linked list is in the correct order. This is called reaching *consensus* and 
 Blockchain achieves it through several *consensus algorithms* like *PoW* or *PoS*.
 
-Above we often mentioned that data in a block has to *valid* and that only the genesis block
+We often mentioned above that data in a block has to *valid* and that only the genesis block
 has the luxury of being automatically correct. But what does this actually mean? 
 
 For those who have done some discrete math, i.e. have done Cornell's 
@@ -258,7 +255,7 @@ as you can't have less than 0 blocks.
 We now have a way to organize data, a block chain, but how do we organize data within 
 blocks? This is an important question as we need to guarantee the following:
 * The data must be clearly ordered so different nodes can have the same version
-* The data has to have a 'signature' that we can use to quickly check it's the same as
+* The data has to have a 'signature' that we can use to quickly check if it's the same as
 the data of other nodes
 * The data has to be immutable
 * We need to guarantee that data is unaltered when it is sent from one node to another, 
@@ -269,12 +266,14 @@ and a linked list would be too complicated. Fortunately we have a data structure
 addresses all of our demands, a *Merkle Tree*.
 
 :::{admonition} On Trees
-*Merkle Trees* are a type of *tree*. Trees are an incredibly useful and widespread CS
-data structure and their use cases go far beyond blockchain. Although we will not cover 
+*Merkle Trees* are a type of *tree*. Trees are an incredibly useful and widespread
+data structure and their use-cases go far beyond blockchain. Although we will not cover 
 trees in depth we need to understand their basic architecture and some key terminology.
 Trees work much like linked lists in that they are composed of nodes pointing to other 
-nodes. But in the case of trees multiple nodes, the *children* can point to the same node,
-the *parent*. Nodes that have no children are called *leaves*. If we plot this relationship it looks like a tree, hence the name. Binary
+nodes. But in the case of trees multiple nodes, the *children*, can point to the same node,
+the *parent*. Nodes that have no children are called *leaves*. All but one node point have a 
+parent node, the one that doesn't is called the *root*. You can get from any node in the
+tree to the root. If we plot this relationship it looks like a tree, hence the name. Binary
 trees are trees where every parent can have at most 2 children, this means a node can be
 pointed to by a maximum of two other nodes. 
 :::
@@ -284,19 +283,19 @@ pointed to by a maximum of two other nodes.
 **Merkle Tree** is a binary tree where every node has a hash, digital signature, which
 is the hash of the hashes of its two children. The actual data is stored in *leaves* 
 whose hash makes up the first layer of nodes that eventually connect to the Merkle *root*
-which is a unique digital signature of the whole set of data. This digital signature
+which is a unique digital signature of the whole set of data. This data signature
 has a given size, but it can represent a data set of infinite size. We cannot understate
 the importance of this data structure in blockchain. It appears everywhere in nearly
 every implementation and add-on, after *BADS* Merkle Trees are the data structure of the blockchain.
 
 Merkle Trees largely rely on *hashes* which, in a simplified sense, are a unique 
 fixed-size signature of the data provided. The idea that every piece of data,
-be it an image or just a combination of other hashes, has a unique representation is
+be it an image or just a combination of other hashes, has a unique fixed-sized representation is
 what gives Merkle Trees their power. Hashing is a fascinating and integral part of
-blockchain and cryptography in general, and we will cover it in depth in the next chapter.
+blockchain and cryptography in general. We will cover it in depth in the next chapter.
 
 Merkle Trees have multiple benefits and features that address our desires for storing 
-concrete data:
+a concrete data:
 * Thanks to the merkle root we can quickly determine whether two sets of data, perhaps
 stored by two different nodes with unreliable connections, are *exactly* the same, 
 in both structure and content.
@@ -316,10 +315,10 @@ the part that references the preceding block and contains information about the 
 , like the merkle root. The blocks 'brain' is the *block header*.
 
 **Block Header** defines the block's properties. Every blockchain implementation has
-a unique header structure. Regardless a, very generalized, block header contains the 
+a unique header structure. Regardless a very generalized block header contains the 
 following:
-* **Version** - The version of the blockchain implementation when the block was added. Like all software 
-blockchain implementation has updates and so different versions that can affect how we
+* **Version** - The version of the blockchain implementation when the block was added. Like all software, 
+blockchain implementations have updates and so different versions that can affect how we
 determine whether a block is valid.
 * **Preceding Block Hash** - The hash of the latest block before this one. This creates
 the linked list.
@@ -360,19 +359,19 @@ A generalized, but heavily inspired by PoW and original implementations of PoS, 
 algorithm requires that all nodes store *BADS* and actively participate in trying to
 add a block or validate a candidate. The general process for a node goes as follows:
 1. A node collects, and verifies, data to put into its block, fills out its block header and then 
-tries to validate it. This validation goes beyond the validity of the data and is the 
-main point where consensus algorithms converge. Validation is always meant to take
+tries to validate it. Block validation goes beyond the validity of the data and is the 
+main point where consensus algorithms converge. Block validation is always meant to take
 some noticeable amount of time so the network isn't flooded with candidate blocks.
 2. 1. The node successfully validates its block at which point it broadcasts its candidate
 block to the rest of the network. 
      2. Before the node can validate its own block another candidate block comes in.
 At this point the node stops working on its own block and checks if the candidate 
-is valid. In the case it is the node abandons its attempt, adds the candidate to 
+is valid. In the case it is valid the node abandons its attempt, adds the candidate to 
 its own blockchain and tries to create the block that follows it.
 
-Achieving consensus therefore happens at an individual level for every node, but it happens 
-simultaneously. As what makes a block valid is known to the whole network, via the 
-consensus algorithm, every block can individually determine whether a block is valid,
+Achieving consensus therefore happens at an individual node level, but it happens 
+simultaneously. What makes a block valid is known to the whole network, via the 
+consensus algorithm, so every block can individually determine whether a block is valid,
 and it expresses its consent by adding it to its own local blockchain. When this happens
 at a majority of nodes we consider the block to be successfully added to the blockchain.
 
@@ -381,7 +380,7 @@ replace existing blocks and then publish them to the network that accepts them? 
 theory yes but the likelihood of something like this happening is very low. We 
 first must understand that at anyone time there may be multiple competing chains
 and the *valid* chain is the one that is the biggest/longest. This is 
-because creating, a broadcasting, a valid block is a time race and so as long as a 
+because creating, and broadcasting, a valid block is a time race and so as long as a 
 majority of nodes are honest, and accept that blockchain is add-only, the attackers
 won't be able to catch up with the longer, valid, chain that the honest nodes add onto.
 
@@ -393,21 +392,20 @@ of *BADS*. This requirement also essentially makes *BADS* impossible to destroy 
 do it one would have to destroy the local version of every node. 
 
 :::{admonition} An honest majority
-Above we based alot of *BADS* maintenance on the idea that a majority of nodes are
+We based alot of *BADS* maintenance on the idea that a majority of nodes are
 honest. This might seem like a design flaw, but it is one of the central assumptions 
-of a valid blockchain. As we will discover later in the course this assumption holds
-for the most part but there have been cases when it hasn't with tragic results. 
+of a valid blockchain. As we will discover later in the book this assumption mostly holds 
+but there have been cases when it hasn't with tragic results. 
 :::
 
 ## Implications of Blockchain being a solution
-Coming back to *BGP* we now have a solution on the format of the messages that the 
+Coming back to *BGP*, we now have a solution on the format of the messages that the 
 generals send to each other. The messages are put in a blockchain, the genesis block
 can contain none or some very basic information they all agree on like how many generals there are,
 and each general has a local version. Generals don't need to trust the messengers, as 
 a malicious message would not be supported by previous data in the blockchain, or 
 other generals. They only need to trust the system and that a majority of the generals 
-are honest, so they will always control the valid chain and so only exchange valid 
-messages. 
+are honest.
 
 This solution has an important implication, the concept that we can trust
 the system rather than any particular participant in it. We trust the blockchain, we
@@ -419,14 +417,14 @@ From our discussion above we can determine several benefits of *BADS*:
 * **Censorship-Resistant** - Anyone can join a distributed system.
 * **Very stable** - For *BADS* to disappear every node has to delete its local version 
 of it, a very unlikely event.
-* **Works well over a unstable connection** - With Merkle Trees and immediate verification
+* **Works well over an unstable connection** - With Merkle Trees and immediate verification
 upon receiving, data that is kept is guaranteed to be what the sender intended it to be.
 * **Verification is conducted individually so there is no need to trust any individual participant**
 
 There are however also drawbacks to *BADS*:
 * **Inefficient by design** - Every participant has to store the exact same version
 of the blockchain which from a storage standpoint, is as inefficient as it gets.
-* **Limited Data** - Although we haven't delved into this just yet, the verification
+* **Limited Data** - Although we haven't gotten into this just yet, the verification
 of data is difficult and so a blockchain is often limited to only one type of data it
 can store.
 * **Dishonest Majority** - There is always the small possibility that a majority of the
