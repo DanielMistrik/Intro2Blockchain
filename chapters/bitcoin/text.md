@@ -258,8 +258,8 @@ All Bitcoin addresses begin with a 1 to make them easy to differentiate.
 :::{note}
 **Base 58** format is an encoding format that is a more-readable version of 
 *Base 64*. Base 64 is a number system with 64 numerals. They are represented by all the 
-capital letters, un-capitalized letters,numerals 0 to 9 and + and /. Base 58
-takes characters that are frequently confused like, 0 and o, and has a built-in
+capital letters, un-capitalized letters, numerals 0 to 9 and + and /. Base 58
+removes characters that are frequently confused, like 0 and o, and has a built-in
 check that detects if you wrote it wrong.
 :::
 
@@ -555,3 +555,32 @@ an estimated 10% of create Bitcoins is presumed lost or
 *unrecoverable*.
 
 ### Limitations & Bitcoin's Future
+Bitcoin was the project that introduced the world to Blockchain.
+Being the first has its pros, namely recognition and first-mover
+advantage, but it comes at the drawback of being antiquated. Bitcoin's
+creator disappeared in the early 2010s and without a central leader
+major changes to Bitcoin look unlikely. This means that Bitcoin
+is destined to remain the steam-powered ocean-liner of the blockchain
+world. This is most evident in its lack of scalability, can process
+3-4 transactions per second, inefficient consensus algorithm, 
+*PoW* has been criticized for being very energetically inefficient,
+and limited functionality, Script is limited to transaction verification.
+
+Bitcoin's drawbacks have lead to the creation of a large number of
+competitor projects like Ethereum, Cardano or Litecoin. Many of these
+competitors have active development teams supporting them so their
+technological advantage over Bitcoin will only grow.
+
+But not all hope is lost for Bitcoin. While the core project
+will most likely never change in any large meaningful way there is
+a community of developers trying to build *on top* of Bitcoin.
+The most notable is *Layer 2* with projects such as the Lightning
+Network or the Liquid Network. These projects significantly increase
+Bitcoin's scalability and reduce its dependence on *PoW*. We
+also must not forget that as of 2022 Bitcoin is still the largest,
+by market valuation, blockchain project and the most recognizable.
+For many Bitcoin and blockchain are synonymous. As of 2022, Bitcoin has also
+been adopted by governments such as El Salvador and Tonga with other
+countries, like Bulgaria, owning significant amounts of Bitcoin. This all has bolstered
+a group of people who believe Bitcoin is the ultimate blockchain 
+solution called *Bitcoin Maximalists*.

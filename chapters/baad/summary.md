@@ -1,9 +1,9 @@
 # Summary
 This chapter introduced us to the very basics of blockchain and why it is useful. What
 we learned in this chapter will form the basis of our understanding of the blockchain.
-* Systems are a crucial part of the computer world, and they are divided into three main types
+* Systems are a crucial part of the computer world. They are divided into three main types
 all of which have their benefits and drawbacks.
-* Distributed systems flaw can be expressed in a theoretical problem known as the *Byzantine
+* Distributed systems' flaw can be expressed in a theoretical problem known as the *Byzantine
 General's Problem* which highlights the difficulty of cooperating in a system where nodes
 don't trust each other.
 * Blockchain is a solution to the Byzantines General Problem through a network that shares a
