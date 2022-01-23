@@ -578,21 +578,21 @@ cryptography’s ability to secure and validate data like blocks and the data th
 </div>
 <p>Blockchain depends on two primary cryptographic devices:</p>
 <ul class="simple">
-<li><p><strong>Hashing</strong> - Used to validate blocks in <em>Proof-of-Work</em> consensus, act as a signature of blocks and the
-backbone of merkle trees.</p></li>
+<li><p><strong>Hashing</strong> - Used to act as a signature of blocks and the
+backbone of merkle trees and validate blocks in <em>Proof-of-Work</em> consensus.</p></li>
 <li><p><strong>Digital Signature</strong> - Used to verify individual participants signing off on a piece
 of data and so validate data in blocks.</p></li>
 </ul>
-<p>The two devices work in tandem and give blockchain trust even when the participants are
-untrustworthy. In the previous chapter we left this definition without explaining the
-seeming paradox of a trusted system composed of untrusted nodes. Both of the devices
+<p>The two devices work in tandem and give blockchain trust in a trustless environment.
+In the previous chapter we left this statement without explaining the
+seeming paradox of a trusted system composed of untrusted nodes. Both of the cryptographic devices
 above are rooted in theoretical math and so can be proven correct and valid. Not even
 dishonest participants can forge them which means their use guarantees trust and validity.</p>
 <div class="section" id="cryptography-basics">
 <h2><span class="section-number">2.1.1. </span>Cryptography Basics<a class="headerlink" href="#cryptography-basics" title="Permalink to this headline">¶</a></h2>
 <p>Before we get into the intricacies of cryptography we need to understand some basic
 ideas that cryptography uses. First we need to understand the ‘language’ cryptography
-operates in, <em>number systems</em> and how it manipulates this language, <em>bitwise operations</em>.</p>
+operates in, <em>number systems</em>, and how it manipulates this language, <em>bitwise operations</em>.</p>
 <div class="section" id="number-systems">
 <h3><span class="section-number">2.1.1.1. </span>Number Systems<a class="headerlink" href="#number-systems" title="Permalink to this headline">¶</a></h3>
 <p>As you may or may not know computers don’t understand human languages, they understand
@@ -614,7 +614,7 @@ building blocks of computers, <em>logic gates</em>, can work with.</p>
 <p>We use <em>hexadecimal</em>,or base-16 composed of the standard 10 numerals and the 6 letters
 from ‘a’ to ‘f’, because working with binary is incredibly complicated. Hexadecimal
 is more <em>terse</em> and is used frequently in  <em>lower-level programming</em>, programming
-that works in languages computers understand more.</p>
+that works in languages computers understand more than languages like English.</p>
 <p>We will see hexadecimal re-appear throughout the course as we examine the basic building
 blocks of blockchain implementations like Ethereum.</p>
 <div class="tip admonition">
@@ -631,13 +631,13 @@ blocks of blockchain implementations like Ethereum.</p>
 <h3><span class="section-number">2.1.1.2. </span>Bitwise Operations<a class="headerlink" href="#bitwise-operations" title="Permalink to this headline">¶</a></h3>
 <p>As with all languages, we need a way to manipulate them. Bitwise operations are
 operators on binary and imitate what <em>logic gates</em>, the basic building blocks of
-computers do. While their use-case isn’t immediately clear they are an integral part of
+computers, do. While their use-case isn’t immediately clear they are an integral part of
 computer science with <a class="reference external" href="https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators">a wide range of applications</a>
 including cryptography.</p>
-<p>Bitwise operations work by taking to binary <em>streams</em>, sequences of 1’s and 0’s, of
-equal length and calculating a new binary stream from them. They do this by analyzing
-the bytes at every individual position and depending on what operator they are
-producing either a 1 or 0.</p>
+<p>Bitwise operations work by taking two binary <em>streams</em>, sequences of 1’s and 0’s, of
+equal length and produce a new binary stream from them. They do this by analyzing
+the bytes at every individual position and, depending on what operator,
+produce either a 1 or 0.</p>
 <p>Bitwise Operators are not an easy concept, and we do not expect you to understand
 them fully. We only want to make sure you have a rough idea of how they work so when
 we explain processes like hashing you will be able to understand it a little more
@@ -648,7 +648,7 @@ deeply.</p>
 <p><strong>OR</strong> - Produces a 1 if either or both input bits are 1 and 0 otherwise. If we had
 input streams <em>1010</em> and <em>1100</em> the OR operator would output <em>1110</em>. This is because
 when the operator looks at the first bit of both streams it sees it has two 1’s and
-so produces another 1, the second bit in the streams is a 1 or 0 which produces a 1,
+so produces another 1, the second bit in the streams is a 1 and 0 which produces a 1,
 the same goes for the third bit but for the fourth and final bit they are both 0 so the
 OR operator produces a 0.</p>
 <p><strong>AND</strong> - Produces a 1 if both input bits are 1 and 0 otherwise. Therefore, if we
@@ -668,8 +668,8 @@ three following characteristics:</p>
 <li><p><strong>Deterministic</strong> - A given input will <em>always</em> produce the same output for the same
 hash function implementation.</p></li>
 <li><p><strong>Trap-door Function</strong> - You can quickly and easily take an input and calculate the
-output, the <em>hash digest</em>, but you cannot take the <em>hash digest</em> and quickly find
-what the original input was. You could say the hash function is not <em>invertible</em>.</p></li>
+output, the <em>hash digest</em>, but you cannot take the output, the <em>hash digest</em>, and quickly
+get the input. You could say the hash function is not <em>invertible</em>.</p></li>
 <li><p><strong>Collision Resistant</strong> - The number of inputs that share the same output, known
 as a <em>collision</em>, should be as small as possible. Ideally one input maps to one output but as
 the output is fixed-size and input can be anything even the best hash functions are
@@ -693,35 +693,35 @@ is also Bitcoin’s hash function.</p>
 <p>Alot of CS textbooks give examples of very simple hash functions (i.e. converting data
 to a number and the output is that number times two). We disagree with this approach.
 These kinds of simple hash functions don’t have the three good hash function properties and
-as such are never used in the real-world making teaching them redundant. We will be showing
-you SHA-256 which is incredibly difficult and incredibly useful. We do not expect you to understand it.
+as such are never used in the real-world. This makes teaching them redundant. We will be showing
+you SHA-256 which is incredibly difficult but incredibly useful. We do not expect you to understand it.
 We are putting it in this textbook merely, so you are <em>aware</em> of its inner-workings, and you can rest
 assured that for 99.5% of blockchain projects you will not have to understand it fully.</p>
 </div>
 <p>From a simplified perspective, SHA-256 works as follows:</p>
 <ol class="simple">
-<li><p>Convert the input data into binary</p></li>
-<li><p>‘Pad’ the data, add 0’s to it, and add its original length in binary to it so its
-final length is divisible by 512, that is its length is 512k bits where k is some integer.</p></li>
+<li><p>Convert the input data into binary.</p></li>
+<li><p>‘Pad’ the data, add 0’s to the end, and add its original length in binary to it so its
+final length is divisible by 512, that is its length is divisible by 512.</p></li>
 <li><p>Divide the entire binary sequence into 512 bit long ‘chunks’.</p></li>
 <li><p>Taking each chunk one-by-one first divide it further into 16 32-bit ‘windows’ and then
 add another 48 32-bit ‘windows’ initialized to 0.</p></li>
-<li><p>For the 16 non-empty words run some logic and the XOR bitwise operator on them and
-put the results in the 48 empty words.</p></li>
+<li><p>For the 16 non-empty windows run some logic and the XOR bitwise operator on them and
+put the results in the 48 empty windows.</p></li>
 <li><p>Starting with 8 pre-defined hash values modify them by compressing the 64 words into them
 through XOR and bit-logic. These 8 hash values will only have pre-defined values when
-the words of the first ‘chunk’ are compressed into them. After that the results of the
-compression are changed. If the results are greater than 2^32 the modulo operator is applied,
+the windows from the first ‘chunk’ are compressed into them. After that the results of the
+compression are changed. If any of the 8 hash values are greater than 2^32 the modulo operator is applied,
 so they are always smaller than 2^32.</p></li>
-<li><p>After we iterated over all the chunks append the 8 resulting hash functions, convert
+<li><p>After we iterated over all the chunks unite the 8 resulting hash functions, convert
 them to hexadecimal, and you have your hash digest.</p></li>
 </ol>
 <p>We warned you. This is not simple in the slightest and why these steps are the way they
 are is far beyond the scope of this textbook. If you want one thing to take away from
-all of this then know that hash functions use bitwise operations, logic and math to guarantee
+all of this then know that hash functions use bitwise operations, logic and modulo to guarantee
 the three good hash function properties.</p>
 <p><strong>SHA-256</strong> is the hash function we described above, and it is part of the SHA-2 family
-created by NIST in 2001, and it has a 256-bit hash digest. Its notable use-case in Blockchain
+created by NIST in 2001. It has a 256-bit hash digest. Its notable use-case in Blockchain
 is Bitcoin.</p>
 <p><strong>Keccak-256</strong> is Ethereum’s hash function. It was the <em>original</em> version of NIST’s
 SHA3 before it was edited by NIST in 2013. These edits caused some concerns that
@@ -731,22 +731,22 @@ the raw unedited SHA3 called Keccak-256. Like SHA-256 it has a 256-bit hash dige
 <div class="section" id="cracking-hashes">
 <h3><span class="section-number">2.1.2.2. </span>Cracking Hashes<a class="headerlink" href="#cracking-hashes" title="Permalink to this headline">¶</a></h3>
 <p>There are two primary ways to crack a hash function:
-finding the input to the hash function given a hash input, or finding hash <em>collisions</em>.</p>
+finding the input to the hash function from a hash digest, or finding hash <em>collisions</em>.</p>
 <p><em>Collisions</em> are when two different inputs have the same output and while good hash
-functions should not have them advancements in computer processing have turned made
+functions should not have alot them advancements in computer processing have made
 once good hash functions, like SHA-1, susceptible to <em>collision attacks</em>.</p>
 <p><em>Collision Attacks</em> are when you take any piece of data and <em>salt</em> it with additional
 data so that it has a desired hash digest. This attack can therefore misuse services
 that, for security reasons, only compare hash digests and not the actual input (i.e.
-like password verification). SHA-1’s algorithm has been cracked to the point that
+password verification). SHA-1’s algorithm has been cracked to the point that
 you can find a hash collision in 2^62 calculations. In comparison, for the yet
-uncracked SHA-256 you would have to do at least 2^256 calculations to find a collision.</p>
+uncracked SHA-256 you would have to do 2^256 calculations to find a collision.</p>
 <p><em>Brute-Force Attacks</em> are attacks that try to <em>reverse</em> a hash function and this is
-much more difficult, to the point it is impossible, than collision attacks. This is
-because complex hashing functions cannot be <em>reversed</em> so the only way you find the input
-for a given output is try all possible inputs until you get your output. For SHA-256
-this would take roughly 2^256 computations which would take the whole worlds computing
-power more time than the predicted lifespan of the universe. Note, that because of
+much more difficult, to the point of impossibility, than collision attacks. This is
+because complex hashing functions cannot be <em>reversed</em> so the only way you can find the input
+for a given output is to try all possible inputs until you get your desired output. For SHA-256
+this would take roughly 2^256 computations.For reference this would take the whole worlds computing
+power more time than the predicted lifespan of the universe. Note, because of
 collisions even if you find an input that translates to your desired output you can
 never be sure it is the input you want.</p>
 </div>
@@ -790,17 +790,15 @@ has to store the whole blockchain.</p>
 <div class="section" id="block-validation-in-pow">
 <h3><span class="section-number">2.1.2.4. </span>Block Validation in PoW<a class="headerlink" href="#block-validation-in-pow" title="Permalink to this headline">¶</a></h3>
 <p>In the last chapter we briefly covered block validation and consensus
-algorithms. Consensus algorithms differ to greatly in implementation
-so a detailed description of them isn’t fit for the first chapter.
+algorithms.
 Consensus algorithms try to achieve two goals:</p>
 <ul class="simple">
 <li><p>Limit the number of valid blocks produced in a
-time interval, to guarantee every node gets the newest block in time to
+time interval. This is to guarantee that every node gets the newest block in time to
 synchronize before the next block is produced.</p></li>
-<li><p>Try to express
-the opinion of an honest majority.</p></li>
+<li><p>Try to express the opinion of an honest majority.</p></li>
 </ul>
-<p><em>Proof of Work</em> (<em>PoW</em>) is a consensus algorithm achieves the above by
+<p><em>Proof of Work</em> (<em>PoW</em>) is a consensus algorithm that achieves the above by
 using hash functions. We previously talked about the fact that to get
 a desired output there is no other solution than brute-force, trying random
 inputs until one input generates a desired output. While brute-force
@@ -813,13 +811,13 @@ amount of time to solve.</p></li>
 the greatest computing power.</p></li>
 </ul>
 <p>This means that brute-force hashing can limit the number of solutions
-over a period of time and accurately describe the opinion of the majority,
-in other words it solves the two goals we want from a consensus algorithm!</p>
-<p><em>Hash puzzle</em> is PoW’s desired output. The hash puzzle is a hash output
+over a period of time and accurately describe the opinion of the majority.
+In other words, it solves the two goals we want from a consensus algorithm!</p>
+<p><em>Hash puzzle</em> is the desired output in PoW. The hash puzzle is a hash output
 that is below a certain value, remember hash outputs are hexadecimal which
-is just a number system. The value, known as the <em>target</em>, is calculated
+just represents a number. The value, known as the <em>target</em>, is calculated
 through something known as the <em>difficulty</em> which roughly equates to
-how difficult the hash puzzle is. Blockchain’s typically adjust
+how difficult the hash puzzle is to solve. Blockchain’s typically adjust
 the difficulty depending on how much computing power is present to
 keep the ‘ABCT’, average block creation time, constant.</p>
 <div class="admonition note">
@@ -835,6 +833,7 @@ a factor of 4.</p></li>
 </ul>
 <p>Difficulty Coefficient - Last 3 bytes of the new difficulty.</p>
 <p>Difficulty Index - First byte of the new difficulty.</p>
+<p>Difficulty is 4 bytes long.</p>
 </div>
 <p>Difficulty is included in the block header along with a field called
 the <em>nonce</em>. The <em>nonce</em> is a free field which can be populated with
@@ -851,43 +850,42 @@ the target. This is difficult to achieve but very easy to verify, you
 just evaluate: <em>target</em> &gt; <em>block header</em>.</p>
 <p><em>PoW</em> also has the consequence
 that the definition of an honest majority is a majority of computing
-power, even if the number of actual nodes is a minority.</p>
+power, even if the number of actual nodes is in the minority.</p>
 </div>
 </div>
 <div class="section" id="public-private-cryptography">
 <h2><span class="section-number">2.1.3. </span>Public-Private Cryptography<a class="headerlink" href="#public-private-cryptography" title="Permalink to this headline">¶</a></h2>
-<p>We now know how to verify what data is supposed to be in a block and
-how to verify the block. What we are missing is how we verify the actual
+<p>We now know how to verify what data is in a block and
+how to verify the block. What we are missing is how to verify the actual
 data that goes into the block. This is a very general question that
 largely depends on what <em>type</em> of data the blockchain is storing but
 nearly every type of data needs to verify its source. While at first
-sight this might seem irrelevant it becomes important when a piece of
+sight this might seem irrelevant, it becomes important when a piece of
 data orders the blockchain to move money from one account to another.</p>
 <p>But how do we do this? Verifying the creator/origin of a piece
-of data is very difficult as we can’t just give a signature like
+of data is very difficult as we can’t just give a handwritten signature like
 we can in the real-world. The solution lies in a topic called
 <em>Public-Private Cryptography</em>.</p>
 <p><strong>Public-Private Cryptography</strong> (<em>PPC</em>) is a set of cryptographic algorithms that
 work on the basis of two keys, a <em>public key</em> and <em>private key</em>. These
 two keys are mathematically linked in such a way that anything <em>encrypted</em>
 with the private key can only be decrypted with its corresponding public key
-and only that public key. The private key is to be kept private and not
-share with anyone while the public key can and should be shared with
-everyone.</p>
+and only that public key. The private key is kept private and should not be shared with anyone
+while the public key can and should be shared with everyone.</p>
 <p><em>PPC</em> is a very important subset of cryptography and is used extensively
 in real-world applications. <em>PPC</em> provides two key benefits that
 make it useful:</p>
 <ul class="simple">
-<li><p>They can be used to verify that a certain digital entity, represented
+<li><p>It can be used to verify that a certain digital entity, represented
 by a public key, attested to some piece of data, by encrypting it with
 their private key.</p></li>
 <li><p>They allow for peer-to-peer secret communication. This is because each side can encrypt
 their messages with the others public key which can only be decrypted with
-the other party’s private key. Some PPC algorithms allow for this kind of public keys
-encryption and private keys decryption.</p></li>
+the other party’s private key. Some PPC algorithms allow for public keys to encrypt and
+private keys to decrypt.</p></li>
 </ul>
 <p>Blockchain is primarily interested in the first type of application
-because it can be used in verifying the source of pieces of data, a <em>digital signature</em>.</p>
+because it can be used in verifying the source of piece of data, a <em>digital signature</em>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This textbook uses the phrase data signature and digital signature,
@@ -904,7 +902,7 @@ they are trying to authenticate in the signature. Digital signatures are meant t
 be verifiable by anyone but can only be generated by one entity.
 This is done by the one source or ‘verifier’ encrypting the message/data
 with their private key and then anyone with their public key, which
-should be publicly available, can verify their message/data signature.</p>
+should be publicly available, and the messages hash can verify their message/data signature.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Digital signatures boil down to proving one has the private key without
@@ -922,8 +920,8 @@ for identifying yourself on most blockchain projects.</p>
 <div class="tip admonition">
 <p class="admonition-title">Example</p>
 <p>In the first chapter we looked at an example with a blockchain tracking how much
-blocks each participant had. There we just assumed that the data about the block
-movements was valid, but now we will analyze how we can guarantee that.
+blocks each participant had. There we just assumed that the data about trading lego
+was valid, but now we will analyze how we can guarantee that.
 We are back on the lego blockchain and the current version of the
 blockchain says you have 3 legos. Let’s say you want to give one of those
 legos to Alice:</p>
@@ -943,14 +941,14 @@ down to 2 legos and Alice has one more.</p></li>
 <div class="section" id="ppc-implementations">
 <h3><span class="section-number">2.1.3.2. </span>PPC Implementations<a class="headerlink" href="#ppc-implementations" title="Permalink to this headline">¶</a></h3>
 <p>Like with hashing algorithms, there is no perfect <em>PPC</em> implementation
-with every one having pros and cons. We will be looking at two major
+with each having pros and cons. We will be looking at two major
 implementations: RSA and ECDSA.</p>
 <div class="section" id="rsa">
 <h4><span class="section-number">2.1.3.2.1. </span>RSA<a class="headerlink" href="#rsa" title="Permalink to this headline">¶</a></h4>
 <p><strong>RSA</strong>, the name is derived form its creators’ initials, was developed in the 1970s and is a <em>PPC</em> algorithm that
 is ‘double-sided’. By this we mean that you can take either public
 or private key, encrypt a message and that message can only be
-decrypted with the other.</p>
+decrypted with the other key.</p>
 <p>RSA works on the set of real numbers, this will be important later, and
 heavily relies on the concept of <a class="reference external" href="https://www.computerhope.com/jargon/m/modulo.htm#:~:text=Modulo%20is%20a%20math%20operation,and%20r%20is%20the%20remainder.">modulo</a>
 , which guarantees you can’t deduce the private key from the public key
@@ -958,6 +956,13 @@ and an encrypted message. Its public key is composed of two numbers while the pr
 is composed of one number. All three numbers are derived from two very
 large and random prime numbers that have
 to be kept private as well.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>While RSA encryption is ‘double-sided’ you cannot interchange which key is private and which is
+public. This is because the public key, composed of two numbers, is generated from the private
+key. If you use the private key as the public key someone could easily generate the public
+key you are keeping secret.</p>
+</div>
 <p>RSA is used heavily in industry as it is secure and easy to use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -974,10 +979,11 @@ the private key and decrypt with the public key. ECDSA is <em>very</em> difficul
 to crack but this is balanced out by the fact that you cannot use it in
 p2p messaging like you can with RSA. This is because everyone can
 decrypt a ECDSA-encrypted message, that is very much the point of ECDSA but
-not very helpful when you are trying to send encrypted messages.</p>
+not very helpful when you are trying to send secret messages.</p>
 <p>ECDSA’s power comes from the fact that unlike RSA, it does not work
 on the set of real numbers but on a group on the prime order. This means
-that it only works with a certain set of prime numbers. These prime numbers
+that it only works with a certain set of prime numbers. These prime numbers are points on a
+plane that
 form the path of an elliptical curve. All you need to know about this
 elliptical curve is that it is symmetric along the x-axis, and it is
 defined by an equation.</p>
@@ -987,9 +993,9 @@ defined by an equation.</p>
 groups work with only select numbers, often incomprehensibly complicated
 or long.</p>
 </div>
-<p>One of the implications of ECDSA working on a group is that its operators
-, like addition or multiplication, are not like the addition and
-multiplication we are used to. While there are may operators for
+<p>One of the implications of ECDSA working on a group is that its operators, like
+addition or multiplication, are not like the addition and
+multiplication we are used to. While there are many operators, for
 our needs we only need to know one, addition. This is because from
 addition we can get multiplication, which is just addition <em>n</em> many
 times, and multiplication is key in ECDSA.</p>
@@ -1017,7 +1023,7 @@ The equation for the public key is then:</p>
 message to be signed and a random number known as k to generate a digital
 signature. This signature can be verified provided you have the
 message, public key and the random number.</p>
-<p>Another benefit of ECDSA is because the elliptical curve is symmetric
+<p>Another benefit of ECDSA is that because the elliptical curve is symmetric
 along the x-axis we can denote the public key, which is just another
 point on the curve, just through its x-coordinate and the sign of the
 y-coordinate rather than the full coordinate. This cuts the size of the
@@ -1026,11 +1032,11 @@ key compared to the larger <em>uncompressed</em> public key.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Compressed public keys are so small that they are even smaller than addresses.
-This raises the natural question of why we use addresses at all? The
+This raises the question of why we use addresses at all? The
 reason is Bitcoin uses addresses and as the original blockchain project
 we adopted alot of its features.</p>
 <p>But why does Bitcoin use addresses? Well, there is <em>suspicion</em> that its
-creator was unaware of compressed public keys and that why Bitcoin
+creator was unaware of compressed public keys and thats why Bitcoin
 uses addresses.</p>
 </div>
 </div>
@@ -1038,7 +1044,7 @@ uses addresses.</p>
 <h4><span class="section-number">2.1.3.2.3. </span>ECDSA v RSA<a class="headerlink" href="#ecdsa-v-rsa" title="Permalink to this headline">¶</a></h4>
 <p>RSA is an <em>encryption</em> algorithm while ECDSA is just a digital signature
 algorithm. At first glance it might seem like RSA is the more practical of
-the two and while it is true it has more use-cases both algorithms have their
+the two and while it does have more use-cases both algorithms have their
 benefits and drawbacks.</p>
 <table class="colwidths-auto table">
 <thead>
@@ -1068,34 +1074,34 @@ starts to really add up.</p>
 <div class="section" id="cryptography-in-action">
 <h2><span class="section-number">2.1.4. </span>Cryptography in Action<a class="headerlink" href="#cryptography-in-action" title="Permalink to this headline">¶</a></h2>
 <p>When describing RSA and ECDSA we used the word <em>random</em> alot. This is
-incredibly important because the security of both RSA and ECDSA, but
-particularly the latter, is dependent on being as random as
-possible. This introduces us to a common problem in cryptography, which
-is achieving <em>true random</em>.</p>
+incredibly important because the security of both RSA and ECDSA
+is dependent on being as random as
+possible. This introduces us to a common problem in cryptography: achieving <em>true random</em>.</p>
 <p><strong>True random</strong> is something that is incredibly difficult to achieve
-for computers because they only do exactly as told. This makes generating
+for computers because they only do exactly as they’re told. This makes generating
 <em>randomness</em> very difficult because how do you tell a computer, in
-exact detail, how to return a completely random number? The solution
-is often that you can’t. Random functions in most computers aren’t
-random at all but rather <em>pseudorandom</em> which derive from mathematical
-equations. While this is ok for picking colors or the name of your
+exact detail, how to return a completely random number? The answer
+is you can’t. Random functions in most computers aren’t
+random at all but rather <em>pseudorandom</em> which are derived from mathematical
+equations. This means they predictably create numbers given a starting
+number called a <em>seed</em>. While this is ok for picking colors or the name of your
 rock band it isn’t good in cryptography because attackers can predict
-the numbers.</p>
+these numbers.</p>
 <p>We began our discussion of digital signatures with the observation
 that they are trying to prove you have the private
-key without actually showing the private key. With possible
+key without actually showing the private key. With possibly
 thousands of such unique proofs, as different messages need to be
 verified, it becomes increasingly difficult to keep the private key
 private. This is where randomness comes in as with a constantly changing random
 number added in to your digital signature your private key is hidden.
 If you are only
-putting pseudo-random numbers in then the attacker can predict them and then
-uncover your private key, stressing the importance of true random.</p>
+putting pseudo-random numbers in, then the attacker can predict them and then
+uncover your private key.</p>
 <p>Randomness therefore underpins the security of cryptography. You might
 be wondering how true random is achieved and the solution is
-the physical world. Some programs measure the exact heat of the cpu,
+the physical world. Some random programs measure the exact heat of the cpu,
 the background noise or even tell you to move your mouse around.
-Computers become random by moving the randomness onto the physical
+Computers become random by moving the task of randomness, or <em>entropy</em>, onto the physical
 world which, for the most part, can be very random.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1114,13 +1120,13 @@ are:</p>
 <ul class="simple">
 <li><p>Hashing is the backbone of the Merkle Tree data structure that blocks
 use to store their data.</p></li>
-<li><p>In PoW hashing is also used as the solution to block validation and
+<li><p>In PoW, hashing is also used as the solution to block validation and
 consensus through the hash puzzle.</p></li>
 <li><p>ECDSA cryptography validates individual pieces of data in a blockchain
-as it allows anyone to definitely prove the source or attestation to a
+as it allows anyone to definitely prove the source of or attestation to, a
 piece of data in the blockchain.</p></li>
 </ul>
-<p>A common format of data in the blockchain are transaction which depend
+<p>A common format of data in the blockchain are transactions which depend
 on cryptography even more. This because a standard transaction is
 composed of:</p>
 <ul class="simple">
@@ -1135,11 +1141,11 @@ cryptographic keys. This is called <em>pseudonymity</em>.</p>
 <p><strong>Pseudonymity</strong> is when a party is only reachable through its
 cryptographic identity which is disconnected from its physical one.
 There is a gap between the physical and the cryptographic, but it is
-a gap that can, and has, be bridged.</p>
+a gap that can, and sometime has, been bridged.</p>
 <p>Being pseudonymous does not
-imply anonymity. A public keys interactions are public-knowledge and interacting with well
+imply anonymity. A public key’s interactions are public-knowledge and interacting with well
 known public keys, like those of a bank or public exchange, can be
-used along with tracking devices, like security cameras, to deduce the
+used along with physical tracking devices, like security cameras, to deduce the
 actual identity behind the public key.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1151,7 +1157,7 @@ anonymous.</p>
 <h3><span class="section-number">2.1.4.2. </span>Back to Byzantium<a class="headerlink" href="#back-to-byzantium" title="Permalink to this headline">¶</a></h3>
 <p>Coming back to the Byzantine General’s problem, this chapter helped the generals verify that messages originate
 from other generals and are not forged by unreliable messengers.
-This guarantees communication between generals is un tamper-able as
+This guarantees communication between generals is un-tamper-able as
 a modified message would have a different hash which would not fit
 into the provided digital signature, which cannot be forged because
 Byzantium nor the messengers have the private key.</p>
@@ -1159,10 +1165,10 @@ Byzantium nor the messengers have the private key.</p>
 achieving consensus, agreeing on the exact content of the valid chain,
 through PoW.</p>
 <p>The generals now have a message format, the blockchain, that is
-trustworthy if there is an honest majority and will now only
-contain data that verifiable originates from the generals and not
-some malicious third party. We are still lacking coordination,
-how do the generals organize this whole blockchain. This will be
+trustworthy if there is an honest majority and it will now only
+contain data that verifiably originates from the generals and not
+some malicious third party. However, we are still lacking coordination,
+how the generals organize this whole blockchain. This will be
 the topic of out next chapter, <em>networks</em>.</p>
 </div>
 </div>

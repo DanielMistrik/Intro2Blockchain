@@ -451,3 +451,7 @@ through the book.
 * **Block Header** - Where all the information about the Block is stored.
 * **Merkle Tree** - A cryptographically ordered binary tree data structure.
 * **Block Hash** - The data signature of the Block header.
+* **Chain** - A linked list of blocks ending in the genesis block. At any one time there may be 
+multiple chains competing to become the *valid chain*.
+* **Valid Chain** - The chain that is the correct chain of blocks. Only data in the valid
+chain is considered valid by the blockchain.
