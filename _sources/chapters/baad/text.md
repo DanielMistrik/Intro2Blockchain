@@ -152,7 +152,7 @@ cut it. Our ideal data-structure would have the following properties:
 * Can be easily shared among nodes in the system.
 * Anyone can contribute to it but can only submit valid data.
 
-### Blockchain Implementation (*BAADS*)
+### Blockchain Implementation (*BADS*)
 The blockchain meets the requirements above through the following data-structure:
 * Data is ordered into *blocks* and structured by *Merkle Trees*.
 * *Blocks* are united through a *linked list*.
