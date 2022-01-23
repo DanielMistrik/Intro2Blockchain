@@ -442,3 +442,12 @@ because we want to address a common misconception: blockchain isn't only finance
 Bitcoin and DeFi are successful financial applications of the blockchain they aren't 
 its only applications.
 :::
+
+### Blockchain Jargon
+Like any field, Blockchain has alot of jargon that is important for us to understand as we progress
+through the book.
+* **Genesis Block** - The first block of the Blockchain and the only one that points to nothing.
+* **Block Height** - The number of blocks added since the genesis block, 0-indexed.
+* **Block Header** - Where all the information about the Block is stored.
+* **Merkle Tree** - A cryptographically ordered binary tree data structure.
+* **Block Hash** - The data signature of the Block header.
