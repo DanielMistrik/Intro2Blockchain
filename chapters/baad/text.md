@@ -445,9 +445,13 @@ its only applications.
 
 ### Blockchain Jargon
 Like any field, Blockchain has alot of jargon that is important for us to understand as we progress
-through the course.
+through the book.
 * **Genesis Block** - The first block of the Blockchain and the only one that points to nothing.
 * **Block Height** - The number of blocks added since the genesis block, 0-indexed.
 * **Block Header** - Where all the information about the Block is stored.
 * **Merkle Tree** - A cryptographically ordered binary tree data structure.
 * **Block Hash** - The data signature of the Block header.
+* **Chain** - A linked list of blocks ending in the genesis block. At any one time there may be 
+multiple chains competing to become the *valid chain*.
+* **Valid Chain** - The chain that is the correct chain of blocks. Only data in the valid
+chain is considered valid by the blockchain.
