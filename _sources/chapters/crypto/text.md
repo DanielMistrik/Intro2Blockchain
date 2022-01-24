@@ -104,27 +104,29 @@ are very useful. They appear in data structures, through Hash tables & Merkle
 trees, password verification and ofcourse data signatures. 
 
 There are alot of implementations of hash functions but good ones should share the
-three following characteristics:
+four following characteristics:
 
 * **Deterministic** - A given input will *always* produce the same output for the same
 hash function implementation.
-* **Trap-door Function** - You can quickly and easily take an input and calculate the 
+* **One-Way Function** - You can quickly and easily take an input and calculate the 
 output, the *hash digest*, but you cannot take the output, the *hash digest*, and quickly 
 get the input. You could say the hash function is not *invertible*.
 * **Collision Resistant** - The number of inputs that share the same output, known 
 as a *collision*, should be as small as possible. Ideally one input maps to one output but as 
 the output is fixed-size and input can be anything even the best hash functions are
 bound to have collisions.
+* **Avalanche-Effect** - Changing the input even slightly has a profound, and unpredictable, effect
+on the output. 
 
 :::{tip}
-The three properties of good hash functions are incredibly important. They are the 
+The four properties of good hash functions are incredibly important. They are the 
 properties that make hash functions so useful, so they are definitely something
 to remember.
 :::
 
 ### How it Works
 Hash functions typically work with binary but the hash digest is often represented as 
-a hexadecimal due to terseness. Implementations always try to provide the three
+a hexadecimal due to terseness. Implementations always try to provide the four
 properties of good hash functions but how they achieve this varies greatly.
 We will be looking at SHA-256 because it is the most widely used and 
 is also Bitcoin's hash function.
@@ -187,7 +189,8 @@ uncracked SHA-256 you would have to do 2^256 calculations to find a collision.
 
 *Brute-Force Attacks* are attacks that try to *reverse* a hash function and this is 
 much more difficult, to the point of impossibility, than collision attacks. This is
-because complex hashing functions cannot be *reversed* so the only way you can find the input
+because complex hashing functions cannot be *reversed* and changing their input gives an unpredictable
+output so the only way you can find the input
 for a given output is to try all possible inputs until you get your desired output. For SHA-256
 this would take roughly 2^256 computations.For reference this would take the whole worlds computing
 power more time than the predicted lifespan of the universe. Note, because of 

@@ -663,28 +663,30 @@ size and produces an output value, a number, of fixed-size, the <em>hash digest<
 are very useful. They appear in data structures, through Hash tables &amp; Merkle
 trees, password verification and ofcourse data signatures.</p>
 <p>There are alot of implementations of hash functions but good ones should share the
-three following characteristics:</p>
+four following characteristics:</p>
 <ul class="simple">
 <li><p><strong>Deterministic</strong> - A given input will <em>always</em> produce the same output for the same
 hash function implementation.</p></li>
-<li><p><strong>Trap-door Function</strong> - You can quickly and easily take an input and calculate the
+<li><p><strong>One-Way Function</strong> - You can quickly and easily take an input and calculate the
 output, the <em>hash digest</em>, but you cannot take the output, the <em>hash digest</em>, and quickly
 get the input. You could say the hash function is not <em>invertible</em>.</p></li>
 <li><p><strong>Collision Resistant</strong> - The number of inputs that share the same output, known
 as a <em>collision</em>, should be as small as possible. Ideally one input maps to one output but as
 the output is fixed-size and input can be anything even the best hash functions are
 bound to have collisions.</p></li>
+<li><p><strong>Avalanche-Effect</strong> - Changing the input even slightly has a profound, and unpredictable, effect
+on the output.</p></li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The three properties of good hash functions are incredibly important. They are the
+<p>The four properties of good hash functions are incredibly important. They are the
 properties that make hash functions so useful, so they are definitely something
 to remember.</p>
 </div>
 <div class="section" id="how-it-works">
 <h3><span class="section-number">2.1.2.1. </span>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h3>
 <p>Hash functions typically work with binary but the hash digest is often represented as
-a hexadecimal due to terseness. Implementations always try to provide the three
+a hexadecimal due to terseness. Implementations always try to provide the four
 properties of good hash functions but how they achieve this varies greatly.
 We will be looking at SHA-256 because it is the most widely used and
 is also Bitcoin’s hash function.</p>
@@ -743,7 +745,8 @@ you can find a hash collision in 2^62 calculations. In comparison, for the yet
 uncracked SHA-256 you would have to do 2^256 calculations to find a collision.</p>
 <p><em>Brute-Force Attacks</em> are attacks that try to <em>reverse</em> a hash function and this is
 much more difficult, to the point of impossibility, than collision attacks. This is
-because complex hashing functions cannot be <em>reversed</em> so the only way you can find the input
+because complex hashing functions cannot be <em>reversed</em> and changing their input gives an unpredictable
+output so the only way you can find the input
 for a given output is to try all possible inputs until you get your desired output. For SHA-256
 this would take roughly 2^256 computations.For reference this would take the whole worlds computing
 power more time than the predicted lifespan of the universe. Note, because of
